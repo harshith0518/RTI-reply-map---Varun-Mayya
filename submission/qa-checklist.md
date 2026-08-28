@@ -35,13 +35,13 @@
 - [x] Test the current five-case workspace and JSON importer at 360 px and desktop width with no horizontal overflow.
 - [ ] Verify keyboard access, visible focus, case selection, tree nodes, Reply Map details, review controls, prompt copy, file choice, validation, load, and clear.
 - [x] Maya's three source PDFs render cleanly on all six pages.
-- [ ] Deploy the final commit to the free static public host.
-- [ ] Confirm the deployed build has no authentication, database, paid runtime dependency, analytics, or government integration.
+- [x] Deploy the final commit to the free static public host.
+- [x] Confirm the deployed build has no authentication, database, paid runtime dependency, analytics, or government integration.
 
 ## Before submitting
 
 - [ ] Open the final public URL in a private browser window.
-- [ ] Confirm the public URL requires no account or access request.
+- [x] Confirm the public URL requires no account or access request.
 - [ ] Play the full 60-second demo once against the deployed build.
 - [ ] Confirm every demoed control works and all five sample cases remain visibly fictional.
 - [ ] Paste the public URL and the summary from `project-summary.md` into the submission form.
