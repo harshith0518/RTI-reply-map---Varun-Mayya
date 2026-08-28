@@ -86,12 +86,17 @@ export function ReplyMapPanel({
                 {document && !document.assetPath ? <p className="document-metadata-note">{data.source === 'synthetic' ? 'Synthetic document metadata only · sample PDF not attached.' : 'Document metadata from imported JSON · compare it with your redacted source record.'}</p> : null}
                 <div className="mapping-actions">
                   <button className="branch-link" type="button" onClick={() => onRevealNode(mapping.nodeId)}>Show this case event in the tree</button>
-                  <label className="review-control">
-                    <span>Your check <small>kept only in this tab</small></span>
-                    <select value={effectiveCoverage} onChange={(event) => onReview(mapping.id, event.target.value as CoverageCode)}>
-                      {(Object.entries(COVERAGE_COPY) as [CoverageCode, string][]).map(([code, label]) => <option value={code} key={code}>{label}</option>)}
-                    </select>
-                  </label>
+                  <div className="review-actions">
+                    <label className="review-control">
+                      <span>Your check <small>kept only in this tab</small></span>
+                      <select value={effectiveCoverage} onChange={(event) => onReview(mapping.id, event.target.value as CoverageCode)}>
+                        {(Object.entries(COVERAGE_COPY) as [CoverageCode, string][]).map(([code, label]) => <option value={code} key={code}>{label}</option>)}
+                      </select>
+                    </label>
+                    {reviews[mapping.id]
+                      ? <span className="check-saved" role="status">✓ Check saved</span>
+                      : <button className="confirm-review" type="button" onClick={() => onReview(mapping.id, effectiveCoverage)}>Confirm this result</button>}
+                  </div>
                 </div>
                 {reviews[mapping.id] ? <p className="review-note">Original proposal: {COVERAGE_COPY[mapping.coverage]}. Your check is shown above without deleting the original.</p> : null}
               </div>

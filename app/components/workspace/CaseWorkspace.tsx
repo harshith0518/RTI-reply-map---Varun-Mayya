@@ -6,13 +6,33 @@ import { summarizeCase, type RTICaseData } from '@/src/case-model';
 import { DependencyTree } from './DependencyTree';
 import { ReplyMapPanel } from './ReplyMapPanel';
 
-export function CaseWorkspace({ data }: { data: RTICaseData }) {
+const COVERAGE_CODES = Object.keys(COVERAGE_COPY) as CoverageCode[];
+
+export function CaseWorkspace({
+  data,
+  reviews,
+  onReview,
+  onResetReviews,
+}: {
+  data: RTICaseData;
+  reviews: Record<string, CoverageCode>;
+  onReview: (mappingId: string, coverage: CoverageCode) => void;
+  onResetReviews: () => void;
+}) {
   const [selectedNodeId, setSelectedNodeId] = useState(data.rootNodeId);
-  const [reviews, setReviews] = useState<Record<string, CoverageCode>>({});
   const [liveMessage, setLiveMessage] = useState('');
   const nodeElements = useRef(new Map<string, HTMLButtonElement>());
   const stats = summarizeCase(data);
   const reviewedCount = Object.keys(reviews).length;
+  const effectiveCoverage = Object.fromEntries(COVERAGE_CODES.map((code) => [code, 0])) as Record<CoverageCode, number>;
+
+  for (const mapping of data.mappings) {
+    effectiveCoverage[reviews[mapping.id] ?? mapping.coverage] += 1;
+  }
+
+  const attentionMappings = data.mappings.filter(
+    (mapping) => (reviews[mapping.id] ?? mapping.coverage) !== 'answer_located',
+  );
 
   async function copyValue(value: string) {
     try {
@@ -24,7 +44,7 @@ export function CaseWorkspace({ data }: { data: RTICaseData }) {
   }
 
   function reviewMapping(mappingId: string, coverage: CoverageCode) {
-    setReviews((current) => ({ ...current, [mappingId]: coverage }));
+    onReview(mappingId, coverage);
     setLiveMessage(`Your check was kept in this tab as “${COVERAGE_COPY[coverage]}”.`);
   }
 
@@ -57,6 +77,14 @@ export function CaseWorkspace({ data }: { data: RTICaseData }) {
           <div><dt>Replies</dt><dd>{stats.replies}</dd></div>
         </dl>
         <div className="case-context"><strong>Why this gets confusing</strong><p>{data.painPoint}</p></div>
+        <div className="original-questions">
+          <div><strong>What the citizen originally asked</strong><span>Every question must end with one visible Reply Map result.</span></div>
+          <ol>
+            {data.questions.map((question) => (
+              <li key={question.id}><span>Q{question.number}</span><div><strong>{question.title}</strong><p>{question.text}</p></div></li>
+            ))}
+          </ol>
+        </div>
         <div className="case-boundary"><strong>{data.source === 'custom' ? 'Local imported case' : 'Fictional demonstration'}</strong><span>{reviewedCount ? `${reviewedCount} result${reviewedCount === 1 ? '' : 's'} checked by you · ` : ''}No automated legal conclusion</span></div>
       </section>
       <div className="workspace-grid" id="workspace">
@@ -69,11 +97,56 @@ export function CaseWorkspace({ data }: { data: RTICaseData }) {
           onRevealNode={revealNode}
           onReview={reviewMapping}
           onResetReviews={() => {
-            setReviews({});
+            onResetReviews();
             setLiveMessage('Your checks were reset to the proposed results.');
           }}
         />
       </div>
+      <section className="outcome-summary" aria-labelledby="outcome-title">
+        <div className="outcome-heading">
+          <div>
+            <p className="eyebrow">Citizen-ready outcome</p>
+            <h2 id="outcome-title">What this Reply Map tells you</h2>
+          </div>
+          <p>{reviewedCount ? `${reviewedCount} human check${reviewedCount === 1 ? '' : 's'} applied in this tab.` : 'Showing the proposed evidence labels. You can check every result yourself.'}</p>
+        </div>
+        <dl className="outcome-counts" aria-label="Question coverage summary">
+          {COVERAGE_CODES.map((code) => (
+            <div className={`outcome-count count-${code}`} key={code}>
+              <dt>{COVERAGE_COPY[code]}</dt>
+              <dd>{effectiveCoverage[code]}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="outcome-next-step">
+          <div>
+            <h3>{attentionMappings.length ? `${attentionMappings.length} question${attentionMappings.length === 1 ? ' needs' : 's need'} attention` : 'Every question has a located answer'}</h3>
+            <p>{attentionMappings.length ? 'These labels are navigation aids, not a finding about legal compliance. Open the matching Reply Map item to inspect the passage, missing detail, and branch.' : 'Still inspect each passage before relying on it; this prototype does not decide whether a reply is legally adequate.'}</p>
+          </div>
+          {attentionMappings.length > 0 && (
+            <ul>
+              {attentionMappings.map((mapping) => {
+                const question = data.questions.find((item) => item.id === mapping.questionId);
+                const node = data.nodes.find((item) => item.id === mapping.nodeId);
+                const result = reviews[mapping.id] ?? mapping.coverage;
+                return (
+                  <li key={mapping.id}>
+                    <span>Q{question?.number ?? '?'}</span>
+                    <div><strong>{question?.title ?? 'Question'}</strong><small>{node?.registrationNumber ?? mapping.registrationNumber ?? 'No branch registration'}</small></div>
+                    <em>{COVERAGE_COPY[result]}</em>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+        <div className="official-handoff">
+          <strong>Need to act on a real case?</strong>
+          <span>Use the official portal or its guidance after verifying your records. This website does not submit an RTI, payment, or appeal.</span>
+          <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Open official RTI Online portal <span>(new tab)</span></a>
+          <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Read official FAQ <span>(new tab)</span></a>
+        </div>
+      </section>
       <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>
     </>
   );

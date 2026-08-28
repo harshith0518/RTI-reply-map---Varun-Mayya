@@ -16,7 +16,7 @@ export function ExamplePicker({
   onSelect: (caseId: string) => void;
 }) {
   return (
-    <section className="example-picker" aria-labelledby="examples-title">
+    <section className="example-picker" id="examples" aria-labelledby="examples-title">
       <div className="section-heading">
         <div>
           <p className="eyebrow">Five cases · five different failure patterns</p>
@@ -24,7 +24,7 @@ export function ExamplePicker({
         </div>
         <label className="example-select">
           <span>Choose a case</span>
-          <select value={activeCase.source === 'custom' ? LOCAL_CASE_OPTION : activeCase.caseId} onChange={(event) => onSelect(event.target.value)}>
+          <select aria-controls="workspace" value={activeCase.source === 'custom' ? LOCAL_CASE_OPTION : activeCase.caseId} onChange={(event) => onSelect(event.target.value)}>
             {examples.map((example) => (
               <option value={example.caseId} key={example.caseId}>{example.citizenName} — {example.structureLabel}</option>
             ))}
@@ -39,6 +39,7 @@ export function ExamplePicker({
             type="button"
             className={activeCase.source === 'synthetic' && activeCase.caseId === example.caseId ? 'active' : ''}
             aria-pressed={activeCase.source === 'synthetic' && activeCase.caseId === example.caseId}
+            aria-controls="workspace"
             onClick={() => onSelect(example.caseId)}
             key={example.caseId}
           >
@@ -51,7 +52,7 @@ export function ExamplePicker({
           </button>
         ))}
       </div>
-      <p className="example-caption">All five demonstrations are fictional and deliberately different: parallel split, transfer then split, appeal chain, fee/no-reply branches, and a simple consolidated reply.</p>
+      <p className="example-caption">All five demonstrations are fictional and deliberately different. Select a card—or use the menu—to compare the same tree and Reply Map across every structure.</p>
     </section>
   );
 }

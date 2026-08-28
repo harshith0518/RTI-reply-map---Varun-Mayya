@@ -87,7 +87,7 @@ export function ImportCasePanel({
           <p className="eyebrow">Use your own redacted case</p>
           <h2 id="import-title">Turn records into the same tree and Reply Map.</h2>
         </div>
-        <p>No account, server, or paid API. The JSON stays in this browser tab and is cleared when the tab is refreshed.</p>
+        <p>No account or AI API inside this website. Deterministic browser code validates the JSON and builds the map locally; refreshing clears it.</p>
       </div>
 
       <div className="import-grid">
@@ -98,6 +98,7 @@ export function ImportCasePanel({
             <strong>Redact before sharing</strong>
             <p>Remove names, addresses, phone numbers, emails, Aadhaar or identity numbers, signatures, bank details, and any other personal information.</p>
           </div>
+          <p className="external-ai-note"><strong>Separate optional step:</strong> ChatGPT runs under its own account and privacy terms. This website never calls it. You can also edit the downloaded JSON template manually.</p>
           <ol className="import-steps">
             <li>Copy the prompt.</li>
             <li>Give ChatGPT only redacted RTI records.</li>
