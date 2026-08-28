@@ -120,20 +120,58 @@ export function ReplyMapApp() {
         <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>
       </main>
 
-      <footer className="site-footer workspace-footer">
-        <div className="disclosure">
-          <strong>Independent hackathon prototype</strong>
-          <span>{activeCase.source === 'custom' ? 'Local imported case — this site does not upload it' : 'Uses fictional sample records'}</span>
-          <span>Not connected to a government website</span>
-          <span>Nothing is submitted</span>
-          <span>Not legal advice</span>
-          <span>Built with Codex · no runtime AI/API</span>
+      <footer className="site-footer workspace-footer" id="prototype-footer">
+        <section className="footer-handoff" aria-labelledby="footer-handoff-title">
+          <div className="footer-handoff-copy">
+            <div>
+              <p className="footer-kicker">Independent hackathon prototype</p>
+              <p className="footer-flow" aria-label="Understand, then explore, then test">
+                <span>Understand</span><b aria-hidden="true">→</b><span>Explore</span><b aria-hidden="true">→</b><span>Test</span>
+              </p>
+            </div>
+            <div>
+              <h2 id="footer-handoff-title">See the problem. Explore the map. Test a case.</h2>
+              <p>This prototype reconnects scattered RTI registrations, transfers and replies into one reviewable case. It does not file an RTI or replace the official portal.</p>
+            </div>
+          </div>
+
+          <nav className="footer-paths" aria-label="Explore and test this prototype">
+            <a href="#why-this-exists">
+              <span>01 · Understand</span>
+              <strong>See the current workflow</strong>
+              <small>View sourced screenshots of fragmented status pages, transfer records and replies.</small>
+              <b aria-hidden="true">See the evidence →</b>
+            </a>
+            <a href="#examples">
+              <span>02 · Explore</span>
+              <strong>Try five fictional cases</strong>
+              <small>Compare different dependency trees and question-to-evidence maps.</small>
+              <b aria-hidden="true">Open the cases →</b>
+            </a>
+            <a href="#use-your-case">
+              <span>03 · Test</span>
+              <strong>Use custom redacted JSON</strong>
+              <small>Paste JSON or choose a file. Validation and mapping run only in this browser.</small>
+              <b aria-hidden="true">Test your case →</b>
+            </a>
+          </nav>
+        </section>
+
+        <div className="footer-boundaries">
+          <div className="disclosure">
+            <strong>Prototype boundaries</strong>
+            <span>{activeCase.source === 'custom' ? 'Local imported case — this site does not upload it' : 'Uses fictional sample records'}</span>
+            <span>Independent of government</span>
+            <span>Nothing is submitted</span>
+            <span>Not legal advice</span>
+            <span>No runtime AI or API</span>
+          </div>
+          <p>The map locates evidence and case links. It does not judge compliance or file an RTI or appeal.</p>
+          <nav className="footer-links" aria-label="Official RTI resources">
+            <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal (new tab)</a>
+            <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ (new tab)</a>
+          </nav>
         </div>
-        <p>The map locates evidence and case links. It does not judge compliance or file an RTI or appeal.</p>
-        <nav className="footer-links" aria-label="Official RTI resources">
-          <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal (new tab)</a>
-          <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ (new tab)</a>
-        </nav>
       </footer>
     </div>
   );
