@@ -8,6 +8,22 @@
 .topbar-link { min-height: 42px; display: inline-flex; align-items: center; border-radius: 7px; padding: .45rem .65rem; color: var(--green-dark); font-size: .84rem; font-weight: 750; text-decoration: none; }
 .topbar-link:hover { background: var(--green-soft); }
 
+.review-note { margin: .35rem 0 0; border: 1px solid #b8c9c0; border-top: 4px solid var(--green); border-radius: 12px; padding: 1.35rem; background: white; box-shadow: var(--shadow-small); }
+.review-note-heading { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr); align-items: end; gap: 1rem 3rem; }
+.review-note-kicker { margin: 0 0 .45rem; color: var(--green); font-size: .72rem; font-weight: 820; letter-spacing: .07em; text-transform: uppercase; }
+.review-note-kicker span { margin-right: .25rem; color: var(--amber); font-size: .65rem; }
+.review-note h2 { max-width: 710px; margin: 0; font-size: clamp(1.45rem, 2.7vw, 2.2rem); letter-spacing: -.035em; line-height: 1.08; }
+.review-note-heading > p { max-width: 560px; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.55; }
+.review-paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; margin-top: 1.15rem; }
+.review-paths a { min-width: 0; min-height: 112px; display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: start; gap: .65rem; border: 1px solid var(--line); border-radius: 9px; padding: .8rem; background: #f8faf8; color: var(--ink); text-decoration: none; }
+.review-paths a:hover { border-color: #91ad9e; background: var(--green-soft); }
+.review-paths > a > span { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 7px; background: var(--ink); color: white; font-family: "Cascadia Code", Consolas, monospace; font-size: .7rem; font-weight: 800; }
+.review-paths strong, .review-paths small { display: block; }
+.review-paths strong { font-size: .87rem; line-height: 1.25; }
+.review-paths small { margin-top: .3rem; color: var(--muted); font-size: .73rem; line-height: 1.42; }
+.review-scope { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .7rem; margin-top: .7rem; border-left: 3px solid var(--amber); padding: .65rem .75rem; background: #fffaf1; color: #654a31; font-size: .77rem; line-height: 1.45; }
+.review-scope strong { color: #6d390a; white-space: nowrap; }
+
 .product-intro { display: grid; grid-template-columns: minmax(0, 1fr) 320px; align-items: end; gap: 2.5rem; border-bottom: 1px solid var(--line); padding: 2rem 0 2.5rem; }
 .product-intro h1 { max-width: 900px; font-size: clamp(2.25rem, 5vw, 4.4rem); }
 .product-intro > div > h1 + p { max-width: 780px; margin: 1rem 0 0; color: var(--muted); font-size: 1.04rem; line-height: 1.6; }
@@ -303,6 +319,7 @@
 .footer-boundaries > p { margin: .75rem 0 0; color: var(--muted); font-size: .8rem; text-align: center; }
 
 @media (max-width: 960px) {
+  .review-note-heading { grid-template-columns: 1fr; gap: .75rem; }
   .product-intro { grid-template-columns: 1fr; }
   .product-intro aside { max-width: 480px; }
   .workspace-grid { grid-template-columns: 1fr; }
@@ -320,6 +337,8 @@
   .topbar { flex-wrap: wrap; gap: .35rem .75rem; }
   .topbar-nav { order: 3; width: 100%; margin: 0; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
   .topbar-nav a { min-height: 44px; }
+  .review-paths { grid-template-columns: 1fr; }
+  .review-paths a { min-height: 0; }
   .why-section, .example-picker, .workspace-grid, .how-section, .import-section { scroll-margin-top: 132px; }
   .how-steps { grid-template-columns: 1fr; }
   .graph-stage { overflow-x: clip; padding: .9rem .65rem; background-size: 18px 18px; }
@@ -337,6 +356,11 @@
 
 @media (max-width: 620px) {
   .workspace-page { width: min(100% - 1.5rem, 1240px); padding-top: 1.2rem; }
+  .review-note { padding: 1rem; }
+  .review-note h2 { font-size: clamp(1.4rem, 7.5vw, 1.85rem); }
+  .review-paths { margin-top: 1rem; }
+  .review-paths a { min-height: 108px; }
+  .review-scope { grid-template-columns: 1fr; gap: .2rem; }
   .product-intro { gap: 1.4rem; padding-top: .8rem; }
   .product-intro h1 { font-size: clamp(2rem, 10vw, 2.8rem); }
   .section-heading { align-items: stretch; flex-direction: column; gap: .9rem; }

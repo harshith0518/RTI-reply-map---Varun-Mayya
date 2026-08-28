@@ -77,6 +77,10 @@ A transfer notice, additional-fee notice, or appeal order records procedure but 
 
 The human check overlays the proposed label in React state. The original proposal remains visible. Reviews are retained per case while the tab stays open so a citizen can compare examples without losing work; they are not written to storage or uploaded.
 
+## Deferred next-phase validation
+
+If the project advances, the next validation area is formal denial or rejection grounds, complaints, second appeals, and other legally complex edge cases. These are deliberately not presented as current prototype capabilities. Any extension should first define narrow citizen-facing semantics with an RTI-domain reviewer, then add schema types, runtime validation, fictional fixtures, and structural tests before changing the interface.
+
 ## Custom-case lifecycle
 
 1. The user downloads and edits the JSON template manually, or copies the optional prompt from `src/case-prompt.ts` for use in a separate ChatGPT session.

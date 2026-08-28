@@ -78,6 +78,36 @@ export function ReplyMapApp() {
       </header>
 
       <main id="main-content" className="workspace-page" tabIndex={-1}>
+        <section className="review-note" aria-labelledby="review-note-title">
+          <div className="review-note-heading">
+            <div>
+              <p className="review-note-kicker"><span aria-hidden="true">●</span> Start here · What you are reviewing</p>
+              <h2 id="review-note-title">This is the proposed solution—not a generic feature showcase.</h2>
+            </div>
+            <p>The dependency tree and Reply Map below are the working concept. Review sourced public records, explore five fictional case structures, then test a redacted JSON case in your browser.</p>
+          </div>
+
+          <nav className="review-paths" aria-label="Review this solution in three steps">
+            <a href="#why-this-exists">
+              <span>01</span>
+              <div><strong>See proof of the problem</strong><small>Public RTI records show the scattered registrations, transfers, replies and branch-specific appeals this proposal reconnects.</small></div>
+            </a>
+            <a href="#examples">
+              <span>02</span>
+              <div><strong>Run five example cases</strong><small>Each fictional scenario uses a different dependency structure and reply-coverage pattern.</small></div>
+            </a>
+            <a href="#use-your-case">
+              <span>03</span>
+              <div><strong>Test a custom case</strong><small>Paste redacted JSON or choose a file. The tree and Reply Map are built locally in this browser.</small></div>
+            </a>
+          </nav>
+
+          <aside className="review-scope" aria-label="Scope of this prototype phase">
+            <strong>Current phase</strong>
+            <span>Reply tracing, partial or missing evidence, fee notices, silence and a first-appeal path are covered. Formal denial or rejection grounds, complaints, second appeals and other legally complex edge cases are the next validation area if this project advances.</span>
+          </aside>
+        </section>
+
         <section className="product-intro" aria-labelledby="product-title">
           <div>
             <p className="eyebrow">One RTI application. Many files. One connected case.</p>
