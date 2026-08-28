@@ -1,93 +1,94 @@
 # Architecture
 
-RTI Reply Map is intentionally a small, deterministic client application. Its job is to demonstrate one auditable citizen journey reliably, not to imitate an RTI portal or make legal decisions.
+RTI Reply Map is a static, local-first client application. Its job is to make an RTI case auditable: lifecycle relationships remain visible in a dependency tree, while every original question stays linked to evidence in the Reply Map.
 
 ## System shape
 
 ```text
-src/fixtures.ts
-  fictional cases, questions, branches, events, documents, passages
+src/case-examples.ts + src/case-examples/*.ts
+  five fictional, structurally different demonstration cases
+                         |
+                         v
+src/case-model.ts <── src/case-prompt.ts
+  versioned types       guarded ChatGPT prompt + valid template
+  runtime validation              |
+  tree construction               v
+                         pasted or chosen local JSON
+                         |
+                         v
+app/components/workspace/ReplyMapApp.tsx
+  active example/custom case, URL selection, disclosure
         |
-        v
-src/domain.ts ------------------------------ tests/domain.test.ts
-  pure mapping and review-overlay rules       topology, evidence, time, labels
-        |
-        v
-src/demo.ts
-  demo constants, review drafts, totals, safe summary HTML
-        |
-        v
-app/page.tsx
-  hash navigation, selected question, localStorage, download orchestration
-        |
-        +--> app/components/shared.tsx
-        |      progress, status, disclosure, navigation controls
-        |
-        +--> app/components/screens/
-               overview and mapping/review screens
-        |
-        +--> public/replies/*.pdf
-               Maya's watermarked public sample evidence
+        +── ExamplePicker.tsx
+        +── CaseWorkspace.tsx
+        |     +── DependencyTree.tsx
+        |     └── ReplyMapPanel.tsx + browser-only human checks
+        └── ImportCasePanel.tsx
 ```
 
-The deployed build has no server-side application state, backend, database, authentication, live government integration, or runtime model call.
+The production build has no server application state, backend, database, authentication, live government integration, analytics, or model call.
 
-## Responsibilities
+## Case model
 
-| Area | Responsibility |
-| --- | --- |
-| `src/domain.ts` | Typed case model, deterministic evidence mapping, approved public labels, and human-review overlay. It has no browser or UI dependency. |
-| `src/fixtures.ts` | Fictional Maya, Nisha, and Asha cases. Events, documents, and evidence passages remain explicit and inspectable. |
-| `src/demo.ts` | Browser-demo helpers, summary counts, storage constants, and escaped reviewed-summary HTML. |
-| `app/page.tsx` | Client controller: seven-step hash navigation, selected question, review state, persistence, focus movement, reset, copy, and download actions. |
-| `app/components/shared.tsx` | Reusable progress, status, safety-disclosure, and previous/next controls. |
-| `app/components/screens/` | Citizen-facing screens grouped by journey responsibility rather than one monolithic page. |
-| `tests/domain.test.ts` | Checks topology, chronology, substantive-vs-procedural evidence, approved labels, and review precedence. |
-| `public/replies/` | Only the PDFs actually exposed by the Maya demo. |
+`RTICaseData` is the single render and import contract. It contains:
 
-## Mapping lifecycle
+- Case metadata and an explicit root node.
+- Original questions.
+- Lifecycle nodes such as application, registration, transfer, reply, no reply, fee notice, payment, appeal, appeal order, and supplemental reply.
+- Directed, labelled dependency edges.
+- Document metadata.
+- Exactly one cautious Reply Map result per original question.
 
-1. `mapCase` evaluates each question against substantive documents available by the requested date.
-2. Exact evidence signals produce one of four cautious labels: answer located, partially addressed, no matching passage located, or needs human review.
-3. Procedural notices and appeal orders never count as substantive answer evidence.
-4. The UI shows the proposal, reason, confidence, branch, and source passage without declaring statutory compliance.
-5. A citizen's confirmation or override produces an `EffectiveMapping`; the original proposal is retained for auditability.
+The current graph deliberately requires a rooted tree: the root has no parent; every other node has exactly one parent; every node is connected; and cycles are rejected. This matches the citizen-facing dependency view and permits a small semantic nested-list renderer without a graph library. A lifecycle event involving an office already seen earlier should be represented as a new dated event node rather than a cross-link.
 
-The mapping layer is deterministic. A future model could suggest candidate passages, but the public labels should still be grounded in stored evidence and remain reviewable.
+## Validation boundary
 
-## Browser review lifecycle
+All five built-in fixtures and every pasted/chosen custom case use `validateCaseData`. The validator rejects:
 
-Reviews are saved under `rti-reply-map-reviews-v1` in `localStorage`.
+- Unsupported schema versions and malformed required fields.
+- Inputs above 512 KB and excessive collection sizes.
+- Duplicate IDs or missing question, node, document, or edge references.
+- Multiple parents, disconnected nodes, root parents, and cycles.
+- Missing Reply Map results or more than one result for a question.
+- Positive results without an exact passage, location, and document.
+- Procedural transfer, fee, or appeal-order documents used as answer evidence.
+- Custom `assetPath` links.
 
-1. On load, stored JSON is parsed and validated against known Maya question IDs and approved coverage labels.
-2. Selecting a question creates a draft from an existing review or the deterministic proposal.
-3. Saving records the chosen label, optional note, and review timestamp.
-4. The effective summary uses the human choice while preserving the system proposal.
-5. Reset removes the storage key and restores the fictional case.
-6. If browser storage is blocked, the flow continues in memory and explains that persistence is unavailable.
+Strings are rendered through React. The app does not use `dangerouslySetInnerHTML`. Custom documents are metadata only and cannot inject a link.
 
-Nothing is uploaded or synchronized. Clearing site data removes saved reviews.
+## Evidence semantics
 
-## Summary export
+The public labels remain intentionally narrow:
 
-`createReviewedSummaryHtml` escapes fixture and review text, includes suggested and reviewed labels, evidence location, file, and registration number, and adds a synthetic-demo disclaimer. The browser creates a `Blob` and downloads the HTML locally; no server receives the summary.
+- `answer_located`
+- `partially_addressed`
+- `no_matching_passage`
+- `needs_human_review`
 
-## Fixture assets
+A transfer notice, additional-fee notice, or appeal order records procedure but cannot prove that requested information was supplied. An exact dated “no such record exists” statement can be an answer passage; it is not a legal-compliance verdict. A reply that exists but contains no relevant passage is distinct from a branch with no substantive reply.
 
-Maya drives the public UI and these files exist in `public/replies/`:
+The human check overlays the proposed label in React state. The original proposal remains visible. Reviews are not persisted or uploaded.
 
-- `maya-results-reply.pdf`
-- `maya-cutoff-reply.pdf`
-- `maya-vacancy-reply.pdf`
+## Custom-case lifecycle
 
-Nisha and Asha exercise serial transfer, parallel split, explicit no-record, no-reply, appeal-order, supplemental-reply, and no-match states in domain tests. Their document filenames are fixture metadata only; matching PDFs are deliberately not published.
+1. The user copies the prompt from `src/case-prompt.ts`.
+2. Personal details are redacted before records are shared with any external AI service.
+3. ChatGPT returns one JSON object using schema version `1.0`.
+4. The user pastes JSON or chooses a local `.json` file.
+5. The same runtime validator used for the fixtures checks the case.
+6. A valid case replaces the selected example in memory and renders through the same components.
+7. Refresh or “Clear imported case” removes it.
+
+## Free deployment
+
+The app is deliberately static and dependency-light. It can be served from OpenAI Sites for the current public deployment or another free static host. No paid service is required at runtime.
 
 ## Safe extension rules
 
-- Keep mapping rules pure and independent of React.
-- Add domain scenarios as typed fixtures and tests before exposing them in the UI.
-- Count only substantive reply documents as answer evidence.
-- Preserve exact passage, page, document, branch, and time qualifiers.
-- Put a file under `public/` only when the public UI intentionally links to it.
-- Never introduce real citizen data, credentials, uploads, or unapproved government connections.
-- Treat legal next steps as official-link handoffs, not product verdicts.
+- Keep the schema, validator, tree builder, and examples independent of React.
+- Add a fixture and structural test before introducing a new lifecycle rule.
+- Preserve exact passage, page/location, document, registration, and time qualifiers.
+- Keep procedural and substantive documents distinct.
+- Put a file under `public/` only when a built-in demonstration intentionally links to it.
+- Never commit real unredacted citizen data, credentials, or private documents.
+- Treat next steps as official-link handoffs, not product verdicts.

@@ -30,25 +30,25 @@ This runs TypeScript checks, tests, lint, and the production build. Also walk th
 
 ## Where changes belong
 
-- Put case types and deterministic mapping behavior in `src/domain.ts`.
-- Put only fictional, explicit case data in `src/fixtures.ts`.
-- Put review/export helpers that do not render React in `src/demo.ts`.
-- Keep browser orchestration in `app/page.tsx`.
+- Put the versioned workspace case model, validator, and tree builder in `src/case-model.ts`.
+- Put only fictional, explicit public examples in `src/case-examples/` and register them in `src/case-examples.ts`.
+- Keep the generated prompt and downloadable template together in `src/case-prompt.ts`.
+- Keep browser orchestration in `app/components/workspace/ReplyMapApp.tsx`.
 - Reuse controls from `app/components/shared.tsx`.
-- Keep journey screens in `app/components/screens/`.
-- Add or update domain tests for every rule change.
+- Keep the dependency tree, Reply Map, selector, and importer in `app/components/workspace/`.
+- Add or update model/import/prompt tests for every rule change.
 - Publish evidence under `public/replies/` only when a screen intentionally links to it.
 
-Nisha and Asha are test fixtures, not public demos. Their PDF-like filenames are metadata and must not be documented as downloadable files unless those files are intentionally created, reviewed, and added to `public/replies/`.
+Only Maya currently links to public watermarked PDFs. PDF-like filenames in the other demonstrations are metadata and must not be documented as downloadable files unless those files are intentionally created, reviewed, and added to `public/replies/`.
 
 ## Product and safety rules
 
-- Use synthetic data only; never commit real RTI records, identifiers, credentials, or personal information.
+- Commit synthetic data only; never commit real RTI records, identifiers, credentials, or personal information.
 - Do not connect to, test, scrape, or imitate a live government system.
 - Keep “independent prototype,” “sample data,” “nothing is submitted,” and “not legal advice” disclosures clear.
 - Describe evidence coverage, not legal compliance.
 - Preserve keyboard access, visible focus, semantic headings, browser Back/Forward behavior, and text explanations that do not rely on color alone.
-- Avoid adding authentication, a backend, analytics, uploads, or runtime AI unless the architecture and privacy model are deliberately reviewed first.
+- Keep custom case data local and memory-only. Avoid adding authentication, a backend, analytics, network uploads, or runtime AI unless the architecture and privacy model are deliberately reviewed first.
 
 ## Git history
 
