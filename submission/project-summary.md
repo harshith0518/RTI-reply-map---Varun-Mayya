@@ -2,12 +2,12 @@
 
 ## RTI Reply Map
 
-When one Central RTI application produces related registrations and separate replies, a citizen may still need to compare every document with the original questions. RTI Reply Map is a no-login workspace that keeps the case structure and evidence together.
+When one Central RTI application produces related registrations and replies, a citizen may still need to compare every document with the original questions. RTI Reply Map is a mobile-first, no-login workspace that keeps case structure and evidence together.
 
-Its dependency tree shows registrations, transfers, replies, fee notices, no-reply observations, appeals, orders, and supplemental replies. Beside it, the Reply Map gives one cautious result per original question. When evidence exists, the result includes the exact passage, page or attachment, document, and registration number. When it does not, the interface explains whether no substantive reply is available or no matching passage was located.
+Its dependency tree shows registrations, transfers, replies, fee notices, silence, appeals, orders, and supplemental replies. Beside it, the Reply Map gives one cautious result per question. When evidence exists, it includes the exact passage, location, document, and registration. When it does not, the interface explains why no supporting passage can safely be shown. A person can confirm or correct labels and see a reviewed outcome without receiving a legal verdict.
 
-Five fictional cases demonstrate materially different structures: Maya's parallel CPIO split, Nisha's authority transfer then split, Asha's appeal and later reply, Imran's fee-notice and no-reply branches, and Meera's single consolidated reply.
+Five fictional cases demonstrate different structures. Reviewers can also paste or choose prepared, redacted JSON. A strict in-browser validator checks schema, IDs, references, tree connectivity, and mapping relationships before the same deterministic renderer builds the views. It cannot inspect PDFs or verify quotations; users must compare them with source records.
 
-A user can also prepare a redacted case in their own ChatGPT session with the copyable prompt, then paste or choose the returned JSON locally. The app validates schema, allowed values, IDs, references, tree connectivity, and mapping relationships. It cannot verify whether passages, pages, or facts match the source records; the user must check those manually against the redacted originals.
+Official FAQ, citizen-manual, and redacted TRAI screenshots establish the workflow pattern with clear caveats; they do not imply endorsement or prevalence.
 
-The free-deployable static React build uses no login, backend, database, paid API, analytics, live government connection, or runtime AI call. Imported JSON and human checks remain in the current browser tab. The prototype submits nothing and makes no legal-compliance decision.
+Codex helped research official sources, design the schema and fixtures, implement the interface, add accessibility and safety guardrails, and create automated tests and submission materials. There is no runtime model call. The free static build has no login, backend, database, analytics, paid API, or government integration. Imported JSON and checks stay in the browser tab; nothing is submitted.

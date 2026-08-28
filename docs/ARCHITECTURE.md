@@ -17,12 +17,15 @@ src/case-model.ts <── src/case-prompt.ts
                          |
                          v
 app/components/workspace/ReplyMapApp.tsx
-  active example/custom case, URL selection, disclosure
+  active example/custom case, per-case in-tab reviews, disclosure
         |
         +── ExamplePicker.tsx
         +── CaseWorkspace.tsx
         |     +── DependencyTree.tsx
-        |     └── ReplyMapPanel.tsx + browser-only human checks
+        |     +── ReplyMapPanel.tsx + browser-only human checks
+        |     └── reviewed outcome + official handoff
+        +── HowItWorks.tsx
+        +── ProofSection.tsx + local official-source screenshots
         └── ImportCasePanel.tsx
 ```
 
@@ -72,13 +75,13 @@ The public labels remain intentionally narrow:
 
 A transfer notice, additional-fee notice, or appeal order records procedure but cannot prove that requested information was supplied. An exact dated “no such record exists” statement can be an answer passage; it is not a legal-compliance verdict. A reply that exists but contains no relevant passage is distinct from a branch with no substantive reply.
 
-The human check overlays the proposed label in React state. The original proposal remains visible. Reviews are not persisted or uploaded.
+The human check overlays the proposed label in React state. The original proposal remains visible. Reviews are retained per case while the tab stays open so a citizen can compare examples without losing work; they are not written to storage or uploaded.
 
 ## Custom-case lifecycle
 
-1. The user copies the prompt from `src/case-prompt.ts`.
-2. Personal details are redacted before records are shared with any external AI service.
-3. ChatGPT returns one JSON object using schema version `1.0`.
+1. The user downloads and edits the JSON template manually, or copies the optional prompt from `src/case-prompt.ts` for use in a separate ChatGPT session.
+2. Personal details are redacted before records are shared with any external service.
+3. The user prepares one JSON object using schema version `1.0`.
 4. The user pastes JSON or chooses a local `.json` file.
 5. The same runtime validator used for the fixtures checks structure and cross-references.
 6. A valid case replaces the selected example in memory and renders through the same components.
@@ -95,5 +98,6 @@ The app is deliberately static and dependency-light. It can be served from OpenA
 - Preserve exact passage, page/location, document, registration, and time qualifiers.
 - Keep procedural and substantive documents distinct.
 - Put a file under `public/` only when a built-in demonstration intentionally links to it.
+- Keep public-source screenshots in `public/proofs/`, with visible provenance, alt text, source links, and caveats that avoid endorsement or prevalence claims.
 - Never commit real unredacted citizen data, credentials, or private documents.
 - Treat next steps as official-link handoffs, not product verdicts.

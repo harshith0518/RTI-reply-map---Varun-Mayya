@@ -22,7 +22,9 @@ The public workspace contains five deliberately different cases:
 | Imran | Reply, additional-fee notice, and no-reply branches | “Procedure pending” and “nothing received” remain distinct. |
 | Meera | One registration and one consolidated package | The product does not invent branches when the case is simple. |
 
-Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item to inspect its evidence or missing-evidence reason, then change the proposed label using the browser-only human check.
+Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item to inspect its evidence or missing-evidence reason, then confirm or change the proposed label. The outcome summary keeps the final counts, attention items, and relevant branches visible; checks remain in this tab when switching between examples.
+
+The front page also includes three carefully caveated official-source records: the current Central RTI FAQ, the RTI Online citizen manual, and a source-redacted 2025 TRAI reply. They establish that branching and consolidated replies can occur; they do not imply government endorsement, measure prevalence, or decide any individual case.
 
 ## Use a custom redacted case
 
@@ -34,7 +36,7 @@ The “Use your own redacted case” section provides:
 - Runtime validation for strict fields, IDs, real dates, tree connectivity, cycles, question/node/document relationships, and procedural-document misuse.
 - The same dependency-tree and Reply Map renderer used by all five examples.
 
-There is no ChatGPT API call in the site. A user prepares JSON in their own ChatGPT session, then loads it into this browser tab. Imported data is kept in memory, is never uploaded by the app, and disappears on refresh. The checker verifies structure and internal references; it cannot inspect source PDFs or prove that a passage, page, date, or registration number is factually accurate. The user must compare the map with the redacted source records. See [docs/CASE-JSON.md](docs/CASE-JSON.md) for the contract.
+There is no ChatGPT API call in the site. The optional prompt runs separately under ChatGPT's own account and privacy terms; a user can instead edit the JSON template manually. Imported data is kept in memory, is never uploaded by the app, and disappears on refresh. The checker verifies structure and internal references; it cannot inspect source PDFs or prove that a passage, page, date, or registration number is factually accurate. The user must compare the map with the redacted source records. See [docs/CASE-JSON.md](docs/CASE-JSON.md) for the contract.
 
 ## Architecture
 

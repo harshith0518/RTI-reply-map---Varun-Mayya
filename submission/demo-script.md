@@ -1,31 +1,57 @@
-# 60-second demo script
+# Two-minute demo script
 
-## 0–8 seconds — The problem
+Target recording length: **1:50–1:58**. Keep browser zoom at 100%, pointer movement deliberate, and the site already open before recording.
 
-“One RTI application can produce several registrations, notices, and replies. The citizen still has to work out which document addresses each original question.”
+## 0:00–0:10 — The citizen problem
 
-Show the product introduction and the five-case picker.
+“One RTI application can become several registrations, notices, and replies. The citizen still has to reconstruct which branch answers each original question.”
 
-## 8–23 seconds — Connect structure to evidence
+Show the headline and five-case selector.
 
-“For Maya, the dependency tree shows three parallel registrations. The Reply Map keeps every question beside its registration and source evidence.”
+## 0:10–0:30 — Choose a complete journey
 
-Select Maya's Question 3. Point to **Partially addressed**, the 120-seat passage, its page and PDF, and the missing calculation record.
+“These are five fictional but structurally different cases. Maya’s application splits into three parallel registrations. Her original questions remain visible together before we inspect the case.”
 
-## 23–35 seconds — Prove it is not one canned tree
+Select **Maya**, point to the three original questions, then the tree.
 
-“The same workspace handles five different structures: a transfer then split, an appeal with a later reply, fee versus no reply, and even one simple consolidated response.”
+## 0:30–0:52 — Show the core Reply Map
 
-Switch briefly to **Imran** and show the procedural fee notice beside the separate no-reply branch.
+“The dependency tree explains where each file came from. The Reply Map connects every question to its registration, document, passage, and page. Maya’s third reply states 120 seats, but the requested calculation record is still not located, so the result is cautiously marked partially addressed.”
 
-## 35–51 seconds — Load a redacted case locally
+Open Maya’s **Q3 Seat calculation**, point to the passage, location, missing detail, and branch button.
 
-“A user can copy this privacy-aware ChatGPT prompt, use only redacted records in their own ChatGPT session, and load the returned JSON here. The file stays in this tab.”
+## 0:52–1:00 — Human review and outcome
 
-Show **Use your own redacted case**, the prompt, JSON input, and **Check JSON** action.
+“A person can confirm or correct every proposed label. Their checks stay only in this tab, and the reviewed outcome shows exactly which questions still need attention.”
 
-## 51–60 seconds — Honest boundary and architecture
+Click **Confirm this result** and show the outcome summary.
 
-“The checker validates structure and references—not source truth—so passages and pages still need manual comparison. The site is a free static build: no login, backend, paid API, government connection, or legal verdict.”
+## 1:00–1:16 — Prove it is not one canned tree
+
+“The same deterministic renderer handles a transfer then split, an appeal with a later reply, mixed fee and silence branches, and a simple consolidated response.”
+
+Select **Asha** or **Imran** and briefly show the changed tree and Reply Map.
+
+## 1:16–1:31 — Custom static test
+
+“Reviewers can also test a redacted case. The optional prompt runs separately in ChatGPT, or the JSON template can be edited manually. This website makes no AI or government API call.”
+
+Use the navbar to open **Custom JSON**, click **Try the template**, **Check JSON**, and **Load case**.
+
+## 1:31–1:43 — What is working and what is mocked
+
+“What works now is case switching, validation, deterministic tree building, evidence mapping, human checks, and local JSON loading. The people and records are fictional, and filing, payment, status, and appeal actions are not connected.”
+
+Show **How it works** and the working-versus-fictional block.
+
+## 1:43–1:53 — Evidence and honesty
+
+“Official public sources show why branching matters: one application may receive multiple registrations, the citizen manual documents separate replies, and a redacted TRAI record shows one consolidated reply across two transferred registrations. These sources motivate the prototype; they do not endorse it.”
+
+Show the three **Official proof** cards and caveats.
+
+## 1:53–1:58 — Close
+
+“RTI Reply Map keeps the procedure and the meaning together—mobile-first, no login, free to deploy, and no runtime AI.”
 
 End on the tree and Reply Map together.

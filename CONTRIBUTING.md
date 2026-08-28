@@ -36,8 +36,10 @@ This runs TypeScript checks, tests, lint, and the production build. Also walk th
 - Keep browser orchestration in `app/components/workspace/ReplyMapApp.tsx`.
 - Reuse controls from `app/components/shared.tsx`.
 - Keep the dependency tree, Reply Map, selector, and importer in `app/components/workspace/`.
+- Keep judge-facing workflow explanation and official-source evidence in focused workspace components rather than mixing them into the case renderer.
 - Add or update model/import/prompt tests for every rule change.
 - Publish evidence under `public/replies/` only when a screen intentionally links to it.
+- Publish official-source screenshots under `public/proofs/` only after checking provenance, privacy, captions, and caveats; always link back to the public source.
 
 Only Maya currently links to public watermarked PDFs. PDF-like filenames in the other demonstrations are metadata and must not be documented as downloadable files unless those files are intentionally created, reviewed, and added to `public/replies/`.
 

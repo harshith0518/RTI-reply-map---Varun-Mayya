@@ -8,6 +8,7 @@
 - [x] Non-Maya filenames are fixture metadata rather than downloadable source files.
 - [x] Results remain cautious and distinguish positive evidence, partial evidence, no matching passage, and no substantive reply.
 - [x] Human checks do not erase the original proposed result and remain in the current tab only.
+- [x] Official-source screenshots are separately labelled, linked, caveated, and never presented as endorsement or proof of prevalence.
 
 ## Five-case workspace
 
@@ -19,10 +20,13 @@
 - [x] No-reply and no-match results explain why no supporting passage can be shown.
 - [x] Procedural transfer, fee, and appeal-order documents are not presented as substantive answer evidence.
 - [x] A user can change a proposed label and reset the in-tab checks.
+- [x] A user can confirm an unchanged proposed label, switch cases, return, and see that in-tab check preserved.
+- [x] The reviewed outcome summarizes final counts, attention items, branches, and a cautious official handoff.
 
 ## Custom redacted-case boundary
 
 - [x] The full copyable prompt tells users to redact records and avoid legal conclusions.
+- [x] The site states that the optional ChatGPT step happens separately and that the JSON template can be edited manually.
 - [x] JSON can be pasted or chosen locally and is limited to 512 KB.
 - [x] Imported JSON remains in tab memory, cannot add public asset links, and disappears on refresh.
 - [x] Validation checks schema, allowed values, IDs, references, dates, tree connectivity, cycles, and mapping relationships.
@@ -32,7 +36,7 @@
 ## Quality and deployment gates
 
 - [x] Run `npm run check` on the final commit: typecheck, tests, lint, and production build.
-- [x] Test the current five-case workspace and JSON importer at 360 px and desktop width with no horizontal overflow.
+- [x] Test the five-case picker, compact tree, Reply Map, outcome, proof, and JSON importer at 360 px and desktop width with no page overflow.
 - [ ] Verify keyboard access, visible focus, case selection, tree nodes, Reply Map details, review controls, prompt copy, file choice, validation, load, and clear.
 - [x] Maya's three source PDFs render cleanly on all six pages.
 - [x] Deploy the final commit to the free static public host.
@@ -42,7 +46,7 @@
 
 - [ ] Open the final public URL in a private browser window.
 - [x] Confirm the public URL requires no account or access request.
-- [ ] Play the full 60-second demo once against the deployed build.
+- [ ] Play the full two-minute demo once against the deployed build.
 - [ ] Confirm every demoed control works and all five sample cases remain visibly fictional.
 - [ ] Paste the public URL and the summary from `project-summary.md` into the submission form.
 - [ ] Record the video at 1080p with browser zoom at 100% and notifications disabled.
