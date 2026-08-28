@@ -21,10 +21,10 @@ export function HowItWorks() {
     <section className="how-section" id="how-it-works" aria-labelledby="how-title">
       <div className="section-heading how-heading">
         <div>
-          <p className="eyebrow">The complete citizen journey</p>
-          <h2 id="how-title">From scattered files to one reviewable answer trail.</h2>
+          <p className="eyebrow">What the prototype is doing</p>
+          <h2 id="how-title">From case records to a question-by-question view.</h2>
         </div>
-        <p>Choose a case, follow its branches, inspect the evidence, then make your own check.</p>
+        <p>Pick a case. Open a branch. Then check the passage linked to each question.</p>
       </div>
 
       <ol className="how-steps">

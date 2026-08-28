@@ -36,8 +36,9 @@
 ## Quality and deployment gates
 
 - [x] Run `npm run check` on the final commit: typecheck, tests, lint, and production build.
+- [x] Keep the spoken demo script at exactly 250 words with automated boundary checks.
 - [x] Test the five-case picker, compact tree, Reply Map, outcome, proof, and JSON importer at 360 px and desktop width with no page overflow.
-- [ ] Verify keyboard access, visible focus, case selection, tree nodes, Reply Map details, review controls, prompt copy, file choice, validation, load, and clear.
+- [x] Verify semantic keyboard controls and visible focus, plus case selection, tree nodes, Reply Map details, review controls, validation, load, and clear.
 - [x] Maya's three source PDFs render cleanly on all six pages.
 - [x] Deploy the final commit to the free static public host.
 - [x] Confirm the deployed build has no authentication, database, paid runtime dependency, analytics, or government integration.
@@ -47,6 +48,6 @@
 - [ ] Open the final public URL in a private browser window.
 - [x] Confirm the public URL requires no account or access request.
 - [ ] Play the full two-minute demo once against the deployed build.
-- [ ] Confirm every demoed control works and all five sample cases remain visibly fictional.
+- [x] Confirm every demoed control works and all five sample cases remain visibly fictional.
 - [ ] Paste the public URL and the summary from `project-summary.md` into the submission form.
 - [ ] Record the video at 1080p with browser zoom at 100% and notifications disabled.

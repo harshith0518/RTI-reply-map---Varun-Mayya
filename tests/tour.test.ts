@@ -6,6 +6,14 @@ import { PROTOTYPE_TOUR_STEPS } from '../src/tour.ts';
 test('the prototype tour is short, ordered, and points to real sections', () => {
   assert.equal(PROTOTYPE_TOUR_STEPS.length, 6);
   assert.equal(new Set(PROTOTYPE_TOUR_STEPS.map((step) => step.targetId)).size, PROTOTYPE_TOUR_STEPS.length);
+  assert.deepEqual(PROTOTYPE_TOUR_STEPS.map((step) => step.targetId), [
+    'prototype-overview',
+    'examples',
+    'dependency-tree-panel',
+    'reply-map-panel',
+    'why-this-exists',
+    'use-your-case',
+  ]);
 
   const source = [
     '../app/components/workspace/ReplyMapApp.tsx',
@@ -22,4 +30,3 @@ test('the prototype tour is short, ordered, and points to real sections', () => 
     assert.ok(step.body.length > 40, `tour explanation is too short: ${step.targetId}`);
   }
 });
-

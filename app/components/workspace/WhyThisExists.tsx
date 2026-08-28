@@ -45,7 +45,7 @@ const WORKFLOW_EVIDENCE = [
     label: 'Published TRAI record · 2025',
     title: 'A transferred branch gets another registration.',
     caption: 'This public record carries a TRAI registration while also pointing back to the earlier numbered DoT branch that created it.',
-    caveat: 'One redacted record proves the link exists—not that every transfer follows this shape.',
+    caveat: 'This redacted record shows the link—not that every transfer follows this shape.',
     image: '/proofs/trai-numbered-branch-transfer-2025.png',
     width: 1275,
     height: 1650,
@@ -81,67 +81,87 @@ const WORKFLOW_EVIDENCE = [
   },
 ];
 
+const EVIDENCE_GROUPS = [
+  {
+    id: 'official-guidance',
+    number: '01',
+    label: 'Official guidance',
+    title: 'How RTI Online explains split cases',
+    summary: 'The FAQ and citizen manual document multiple registrations, separate status views, replies and branch-specific appeals.',
+    items: WORKFLOW_EVIDENCE.slice(0, 3),
+  },
+  {
+    id: 'published-records',
+    number: '02',
+    label: 'Published case records',
+    title: 'How those links appear in public files',
+    summary: 'These redacted AAI and TRAI records show numbered transfers, a transfer chain and one reply linked to two registrations.',
+    items: WORKFLOW_EVIDENCE.slice(3),
+  },
+];
+
 export function WhyThisExists() {
   return (
     <section className="why-section" id="why-this-exists" aria-labelledby="why-title">
       <div className="why-intro">
         <div>
           <p className="eyebrow">Why this exists</p>
-          <h2 id="why-title">One RTI can become many numbers, screens and replies.</h2>
+          <h2 id="why-title">One application can turn into several records.</h2>
         </div>
-        <p>A citizen may start with one application. When different officers hold different parts of the answer, the record can split into registrations, transfers and replies. The links exist—but the citizen must rebuild the whole case.</p>
-      </div>
-
-      <div className="why-flow" aria-label="How one RTI application can become harder to follow">
-        <span>One application</span><b aria-hidden="true">→</b>
-        <span>Many registrations</span><b aria-hidden="true">→</b>
-        <span>Separate replies</span><b aria-hidden="true">→</b>
-        <span>Branch-specific action</span>
+        <p>You have just seen the proposed view. These official guides and published files show the workflow underneath it: related registrations, transfers, separate replies and branch-specific action.</p>
       </div>
 
       <div className="why-question">
-        <span>The missing view</span>
-        <strong>Which branch answers which original question?</strong>
+        <span>The gap</span>
+        <strong>The numbers stay linked; a citizen may still have to compare the contents question by question.</strong>
       </div>
 
-      <ol className="workflow-evidence" aria-label="Published workflow evidence">
-        {WORKFLOW_EVIDENCE.map((item) => (
-          <li className="evidence-card" key={item.index}>
-            <figure className="evidence-figure">
-              <a href={item.image} target="_blank" rel="noreferrer" aria-label={`Open full image for source ${item.index} (new tab)`}>
-                <img src={item.image} width={item.width} height={item.height} alt={item.alt} loading="lazy" decoding="async" />
-                <span>Open full image</span>
-              </a>
-              <figcaption>{item.label}</figcaption>
-            </figure>
-            <div className="evidence-copy">
-              <span className="evidence-index">Source {item.index}</span>
-              <h3>{item.title}</h3>
-              <p>{item.caption}</p>
-              <p className="evidence-caveat"><strong>Read carefully:</strong> {item.caveat}</p>
-              <a href={item.source} target="_blank" rel="noreferrer">{item.sourceLabel} <span>(new tab)</span></a>
-            </div>
-          </li>
+      <div className="evidence-ledger">
+        {EVIDENCE_GROUPS.map((group) => (
+          <section className="evidence-group" aria-labelledby={`${group.id}-title`} key={group.id}>
+            <header className="evidence-group-heading">
+              <span aria-hidden="true">{group.number}</span>
+              <div>
+                <p>{group.label}</p>
+                <h3 id={`${group.id}-title`}>{group.title}</h3>
+                <small>{group.summary}</small>
+              </div>
+            </header>
+            <ol className="workflow-evidence">
+              {group.items.map((item) => (
+                <li className="evidence-card" key={item.index}>
+                  <figure className="evidence-figure">
+                    <a href={item.image} target="_blank" rel="noreferrer" aria-label={`Open full image for source ${item.index} (new tab)`}>
+                      <img src={item.image} width={item.width} height={item.height} alt={item.alt} loading="lazy" decoding="async" />
+                      <span>View record</span>
+                    </a>
+                  </figure>
+                  <div className="evidence-copy">
+                    <p className="evidence-source-line"><span className="evidence-index">Source {item.index}</span><small>{item.label}</small></p>
+                    <h4>{item.title}</h4>
+                    <p>{item.caption}</p>
+                    <p className="evidence-caveat">{item.caveat}</p>
+                    <a href={item.source} target="_blank" rel="noreferrer">{item.sourceLabel} <span>(new tab)</span></a>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
         ))}
-      </ol>
+      </div>
 
       <div className="why-disclaimer">
-        <strong>What these records establish</strong>
-        <span>Branching, transfers, multiple registrations and branch-specific replies can occur. They do not measure prevalence, prove legal non-compliance, or imply government endorsement of this prototype.</span>
+        <strong>What these sources show</strong>
+        <span>Multiple registrations, transfers and branch-specific replies are part of the documented workflow. These examples do not show how often citizens encounter it, prove that an authority acted unlawfully, or endorse this prototype.</span>
       </div>
 
       <div className="why-bridge">
         <div>
-          <p className="eyebrow">What Reply Map adds</p>
-          <h3>One connected case—and one visible result for every question.</h3>
-          <p>It turns registrations and actions into a dependency tree, then links each original question to an exact reply passage or a clearly stated gap.</p>
+          <p className="eyebrow">Our design response</p>
+          <h3>Keep the official trail. Add a question-by-question reading layer.</h3>
+          <p>Reply Map does not replace RTI Online or the reply files. It helps a citizen read related records together and see where evidence is still missing.</p>
         </div>
-        <div className="before-after" aria-label="Before and after RTI Reply Map">
-          <p><span>Before</span><strong>Numbers, transfers and replies across separate records</strong></p>
-          <b aria-hidden="true">→</b>
-          <p><span>After</span><strong>One case tree and one evidence result per question</strong></p>
-        </div>
-        <a className="primary-button" href="#examples">See five fictional cases</a>
+        <a className="secondary-button" href="#workspace">Return to the selected case ↑</a>
       </div>
     </section>
   );

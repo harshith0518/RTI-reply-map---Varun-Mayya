@@ -176,7 +176,7 @@ export function PrototypeTour() {
         <aside className="tour-invitation" aria-labelledby="tour-invitation-title">
           <p className="tour-invitation-kicker"><span aria-hidden="true">?</span> Optional judge helper</p>
           <h2 id="tour-invitation-title">See the whole prototype in 60 seconds.</h2>
-          <p>Six short stops explain the proof, examples, tree, Reply Map and custom test.</p>
+          <p>Six short stops cover the examples, tree, Reply Map, public sources and local JSON test.</p>
           <div className="tour-invitation-actions">
             <button className="tour-start-button" type="button" onClick={startTour}>Start quick tour</button>
             <button className="tour-dismiss-button" type="button" onClick={dismissInvitation}>Not now</button>

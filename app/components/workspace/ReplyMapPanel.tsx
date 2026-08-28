@@ -92,7 +92,7 @@ export function ReplyMapPanel({
         <div><p className="panel-kicker">2 · Evidence coverage</p><h2 id="reply-map-title">Reply Map</h2></div>
         <span className="structure-chip">{comparisonView === 'after' ? `${data.mappings.length} mapped · ${reviewedCount} checked` : `${data.nodes.length} events · ${data.documents.length} files`}</span>
       </header>
-      <p className="panel-intro">Compare the scattered records people navigate today with the question-to-evidence view this proposal creates.</p>
+      <p className="panel-intro">Switch between this question-by-question map and an illustrative view of the same case as separate records.</p>
       <div className="before-after reply-map-comparison" aria-label="Case-specific before and after comparison">
         <p><span>Before · Without Reply Map</span><strong>{data.painPoint}</strong></p>
         <b aria-hidden="true">→</b>
