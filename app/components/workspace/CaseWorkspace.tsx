@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { COVERAGE_COPY, type CoverageCode } from '@/src/coverage';
 import { summarizeCase, type RTICaseData } from '@/src/case-model';
 import { DependencyTree } from './DependencyTree';
@@ -10,6 +10,7 @@ export function CaseWorkspace({ data }: { data: RTICaseData }) {
   const [selectedNodeId, setSelectedNodeId] = useState(data.rootNodeId);
   const [reviews, setReviews] = useState<Record<string, CoverageCode>>({});
   const [liveMessage, setLiveMessage] = useState('');
+  const nodeElements = useRef(new Map<string, HTMLButtonElement>());
   const stats = summarizeCase(data);
   const reviewedCount = Object.keys(reviews).length;
 
@@ -27,12 +28,27 @@ export function CaseWorkspace({ data }: { data: RTICaseData }) {
     setLiveMessage(`Your check was kept in this tab as “${COVERAGE_COPY[coverage]}”.`);
   }
 
+  function registerNode(nodeId: string, element: HTMLButtonElement | null) {
+    if (element) nodeElements.current.set(nodeId, element);
+    else nodeElements.current.delete(nodeId);
+  }
+
+  function revealNode(nodeId: string) {
+    setSelectedNodeId(nodeId);
+    window.requestAnimationFrame(() => {
+      const element = nodeElements.current.get(nodeId);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      element?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      element?.focus({ preventScroll: true });
+    });
+  }
+
   return (
     <>
       <section className="case-summary" aria-labelledby="case-title">
         <div>
           <p className="eyebrow">{data.citizenName}&apos;s {data.fictional ? 'fictional case' : 'redacted local case'} · {data.structureLabel}</p>
-          <h2 id="case-title">{data.title}</h2>
+          <h2 id="case-title" tabIndex={-1}>{data.title}</h2>
           <p className="case-goal">{data.citizenGoal}</p>
         </div>
         <dl className="case-stats">
@@ -44,12 +60,13 @@ export function CaseWorkspace({ data }: { data: RTICaseData }) {
         <div className="case-boundary"><strong>{data.source === 'custom' ? 'Local imported case' : 'Fictional demonstration'}</strong><span>{reviewedCount ? `${reviewedCount} result${reviewedCount === 1 ? '' : 's'} checked by you · ` : ''}No automated legal conclusion</span></div>
       </section>
       <div className="workspace-grid" id="workspace">
-        <DependencyTree data={data} selectedNodeId={selectedNodeId} onSelectNode={setSelectedNodeId} onCopy={copyValue} />
+        <DependencyTree data={data} selectedNodeId={selectedNodeId} onSelectNode={setSelectedNodeId} onRegisterNode={registerNode} onCopy={copyValue} />
         <ReplyMapPanel
           data={data}
           selectedNodeId={selectedNodeId}
           reviews={reviews}
           onSelectNode={setSelectedNodeId}
+          onRevealNode={revealNode}
           onReview={reviewMapping}
           onResetReviews={() => {
             setReviews({});

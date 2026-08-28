@@ -12,6 +12,37 @@ const CASE_LIMITS = {
   text: 8_000,
 } as const;
 
+const BUILT_IN_ASSET_PATHS = new Set([
+  '/replies/maya-results-reply.pdf',
+  '/replies/maya-cutoff-reply.pdf',
+  '/replies/maya-vacancy-reply.pdf',
+]);
+
+const ANSWER_DOCUMENT_KINDS: CaseDocumentKind[] = [
+  'substantive_reply',
+  'supplemental_reply',
+  'attachment',
+];
+
+const TOP_LEVEL_FIELDS = new Set([
+  'schemaVersion', 'caseId', 'source', 'fictional', 'title', 'citizenName',
+  'citizenGoal', 'scenario', 'painPoint', 'filedOn', 'authority', 'rootNodeId',
+  'structureLabel', 'tags', 'questions', 'nodes', 'edges', 'documents', 'mappings',
+]);
+const QUESTION_FIELDS = new Set(['id', 'number', 'title', 'text']);
+const NODE_FIELDS = new Set([
+  'id', 'kind', 'title', 'summary', 'date', 'status', 'office',
+  'registrationNumber', 'appealNumber', 'questionIds', 'documentIds',
+]);
+const EDGE_FIELDS = new Set(['id', 'from', 'to', 'kind', 'label']);
+const DOCUMENT_FIELDS = new Set([
+  'id', 'title', 'kind', 'fileName', 'registrationNumber', 'issuedOn', 'assetPath',
+]);
+const MAPPING_FIELDS = new Set([
+  'id', 'questionId', 'nodeId', 'documentId', 'registrationNumber', 'coverage',
+  'passage', 'location', 'confidence', 'explanation', 'missingDetail', 'temporalQualifier',
+]);
+
 export const CASE_NODE_KINDS = [
   'application',
   'registration',
@@ -173,7 +204,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function hasText(value: unknown): value is string {
-  return typeof value === 'string' && value.trim().length > 0;
+  return typeof value === 'string' && value.trim().length > 0 && value.length <= CASE_LIMITS.text;
 }
 
 function isReasonableText(value: unknown) {
@@ -185,7 +216,19 @@ function isStringArray(value: unknown): value is string[] {
 }
 
 function isIsoDate(value: string) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function rejectUnknownFields(record: Record<string, unknown>, allowed: Set<string>, path: string, errors: string[]) {
+  for (const key of Object.keys(record)) {
+    if (!allowed.has(key)) errors.push(`${path}.${key} is not a supported field.`);
+  }
+}
+
+function validateOptionalText(record: Record<string, unknown>, key: string, path: string, errors: string[]) {
+  if (record[key] !== undefined && !hasText(record[key])) errors.push(`${path}.${key} must be a non-empty string when supplied.`);
 }
 
 function validateTopLevelShape(value: unknown, errors: string[]): value is RTICaseData {
@@ -193,6 +236,8 @@ function validateTopLevelShape(value: unknown, errors: string[]): value is RTICa
     errors.push('The imported JSON must be one object.');
     return false;
   }
+
+  rejectUnknownFields(value, TOP_LEVEL_FIELDS, 'case', errors);
 
   const requiredText = [
     'caseId', 'title', 'citizenName', 'citizenGoal', 'scenario', 'painPoint',
@@ -211,10 +256,12 @@ function validateTopLevelShape(value: unknown, errors: string[]): value is RTICa
   }
 
   if (Array.isArray(value.questions) && value.questions.length > CASE_LIMITS.questions) errors.push(`questions cannot exceed ${CASE_LIMITS.questions} items.`);
+  if (Array.isArray(value.questions) && value.questions.length === 0) errors.push('questions must contain at least one item.');
   if (Array.isArray(value.nodes) && value.nodes.length > CASE_LIMITS.nodes) errors.push(`nodes cannot exceed ${CASE_LIMITS.nodes} items.`);
   if (Array.isArray(value.edges) && value.edges.length > CASE_LIMITS.edges) errors.push(`edges cannot exceed ${CASE_LIMITS.edges} items.`);
   if (Array.isArray(value.documents) && value.documents.length > CASE_LIMITS.documents) errors.push(`documents cannot exceed ${CASE_LIMITS.documents} items.`);
   if (Array.isArray(value.mappings) && value.mappings.length > CASE_LIMITS.mappings) errors.push(`mappings cannot exceed ${CASE_LIMITS.mappings} items.`);
+  if (Array.isArray(value.mappings) && value.mappings.length === 0) errors.push('mappings must contain at least one item.');
   for (const [key, field] of Object.entries(value)) {
     if (!isReasonableText(field)) errors.push(`${key} is too long.`);
   }
@@ -238,6 +285,8 @@ export function validateCaseData(value: unknown): CaseValidationResult {
       errors.push(`questions[${index}] must be an object.`);
       return;
     }
+    const path = `questions[${index}]`;
+    rejectUnknownFields(question, QUESTION_FIELDS, path, errors);
     if (!hasText(question.id)) errors.push(`questions[${index}].id is required.`);
     else questionIds.push(question.id);
     if (!Number.isInteger(question.number) || Number(question.number) < 1) errors.push(`questions[${index}].number must be a positive integer.`);
@@ -251,11 +300,14 @@ export function validateCaseData(value: unknown): CaseValidationResult {
       errors.push(`nodes[${index}] must be an object.`);
       return;
     }
+    const path = `nodes[${index}]`;
+    rejectUnknownFields(node, NODE_FIELDS, path, errors);
     if (!hasText(node.id)) errors.push(`nodes[${index}].id is required.`);
     else nodeIds.push(node.id);
     if (!CASE_NODE_KINDS.includes(node.kind as CaseNodeKind)) errors.push(`nodes[${index}].kind is not supported.`);
     if (!hasText(node.title)) errors.push(`nodes[${index}].title is required.`);
     if (!hasText(node.summary)) errors.push(`nodes[${index}].summary is required.`);
+    for (const key of ['status', 'office', 'registrationNumber', 'appealNumber']) validateOptionalText(node, key, path, errors);
     if (node.date !== undefined && (!hasText(node.date) || !isIsoDate(node.date))) errors.push(`nodes[${index}].date must use YYYY-MM-DD.`);
     if (node.questionIds !== undefined && !isStringArray(node.questionIds)) errors.push(`nodes[${index}].questionIds must be a string array.`);
     if (node.documentIds !== undefined && !isStringArray(node.documentIds)) errors.push(`nodes[${index}].documentIds must be a string array.`);
@@ -266,6 +318,7 @@ export function validateCaseData(value: unknown): CaseValidationResult {
       errors.push(`edges[${index}] must be an object.`);
       return;
     }
+    rejectUnknownFields(edge, EDGE_FIELDS, `edges[${index}]`, errors);
     if (!hasText(edge.id)) errors.push(`edges[${index}].id is required.`);
     else edgeIds.push(edge.id);
     if (!hasText(edge.from)) errors.push(`edges[${index}].from is required.`);
@@ -280,16 +333,19 @@ export function validateCaseData(value: unknown): CaseValidationResult {
       errors.push(`documents[${index}] must be an object.`);
       return;
     }
+    const path = `documents[${index}]`;
+    rejectUnknownFields(document, DOCUMENT_FIELDS, path, errors);
     if (!hasText(document.id)) errors.push(`documents[${index}].id is required.`);
     else documentIds.push(document.id);
     if (!hasText(document.title)) errors.push(`documents[${index}].title is required.`);
     if (!hasText(document.fileName)) errors.push(`documents[${index}].fileName is required.`);
+    validateOptionalText(document, 'registrationNumber', path, errors);
     if (document.issuedOn !== undefined && (!hasText(document.issuedOn) || !isIsoDate(document.issuedOn))) errors.push(`documents[${index}].issuedOn must use YYYY-MM-DD.`);
     if (!['substantive_reply', 'supplemental_reply', 'transfer_notice', 'appeal_order', 'fee_notice', 'attachment'].includes(String(document.kind))) {
       errors.push(`documents[${index}].kind is not supported.`);
     }
     if (document.assetPath !== undefined) {
-      if (!hasText(document.assetPath) || !document.assetPath.startsWith('/replies/')) errors.push(`documents[${index}].assetPath must be an allowlisted /replies/ path.`);
+      if (!hasText(document.assetPath) || !BUILT_IN_ASSET_PATHS.has(document.assetPath)) errors.push(`documents[${index}].assetPath is not an allowlisted built-in asset.`);
       if (data.source === 'custom') errors.push(`documents[${index}].assetPath is not allowed in custom cases.`);
     }
   });
@@ -299,6 +355,8 @@ export function validateCaseData(value: unknown): CaseValidationResult {
       errors.push(`mappings[${index}] must be an object.`);
       return;
     }
+    const path = `mappings[${index}]`;
+    rejectUnknownFields(mapping, MAPPING_FIELDS, path, errors);
     if (!hasText(mapping.id)) errors.push(`mappings[${index}].id is required.`);
     else mappingIds.push(mapping.id);
     if (!hasText(mapping.questionId)) errors.push(`mappings[${index}].questionId is required.`);
@@ -306,6 +364,7 @@ export function validateCaseData(value: unknown): CaseValidationResult {
     if (!Object.hasOwn(COVERAGE_COPY, String(mapping.coverage))) errors.push(`mappings[${index}].coverage is not supported.`);
     if (!['high', 'medium', 'low'].includes(String(mapping.confidence))) errors.push(`mappings[${index}].confidence is not supported.`);
     if (!hasText(mapping.explanation)) errors.push(`mappings[${index}].explanation is required.`);
+    for (const key of ['documentId', 'registrationNumber', 'passage', 'location', 'missingDetail', 'temporalQualifier']) validateOptionalText(mapping, key, path, errors);
   });
 
   for (const [label, ids] of [
@@ -315,9 +374,12 @@ export function validateCaseData(value: unknown): CaseValidationResult {
   }
   if (!unique(questionNumbers.map(String))) errors.push('Question numbers must be unique.');
 
+  if (errors.length) return { ok: false, errors };
+
   const questionSet = new Set(questionIds);
   const nodeSet = new Set(nodeIds);
   const documentSet = new Set(documentIds);
+  const nodeById = new Map(data.nodes.map((node) => [node.id, node]));
   const documentById = new Map(data.documents.map((document) => [document.id, document]));
   if (!nodeSet.has(data.rootNodeId)) errors.push('rootNodeId must reference an existing node.');
   else if (data.nodes.find((node) => node.id === data.rootNodeId)?.kind !== 'application') errors.push('The root node must be an application.');
@@ -367,13 +429,34 @@ export function validateCaseData(value: unknown): CaseValidationResult {
     if (!questionSet.has(mapping.questionId)) errors.push(`Mapping ${mapping.id} references missing question ${mapping.questionId}.`);
     if (!nodeSet.has(mapping.nodeId)) errors.push(`Mapping ${mapping.id} references missing node ${mapping.nodeId}.`);
     if (mapping.documentId && !documentSet.has(mapping.documentId)) errors.push(`Mapping ${mapping.id} references missing document ${mapping.documentId}.`);
+    const mappingNode = nodeById.get(mapping.nodeId);
+    const evidenceDocument = mapping.documentId ? documentById.get(mapping.documentId) : undefined;
+    if (mappingNode && !(mappingNode.questionIds ?? []).includes(mapping.questionId)) {
+      errors.push(`Mapping ${mapping.id} points to a node that does not carry question ${mapping.questionId}.`);
+    }
+    if (mapping.documentId && mappingNode && !(mappingNode.documentIds ?? []).includes(mapping.documentId)) {
+      errors.push(`Mapping ${mapping.id} points to a document that is not attached to node ${mapping.nodeId}.`);
+    }
+    if (mapping.registrationNumber && mappingNode?.registrationNumber && mapping.registrationNumber !== mappingNode.registrationNumber) {
+      errors.push(`Mapping ${mapping.id} registrationNumber does not match its node.`);
+    }
+    if (mapping.registrationNumber && evidenceDocument?.registrationNumber && mapping.registrationNumber !== evidenceDocument.registrationNumber) {
+      errors.push(`Mapping ${mapping.id} registrationNumber does not match its document.`);
+    }
+    if (mappingNode?.registrationNumber && evidenceDocument?.registrationNumber && mappingNode.registrationNumber !== evidenceDocument.registrationNumber) {
+      errors.push(`Mapping ${mapping.id} node and document use different registration numbers.`);
+    }
     if (mapping.coverage === 'answer_located' || mapping.coverage === 'partially_addressed') {
       if (!hasText(mapping.documentId) || !hasText(mapping.passage) || !hasText(mapping.location)) {
         errors.push(`Mapping ${mapping.id} needs a documentId, exact passage, and location for a positive result.`);
       }
-      const evidenceDocument = mapping.documentId ? documentById.get(mapping.documentId) : undefined;
-      if (evidenceDocument && ['transfer_notice', 'appeal_order', 'fee_notice'].includes(evidenceDocument.kind)) {
+      if (evidenceDocument && !ANSWER_DOCUMENT_KINDS.includes(evidenceDocument.kind)) {
         errors.push(`Mapping ${mapping.id} cannot use a procedural document as answer evidence.`);
+      }
+    }
+    if (mapping.coverage === 'no_matching_passage') {
+      if (!evidenceDocument || !ANSWER_DOCUMENT_KINDS.includes(evidenceDocument.kind)) {
+        errors.push(`Mapping ${mapping.id} needs an inspected substantive document for a no-matching-passage result.`);
       }
     }
   }
@@ -394,7 +477,11 @@ export function parseCaseJson(input: string): CaseValidationResult {
     return { ok: false, errors: ['This JSON is larger than 512 KB. Reduce the case or remove embedded content.'] };
   }
   try {
-    return validateCaseData(JSON.parse(input));
+    const result = validateCaseData(JSON.parse(input));
+    if (result.ok && result.data?.source !== 'custom') {
+      return { ok: false, errors: ['Imported case JSON must use source "custom". Built-in asset links are not accepted from local files.'] };
+    }
+    return result;
   } catch (error) {
     return {
       ok: false,

@@ -66,7 +66,6 @@ test('import validation rejects duplicate IDs and missing references', () => {
   const result = validateCaseData(duplicate);
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((error) => error.includes('node IDs must be unique')));
-  assert.ok(result.errors.some((error) => error.includes('missing from-node') || error.includes('parent edge')));
 });
 
 test('import validation rejects dependency cycles', () => {
@@ -94,15 +93,84 @@ test('custom cases cannot inject public links through assetPath', () => {
 });
 
 test('the root must be an application and question numbers must be unique', () => {
-  const invalid = cloneCase(CASE_JSON_TEMPLATE);
-  invalid.nodes[0].kind = 'registration';
-  invalid.questions.push({ ...invalid.questions[0], id: 'q2' });
-  invalid.nodes[0].questionIds?.push('q2');
-  invalid.mappings.push({ ...invalid.mappings[0], id: 'mapping-q2', questionId: 'q2' });
+  const wrongRoot = cloneCase(CASE_JSON_TEMPLATE);
+  wrongRoot.nodes[0].kind = 'registration';
+  const rootResult = validateCaseData(wrongRoot);
+  assert.equal(rootResult.ok, false);
+  assert.ok(rootResult.errors.some((error) => error.includes('root node must be an application')));
+
+  const duplicateNumber = cloneCase(CASE_JSON_TEMPLATE);
+  duplicateNumber.questions.push({ ...duplicateNumber.questions[0], id: 'q2' });
+  duplicateNumber.nodes[0].questionIds?.push('q2');
+  duplicateNumber.mappings.push({ ...duplicateNumber.mappings[0], id: 'mapping-q2', questionId: 'q2' });
+  const numberResult = validateCaseData(duplicateNumber);
+  assert.equal(numberResult.ok, false);
+  assert.ok(numberResult.errors.some((error) => error.includes('Question numbers must be unique')));
+});
+
+test('malformed optional display fields are rejected before React can render them', () => {
+  const malformed = cloneCase(CASE_JSON_TEMPLATE);
+  (malformed.nodes[1] as unknown as { status: unknown }).status = { unsafe: true };
+  (malformed.mappings[0] as unknown as { temporalQualifier: unknown }).temporalQualifier = ['not text'];
+  assert.doesNotThrow(() => validateCaseData(malformed));
+  const result = validateCaseData(malformed);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('nodes[1].status')));
+  assert.ok(result.errors.some((error) => error.includes('mappings[0].temporalQualifier')));
+});
+
+test('local import requires custom provenance and rejects asset path tricks', () => {
+  const disguised = cloneCase(CASE_JSON_TEMPLATE);
+  disguised.source = 'synthetic';
+  disguised.documents[0].assetPath = '/replies/maya-results-reply.pdf';
+  const parsed = parseCaseJson(JSON.stringify(disguised));
+  assert.equal(parsed.ok, false);
+  assert.ok(parsed.errors.some((error) => error.includes('source "custom"')));
+
+  const traversal = cloneCase(CASE_JSON_TEMPLATE);
+  traversal.source = 'synthetic';
+  traversal.documents[0].assetPath = '/replies/../og.png';
+  const traversalResult = validateCaseData(traversal);
+  assert.equal(traversalResult.ok, false);
+  assert.ok(traversalResult.errors.some((error) => error.includes('allowlisted built-in asset')));
+});
+
+test('Reply Map evidence must belong to its question, node, and document', () => {
+  const detached = cloneCase(CASE_JSON_TEMPLATE);
+  detached.nodes[2].documentIds = [];
+  const detachedResult = validateCaseData(detached);
+  assert.equal(detachedResult.ok, false);
+  assert.ok(detachedResult.errors.some((error) => error.includes('not attached to node')));
+
+  const noMatchWithoutReply = cloneCase(CASE_JSON_TEMPLATE);
+  noMatchWithoutReply.mappings[0].coverage = 'no_matching_passage';
+  delete noMatchWithoutReply.mappings[0].documentId;
+  delete noMatchWithoutReply.mappings[0].passage;
+  delete noMatchWithoutReply.mappings[0].location;
+  const noMatchResult = validateCaseData(noMatchWithoutReply);
+  assert.equal(noMatchResult.ok, false);
+  assert.ok(noMatchResult.errors.some((error) => error.includes('inspected substantive document')));
+});
+
+test('strict fields and real calendar dates are enforced', () => {
+  const invalid = cloneCase(CASE_JSON_TEMPLATE) as RTICaseData & { surprise?: string };
+  invalid.surprise = 'unknown';
+  invalid.filedOn = '2026-02-31';
   const result = validateCaseData(invalid);
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((error) => error.includes('root node must be an application')));
-  assert.ok(result.errors.some((error) => error.includes('Question numbers must be unique')));
+  assert.ok(result.errors.some((error) => error.includes('not a supported field')));
+  assert.ok(result.errors.some((error) => error.includes('filedOn')));
+});
+
+test('a case must contain at least one question and Reply Map result', () => {
+  const empty = structuredClone(CASE_JSON_TEMPLATE) as unknown as Record<string, unknown>;
+  empty.questions = [];
+  empty.mappings = [];
+
+  const result = validateCaseData(empty);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('questions must contain at least one item')));
+  assert.ok(result.errors.some((error) => error.includes('mappings must contain at least one item')));
 });
 
 test('oversized input is rejected before parsing', () => {

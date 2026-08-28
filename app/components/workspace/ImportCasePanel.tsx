@@ -43,7 +43,7 @@ export function ImportCasePanel({
   function checkJson() {
     const result = parseCaseJson(jsonText);
     setValidation(result);
-    setCandidate(result.ok && result.data ? { ...result.data, source: 'custom' } : undefined);
+    setCandidate(result.ok ? result.data : undefined);
     setMessage(result.ok ? `JSON checked. ${result.data?.questions.length ?? 0} questions and ${result.data?.nodes.length ?? 0} case events are ready to load.` : 'JSON needs correction before it can be loaded.');
   }
 
@@ -77,7 +77,7 @@ export function ImportCasePanel({
   function loadCandidate() {
     if (!candidate) return;
     onLoadCase(candidate);
-    setMessage(`${candidate.title} is loaded locally. Nothing was uploaded.`);
+    setMessage(`${candidate.title} is loaded locally. This site did not upload it.`);
   }
 
   return (
@@ -93,7 +93,7 @@ export function ImportCasePanel({
       <div className="import-grid">
         <article className="prompt-card">
           <span className="card-step">A · Prepare the JSON</span>
-          <h3>Copy a guarded prompt for ChatGPT</h3>
+          <h3>Copy a privacy-aware JSON prompt for ChatGPT</h3>
           <div className="privacy-warning">
             <strong>Redact before sharing</strong>
             <p>Remove names, addresses, phone numbers, emails, Aadhaar or identity numbers, signatures, bank details, and any other personal information.</p>
@@ -117,6 +117,7 @@ export function ImportCasePanel({
         <article className="json-card">
           <span className="card-step">B · Check and load</span>
           <h3>Paste JSON or choose a file</h3>
+          <p className="verification-note"><strong>What the checker can verify:</strong> JSON structure, tree connections, and evidence references. It cannot inspect your PDFs or prove that a quoted passage, date, page, or registration number is accurate. Compare the loaded map with your redacted source records.</p>
           <label className="file-control" htmlFor={inputId}>
             <span>Choose a JSON file</span>
             <small>Stays on this device · maximum 512 KB</small>
@@ -140,8 +141,11 @@ export function ImportCasePanel({
           {validation ? (
             <div className={validation.ok ? 'validation-box valid' : 'validation-box invalid'} role={validation.ok ? 'status' : 'alert'}>
               <strong>{validation.ok ? 'Valid case JSON' : `${validation.errors.length} issue${validation.errors.length === 1 ? '' : 's'} found`}</strong>
-              {validation.ok ? <p>The dependency tree is connected and every question has one Reply Map result.</p> : (
-                <ul>{validation.errors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}</ul>
+              {validation.ok ? <p>The dependency tree is connected and every question has one structurally valid Reply Map result. Source accuracy still needs your check.</p> : (
+                <>
+                  {validation.errors.length > 8 ? <p>Showing the first 8 of {validation.errors.length} issues.</p> : null}
+                  <ul>{validation.errors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}</ul>
+                </>
               )}
             </div>
           ) : null}

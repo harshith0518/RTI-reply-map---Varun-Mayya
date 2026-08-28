@@ -10,6 +10,7 @@ export function ReplyMapPanel({
   selectedNodeId,
   reviews,
   onSelectNode,
+  onRevealNode,
   onReview,
   onResetReviews,
 }: {
@@ -17,6 +18,7 @@ export function ReplyMapPanel({
   selectedNodeId: string;
   reviews: Record<string, CoverageCode>;
   onSelectNode: (nodeId: string) => void;
+  onRevealNode: (nodeId: string) => void;
   onReview: (mappingId: string, coverage: CoverageCode) => void;
   onResetReviews: () => void;
 }) {
@@ -31,7 +33,7 @@ export function ReplyMapPanel({
         <div><p className="panel-kicker">2 · Information found</p><h2 id="reply-map-title">Reply Map</h2></div>
         <span className="structure-chip">{data.mappings.length} mapped · {reviewedCount} checked</span>
       </header>
-      <p className="panel-intro">Each original question stays attached to the exact reply, passage, page, and registration number.</p>
+      <p className="panel-intro">Each question shows exact evidence and location when available—or why a passage cannot safely be shown.</p>
       <div className="coverage-key" aria-label="Reply Map status key">
         {Object.entries(COVERAGE_COPY).map(([code, label]) => (
           <span className={`key-${code}`} key={code}>{data.mappings.filter((mapping) => (reviews[mapping.id] ?? mapping.coverage) === code).length} {label}</span>
@@ -42,7 +44,10 @@ export function ReplyMapPanel({
         {data.mappings.map((mapping) => {
           const question = data.questions.find((item) => item.id === mapping.questionId)!;
           const document = data.documents.find((item) => item.id === mapping.documentId);
+          const node = data.nodes.find((item) => item.id === mapping.nodeId);
+          const displayRegistration = mapping.registrationNumber ?? node?.registrationNumber ?? document?.registrationNumber;
           const effectiveCoverage = reviews[mapping.id] ?? mapping.coverage;
+          const proceduralDocument = document ? ['transfer_notice', 'appeal_order', 'fee_notice'].includes(document.kind) : false;
           return (
             <details
               className={`reply-map-item ${selectedNodeId === mapping.nodeId ? 'selected' : ''}`}
@@ -62,14 +67,14 @@ export function ReplyMapPanel({
             >
               <summary>
                 <span className="map-question-number">Q{question.number}</span>
-                <span className="map-question-title"><strong>{question.title}</strong><small>{mapping.registrationNumber ?? 'Registration not supplied'}</small></span>
+                <span className="map-question-title"><strong>{question.title}</strong><small>{displayRegistration ?? 'Registration not supplied'}</small></span>
                 <StatusBadge code={effectiveCoverage} prefix={reviews[mapping.id] ? 'Your check' : undefined} />
               </summary>
               <div className="mapping-body">
                 <p className="question-text"><strong>Citizen asked</strong>{question.text}</p>
                 {mapping.passage ? <blockquote><span>Passage located</span>“{mapping.passage}”</blockquote> : <div className="mapping-empty">No supporting passage is available for this result.</div>}
                 <dl>
-                  <div><dt>Reply file</dt><dd>{document?.fileName ?? 'No reply document'}</dd></div>
+                  <div><dt>{proceduralDocument ? 'Procedural document' : 'Evidence document'}</dt><dd>{document?.fileName ?? 'No substantive document available'}</dd></div>
                   <div><dt>Page / location</dt><dd>{mapping.location ?? 'Not available'}</dd></div>
                   <div><dt>Confidence</dt><dd className="capitalize">{mapping.confidence}</dd></div>
                   <div><dt>Meaning</dt><dd>{COVERAGE_HELP[effectiveCoverage]}</dd></div>
@@ -78,8 +83,9 @@ export function ReplyMapPanel({
                 {mapping.missingDetail ? <p className="missing-record"><strong>Still not located</strong>{mapping.missingDetail}</p> : null}
                 {mapping.temporalQualifier ? <p className="temporal-note">Time qualifier: {mapping.temporalQualifier}</p> : null}
                 {document?.assetPath ? <a className="document-link" href={document.assetPath} target="_blank" rel="noreferrer">Open watermarked sample PDF <span>(new tab)</span></a> : null}
+                {document && !document.assetPath ? <p className="document-metadata-note">{data.source === 'synthetic' ? 'Synthetic document metadata only · sample PDF not attached.' : 'Document metadata from imported JSON · compare it with your redacted source record.'}</p> : null}
                 <div className="mapping-actions">
-                  <button className="branch-link" type="button" onClick={() => onSelectNode(mapping.nodeId)}>Show this reply in the tree</button>
+                  <button className="branch-link" type="button" onClick={() => onRevealNode(mapping.nodeId)}>Show this case event in the tree</button>
                   <label className="review-control">
                     <span>Your check <small>kept only in this tab</small></span>
                     <select value={effectiveCoverage} onChange={(event) => onReview(mapping.id, event.target.value as CoverageCode)}>

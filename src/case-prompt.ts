@@ -134,6 +134,7 @@ PRIVACY FIRST
 OUTPUT RULES
 - After the records are safely redacted, output exactly one JSON object and nothing else. Do not use Markdown fences.
 - Use schemaVersion "${CASE_SCHEMA_VERSION}" and source "custom".
+- Set fictional to false for a real redacted case. Use true only when every record and person is synthetic.
 - Never invent a date, registration number, office, relationship, passage, page, or missing fact. Use a cautious neutral label when a display field is unknown.
 - Keep the structure a dependency tree: one root application; every other node has exactly one parent; no cycles; every ID is unique; every reference points to an existing item.
 - Model each registration, transfer, reply, no-reply observation, fee notice, payment, appeal, appeal order, and supplemental reply as its own dated node when the record supports it.
@@ -145,6 +146,7 @@ OUTPUT RULES
 - An explicit dated statement that no record exists may be answer_located; preserve the date/time qualifier and explain that this is an answer passage, not proof of legal compliance.
 - Do not make a legal-compliance verdict and do not advise whether an appeal must be filed.
 - Do not include assetPath or embed files/base64 data.
+- Before returning JSON, check every exact passage, page, date, registration number, and relationship against the supplied redacted records. The RTI Reply Map website validates structure and references; it cannot inspect the source PDFs or verify factual accuracy.
 
 ALLOWED VALUES
 ${JSON.stringify(schemaGuide, null, 2)}

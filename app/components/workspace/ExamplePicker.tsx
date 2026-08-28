@@ -2,6 +2,8 @@
 
 import type { RTICaseData } from '@/src/case-model';
 
+export const LOCAL_CASE_OPTION = '__local_case__';
+
 export function ExamplePicker({
   examples,
   activeCase,
@@ -22,20 +24,21 @@ export function ExamplePicker({
         </div>
         <label className="example-select">
           <span>Choose a case</span>
-          <select value={activeCase.caseId} onChange={(event) => onSelect(event.target.value)}>
+          <select value={activeCase.source === 'custom' ? LOCAL_CASE_OPTION : activeCase.caseId} onChange={(event) => onSelect(event.target.value)}>
             {examples.map((example) => (
               <option value={example.caseId} key={example.caseId}>{example.citizenName} — {example.structureLabel}</option>
             ))}
-            {importedCase ? <option value={importedCase.caseId}>My local case — {importedCase.title}</option> : null}
+            {importedCase ? <option value={LOCAL_CASE_OPTION}>My local case — {importedCase.title}</option> : null}
           </select>
         </label>
+        <a className="mobile-import-link" href="#use-your-case">Use a redacted case · Import JSON</a>
       </div>
       <div className="example-cards" aria-label="Demonstration cases">
         {examples.map((example, index) => (
           <button
             type="button"
-            className={activeCase.caseId === example.caseId ? 'active' : ''}
-            aria-pressed={activeCase.caseId === example.caseId}
+            className={activeCase.source === 'synthetic' && activeCase.caseId === example.caseId ? 'active' : ''}
+            aria-pressed={activeCase.source === 'synthetic' && activeCase.caseId === example.caseId}
             onClick={() => onSelect(example.caseId)}
             key={example.caseId}
           >

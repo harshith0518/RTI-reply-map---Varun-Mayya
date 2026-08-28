@@ -6,16 +6,19 @@ function TreeBranch({
   item,
   selectedNodeId,
   onSelectNode,
+  onRegisterNode,
 }: {
   item: CaseTreeItem;
   selectedNodeId: string;
   onSelectNode: (nodeId: string) => void;
+  onRegisterNode: (nodeId: string, element: HTMLButtonElement | null) => void;
 }) {
   const { node } = item;
   return (
     <li className="graph-branch">
       {item.incomingEdge ? <span className={`edge-label edge-${item.incomingEdge.kind}`}>{item.incomingEdge.label}</span> : null}
       <button
+        ref={(element) => onRegisterNode(node.id, element)}
         type="button"
         className={`graph-node node-${node.kind} ${selectedNodeId === node.id ? 'selected' : ''}`}
         aria-pressed={selectedNodeId === node.id}
@@ -33,6 +36,7 @@ function TreeBranch({
               item={child}
               selectedNodeId={selectedNodeId}
               onSelectNode={onSelectNode}
+              onRegisterNode={onRegisterNode}
               key={child.node.id}
             />
           ))}
@@ -46,11 +50,13 @@ export function DependencyTree({
   data,
   selectedNodeId,
   onSelectNode,
+  onRegisterNode,
   onCopy,
 }: {
   data: RTICaseData;
   selectedNodeId: string;
   onSelectNode: (nodeId: string) => void;
+  onRegisterNode: (nodeId: string, element: HTMLButtonElement | null) => void;
   onCopy: (value: string) => void;
 }) {
   const tree = buildCaseTree(data);
@@ -71,7 +77,7 @@ export function DependencyTree({
       <p className="panel-intro">Select a node to see which registration, question, and document it carries.</p>
       <div className="graph-stage">
         <ol className="case-graph" aria-label={`Dependency tree for ${data.title}`}>
-          <TreeBranch item={tree} selectedNodeId={selectedNodeId} onSelectNode={onSelectNode} />
+          <TreeBranch item={tree} selectedNodeId={selectedNodeId} onSelectNode={onSelectNode} onRegisterNode={onRegisterNode} />
         </ol>
       </div>
       <aside className="node-inspector" aria-live="polite">
@@ -81,7 +87,7 @@ export function DependencyTree({
           {selectedNode.office ? <div><dt>Office</dt><dd>{selectedNode.office}</dd></div> : null}
           {selectedNode.date ? <div><dt>Date</dt><dd>{selectedNode.date}</dd></div> : null}
           {selectedNode.registrationNumber ? (
-            <div className="inspector-registration"><dt>RTI registration</dt><dd><code>{selectedNode.registrationNumber}</code><button type="button" onClick={() => onCopy(selectedNode.registrationNumber!)}>Copy</button></dd></div>
+            <div className="inspector-registration"><dt>RTI registration</dt><dd><code>{selectedNode.registrationNumber}</code><button type="button" aria-label={`Copy RTI registration number ${selectedNode.registrationNumber}`} onClick={() => onCopy(selectedNode.registrationNumber!)}>Copy</button></dd></div>
           ) : null}
         </dl>
         {questions.length ? <p className="inspector-links"><strong>Questions here:</strong> {questions.map((question) => `Q${question.number} ${question.title}`).join(' · ')}</p> : null}

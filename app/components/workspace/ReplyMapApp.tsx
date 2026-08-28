@@ -4,16 +4,17 @@ import { useState } from 'react';
 import { EXAMPLE_CASES } from '@/src/case-examples';
 import type { RTICaseData } from '@/src/case-model';
 import { CaseWorkspace } from './CaseWorkspace';
-import { ExamplePicker } from './ExamplePicker';
+import { ExamplePicker, LOCAL_CASE_OPTION } from './ExamplePicker';
 import { ImportCasePanel } from './ImportCasePanel';
 
 export function ReplyMapApp() {
   const [activeCase, setActiveCase] = useState<RTICaseData>(EXAMPLE_CASES[0]);
   const [importedCase, setImportedCase] = useState<RTICaseData>();
+  const [importRevision, setImportRevision] = useState(0);
   const [liveMessage, setLiveMessage] = useState('');
 
   function selectCase(caseId: string) {
-    const next = importedCase?.caseId === caseId
+    const next = caseId === LOCAL_CASE_OPTION
       ? importedCase
       : EXAMPLE_CASES.find((item) => item.caseId === caseId);
     if (!next) return;
@@ -24,8 +25,14 @@ export function ReplyMapApp() {
   function loadCase(data: RTICaseData) {
     setImportedCase(data);
     setActiveCase(data);
+    setImportRevision((current) => current + 1);
     setLiveMessage(`${data.title} is loaded from local JSON.`);
-    window.setTimeout(() => document.getElementById('workspace')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    window.setTimeout(() => {
+      const heading = document.getElementById('case-title');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      heading?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      heading?.focus({ preventScroll: true });
+    }, 50);
   }
 
   function clearImportedCase() {
@@ -44,16 +51,16 @@ export function ReplyMapApp() {
         </a>
         <div className="topbar-actions">
           <a className="topbar-link" href="#use-your-case">Use your case</a>
-          <span className="demo-pill"><strong>{activeCase.source === 'custom' ? 'Local case' : 'Sample prototype'}</strong><small>{activeCase.source === 'custom' ? 'Nothing uploaded' : 'Not a government website'}</small></span>
+          <span className="demo-pill"><strong>{activeCase.source === 'custom' ? 'Local case' : 'Sample prototype'}</strong><small>{activeCase.source === 'custom' ? 'Not uploaded by this site' : 'Not a government website'}</small></span>
         </div>
       </header>
 
-      <main id="main-content" className="workspace-page">
+      <main id="main-content" className="workspace-page" tabIndex={-1}>
         <section className="product-intro" aria-labelledby="product-title">
           <div>
             <p className="eyebrow">One RTI application can become many files. Keep the meaning together.</p>
             <h1 id="product-title">Every reply has a place. Every question has a trail.</h1>
-            <p>RTI Reply Map turns registrations, transfers, replies, fee notices, and appeals into one dependency tree—then links every original question to the exact passage that addresses it.</p>
+            <p>RTI Reply Map turns registrations, transfers, replies, fee notices, and appeals into one dependency tree—then shows exact evidence when available, or a clear reason no passage can be shown.</p>
           </div>
           <aside aria-label="How RTI Reply Map transforms a case">
             <strong>The transformation</strong>
@@ -64,7 +71,7 @@ export function ReplyMapApp() {
         </section>
 
         <div className="trust-row" aria-label="Prototype boundaries">
-          <span>No login</span><span>No upload</span><span>No paid API</span><span>No legal verdict</span>
+          <span>No login</span><span>No server upload by this site</span><span>No paid API</span><span>No legal verdict</span>
         </div>
 
         <ExamplePicker examples={EXAMPLE_CASES} activeCase={activeCase} importedCase={importedCase} onSelect={selectCase} />
@@ -74,7 +81,7 @@ export function ReplyMapApp() {
           <p>{activeCase.source === 'custom' ? 'Loaded in memory only. Refreshing clears it.' : 'Fictional data · Select tree nodes and open Reply Map results to trace the case.'}</p>
         </section>
 
-        <CaseWorkspace data={activeCase} key={activeCase.caseId} />
+        <CaseWorkspace data={activeCase} key={`${activeCase.source}:${activeCase.caseId}:${activeCase.source === 'custom' ? importRevision : 0}`} />
         <ImportCasePanel importedCase={importedCase} onLoadCase={loadCase} onClearCase={clearImportedCase} />
         <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>
       </main>
@@ -82,15 +89,15 @@ export function ReplyMapApp() {
       <footer className="site-footer workspace-footer">
         <div className="disclosure">
           <strong>Independent hackathon prototype</strong>
-          <span>{activeCase.source === 'custom' ? 'Local imported case — nothing is uploaded' : 'Uses fictional sample records'}</span>
+          <span>{activeCase.source === 'custom' ? 'Local imported case — this site does not upload it' : 'Uses fictional sample records'}</span>
           <span>Not connected to a government website</span>
           <span>Nothing is submitted</span>
           <span>Not legal advice</span>
         </div>
         <p>The map locates evidence and case relationships. It does not decide legal compliance or file an RTI or appeal.</p>
         <nav className="footer-links" aria-label="Official RTI resources">
-          <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal</a>
-          <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ</a>
+          <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal (new tab)</a>
+          <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ (new tab)</a>
         </nav>
       </footer>
     </div>
