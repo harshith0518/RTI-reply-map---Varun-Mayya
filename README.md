@@ -1,57 +1,75 @@
 # RTI Reply Map
 
-RTI Reply Map is a mobile-first, no-login hackathon prototype that helps a citizen understand several related RTI replies as one question-by-question map. It keeps each result tied to an exact passage, reply file, page location, and registration branch, then lets the citizen confirm or change the suggested label.
+RTI Reply Map is a mobile-first, no-login prototype that helps a citizen read several related RTI replies as one question-by-question map. Each result stays tied to an exact passage, sample reply file, page location, and related RTI registration number. The citizen can then confirm or change the suggested result.
 
-The demonstration is deliberately safe: Maya, every registration number, office, reply, and PDF are synthetic. The site is not connected to a government system, files nothing, and does not provide legal advice.
+- **Live demo:** https://rti-reply-map.harshith794.chatgpt.site
+- **GitHub:** https://github.com/harshith0518/RTI-reply-map---Varun-Mayya
 
-## Demo flow
+Maya, every registration number, office, reply, and PDF are fictional. The prototype is independent, connects to no government system, submits nothing, and does not provide legal advice.
+
+## Citizen journey
 
 1. Read Maya's three original questions.
-2. See the parallel registration branches.
-3. Review the proposed coverage for each question.
-4. Inspect the exact supporting passage and watermarked PDF.
-5. Confirm or override any label and optionally add a note.
-6. Download a reviewed, clearly marked demonstration summary.
+2. See the three related RTI registration branches.
+3. Compare every question with its proposed reply result.
+4. Inspect the exact passage, page, reply file, and registration number.
+5. Confirm or override the result and optionally add a private note.
+6. Download a clearly marked reviewed HTML summary.
 
-## Architecture
+## Architecture at a glance
 
 ```text
-Synthetic case fixtures
-        |
-        v
-Deterministic mapping rules ---> Domain tests (Maya, Nisha, Asha)
-        |
-        v
-React client experience ---> Local browser storage for human reviews
-        |                         (no account, server, or submission)
-        v
-Evidence view + downloadable reviewed summary
+Synthetic fixture -> deterministic mapping -> componentized seven-step UI
+                                                |
+                                     browser-only human review
+                                                |
+                                     reviewed HTML summary
 ```
 
-- `src/domain.ts`: typed mapping rules and human-review overlay.
-- `src/fixtures.ts`: synthetic Maya, Nisha, and Asha test cases.
-- `app/page.tsx`: the accessible seven-step interface.
-- `public/replies/`: watermarked synthetic source PDFs.
-- `tests/domain.test.ts`: deterministic topology, chronology, evidence, and override tests.
-- `submission/`: ready-to-use submission copy, demo script, and QA checklist.
+There is no backend, database, authentication, paid API, or runtime AI dependency. `app/page.tsx` owns browser state and orchestration; screen components live under `app/components/screens/`; reusable progress, status, disclosure, and navigation controls live in `app/components/shared.tsx`. Pure domain rules and synthetic fixtures remain separate under `src/` so they can be checked without rendering the UI.
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the data flow, review lifecycle, trust boundaries, and extension points.
+
+## Fixture and PDF scope
+
+Maya is the public demonstration and has three watermarked PDFs in `public/replies/`:
+
+- `maya-results-reply.pdf`
+- `maya-cutoff-reply.pdf`
+- `maya-vacancy-reply.pdf`
+
+Nisha and Asha are domain/test fixtures in `src/fixtures.ts`. Their filenames—`nisha-evaluation-reply.pdf`, `nisha-finance-reply.pdf`, `asha-contracts-reply.pdf`, and `asha-quality-supplemental-reply.pdf`—describe expected document records but are not public files in this repository.
 
 ## Run locally
 
-Requires Node.js 22.13 or later.
+Prerequisites:
+
+- Node.js 22.13 or later
+- npm
+- Python 3 and ReportLab only if regenerating the sample PDFs
 
 ```bash
+git clone https://github.com/harshith0518/RTI-reply-map---Varun-Mayya.git
+cd RTI-reply-map---Varun-Mayya
 npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-## Verify
+To regenerate Maya's PDFs:
 
 ```bash
-npm test
-npm run lint
-npm run build
+python -m pip install reportlab
+python scripts/create_sample_replies.py
 ```
 
-The production build is designed for free OpenAI Sites hosting. It has no database, authentication, paid API, or runtime AI dependency.
+## Check a change
+
+```bash
+npm run check
+```
+
+The check command runs TypeScript checks, domain tests, ESLint, and a production build. The individual commands remain available as `npm run typecheck`, `npm test`, `npm run lint`, and `npm run build`.
+
+Contribution and review expectations are in [CONTRIBUTING.md](CONTRIBUTING.md).
