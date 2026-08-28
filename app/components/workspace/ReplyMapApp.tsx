@@ -8,6 +8,7 @@ import { CaseWorkspace } from './CaseWorkspace';
 import { ExamplePicker, LOCAL_CASE_OPTION } from './ExamplePicker';
 import { HowItWorks } from './HowItWorks';
 import { ImportCasePanel } from './ImportCasePanel';
+import { PrototypeTour } from './PrototypeTour';
 import { WhyThisExists } from './WhyThisExists';
 
 export function ReplyMapApp() {
@@ -78,7 +79,7 @@ export function ReplyMapApp() {
       </header>
 
       <main id="main-content" className="workspace-page" tabIndex={-1}>
-        <section className="prototype-review-note" aria-labelledby="review-note-title">
+        <section className="prototype-review-note" id="prototype-overview" aria-labelledby="review-note-title">
           <div className="review-note-heading">
             <div>
               <p className="review-note-kicker"><span aria-hidden="true">●</span> Start here · What you are reviewing</p>
@@ -217,6 +218,7 @@ export function ReplyMapApp() {
           </nav>
         </div>
       </footer>
+      <PrototypeTour />
     </div>
   );
 }

@@ -87,7 +87,7 @@ export function ReplyMapPanel({
   const [comparisonView, setComparisonView] = useState<'after' | 'before'>('after');
 
   return (
-    <section className="workspace-panel reply-panel" aria-labelledby="reply-map-title">
+    <section className="workspace-panel reply-panel" id="reply-map-panel" aria-labelledby="reply-map-title">
       <header className="panel-header">
         <div><p className="panel-kicker">2 · Evidence coverage</p><h2 id="reply-map-title">Reply Map</h2></div>
         <span className="structure-chip">{comparisonView === 'after' ? `${data.mappings.length} mapped · ${reviewedCount} checked` : `${data.nodes.length} events · ${data.documents.length} files`}</span>
