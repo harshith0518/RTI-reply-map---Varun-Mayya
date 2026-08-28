@@ -24,7 +24,7 @@ The public workspace contains five deliberately different cases:
 
 Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item to inspect its evidence or missing-evidence reason, then confirm or change the proposed label. The outcome summary keeps the final counts, attention items, and relevant branches visible; checks remain in this tab when switching between examples.
 
-The front page also includes three carefully caveated official-source records: the current Central RTI FAQ, the RTI Online citizen manual, and a source-redacted 2025 TRAI reply. They establish that branching and consolidated replies can occur; they do not imply government endorsement, measure prevalence, or decide any individual case.
+The navbar-linked “Why this exists” section uses six carefully caveated, source-linked screenshots from the Central RTI FAQ, the RTI Online citizen manual, and published AAI and TRAI records. They show how one application can become several registrations, status views, transfers, replies, and branch-specific appeal paths. They do not imply government endorsement, measure prevalence or usability impact, or decide any individual case.
 
 ## Use a custom redacted case
 

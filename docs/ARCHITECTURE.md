@@ -19,13 +19,13 @@ src/case-model.ts <── src/case-prompt.ts
 app/components/workspace/ReplyMapApp.tsx
   active example/custom case, per-case in-tab reviews, disclosure
         |
+        +── WhyThisExists.tsx + sourced workflow evidence
         +── ExamplePicker.tsx
         +── CaseWorkspace.tsx
         |     +── DependencyTree.tsx
         |     +── ReplyMapPanel.tsx + browser-only human checks
         |     └── reviewed outcome + official handoff
         +── HowItWorks.tsx
-        +── ProofSection.tsx + local official-source screenshots
         └── ImportCasePanel.tsx
 ```
 

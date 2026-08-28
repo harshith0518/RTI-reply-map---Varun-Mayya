@@ -8,7 +8,7 @@ import { CaseWorkspace } from './CaseWorkspace';
 import { ExamplePicker, LOCAL_CASE_OPTION } from './ExamplePicker';
 import { HowItWorks } from './HowItWorks';
 import { ImportCasePanel } from './ImportCasePanel';
-import { ProofSection } from './ProofSection';
+import { WhyThisExists } from './WhyThisExists';
 
 export function ReplyMapApp() {
   const [activeCase, setActiveCase] = useState<RTICaseData>(EXAMPLE_CASES[0]);
@@ -67,9 +67,9 @@ export function ReplyMapApp() {
           <span><strong>RTI Reply Map</strong><small>Case tree + evidence map</small></span>
         </a>
         <nav className="topbar-nav" aria-label="Explore the prototype">
+          <a href="#why-this-exists">Why this exists</a>
           <a href="#examples">Five cases</a>
           <a href="#how-it-works">How it works</a>
-          <a href="#proof">Official sources</a>
           <a href="#use-your-case">Custom JSON</a>
         </nav>
         <div className="topbar-actions">
@@ -100,6 +100,7 @@ export function ReplyMapApp() {
           <span>No login</span><span>No server upload by this site</span><span>No runtime AI/API</span><span>No legal verdict</span>
         </div>
 
+        <WhyThisExists />
         <ExamplePicker examples={EXAMPLE_CASES} activeCase={activeCase} importedCase={importedCase} onSelect={selectCase} />
 
         <section className="active-case-strip" aria-label="Selected case">
@@ -115,7 +116,6 @@ export function ReplyMapApp() {
           key={`${activeCase.source}:${activeCase.caseId}:${activeCase.source === 'custom' ? importRevision : 0}`}
         />
         <HowItWorks />
-        <ProofSection />
         <ImportCasePanel importedCase={importedCase} onLoadCase={loadCase} onClearCase={clearImportedCase} />
         <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>
       </main>
