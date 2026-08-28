@@ -133,12 +133,6 @@ export function ReplyMapApp() {
               <a className="secondary-button" href="#use-your-case">Test custom JSON</a>
             </div>
           </div>
-          <aside aria-label="How RTI Reply Map transforms a case">
-            <strong>The transformation</strong>
-            <span>Scattered records</span><b>→</b>
-            <span>Dependency tree</span><b>→</b>
-            <span>Evidence-linked Reply Map</span><b>✓</b>
-          </aside>
         </section>
 
         <div className="trust-row" aria-label="Prototype boundaries">

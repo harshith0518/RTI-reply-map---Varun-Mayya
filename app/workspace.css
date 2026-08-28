@@ -34,15 +34,11 @@
 .review-scope { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .7rem; margin-top: .7rem; border-left: 3px solid var(--amber); padding: .65rem .75rem; background: #fffaf1; color: #654a31; font-size: .77rem; line-height: 1.45; }
 .review-scope strong { color: #6d390a; white-space: nowrap; }
 
-.product-intro { display: grid; grid-template-columns: minmax(0, 1fr) 320px; align-items: end; gap: 2.5rem; border-bottom: 1px solid var(--line); padding: 2rem 0 2.5rem; }
+.product-intro { border-bottom: 1px solid var(--line); padding: 2rem 0 2.5rem; }
 .product-intro h1 { max-width: 900px; font-size: clamp(2.25rem, 5vw, 4.4rem); }
 .product-intro > div > h1 + p { max-width: 780px; margin: 1rem 0 0; color: var(--muted); font-size: 1.04rem; line-height: 1.6; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.15rem; }
 .hero-actions a { text-decoration: none; }
-.product-intro aside { display: grid; grid-template-columns: 1fr auto; gap: .5rem .75rem; border: 1px solid var(--line-strong); border-radius: 10px; padding: 1rem; background: white; }
-.product-intro aside strong { grid-column: 1 / -1; font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; }
-.product-intro aside span { font-weight: 650; }
-.product-intro aside b { color: var(--green); }
 .trust-row { display: flex; flex-wrap: wrap; gap: .45rem; margin: 1rem 0 0; }
 .trust-row span { border: 1px solid var(--line); border-radius: 99px; padding: .4rem .65rem; background: white; color: var(--muted); font-size: .78rem; font-weight: 700; }
 
@@ -537,8 +533,6 @@
 @media (max-width: 960px) {
   .review-note-heading { grid-template-columns: 1fr; gap: .75rem; }
   .status-intro { grid-template-columns: 1fr; }
-  .product-intro { grid-template-columns: 1fr; }
-  .product-intro aside { max-width: 480px; }
   .workspace-grid { grid-template-columns: 1fr; }
   .workspace-panel + .workspace-panel { border-top: 1px solid var(--line); border-left: 0; }
   .example-cards { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(78vw, 16rem); gap: .65rem; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; border: 0; border-radius: 0; padding: .15rem .15rem .75rem; background: transparent; }
@@ -584,7 +578,7 @@
   .status-intro { padding: .8rem; }
   .status-intro ul { grid-template-columns: 1fr; }
   .review-scope { grid-template-columns: 1fr; gap: .2rem; }
-  .product-intro { gap: 1.4rem; padding-top: .8rem; }
+  .product-intro { padding-top: .8rem; }
   .product-intro h1 { font-size: clamp(2rem, 10vw, 2.8rem); }
   .section-heading { align-items: stretch; flex-direction: column; gap: .9rem; }
   .example-select { min-width: 0; }
