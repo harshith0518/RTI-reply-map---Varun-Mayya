@@ -21,6 +21,16 @@
 .review-paths strong, .review-paths small { display: block; }
 .review-paths strong { font-size: .87rem; line-height: 1.25; }
 .review-paths small { margin-top: .3rem; color: var(--muted); font-size: .73rem; line-height: 1.42; }
+.status-intro { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 1rem 1.4rem; margin-top: .75rem; border: 1px solid #b9cec3; border-radius: 10px; padding: 1rem; background: #f8faf8; }
+.status-intro-copy > p { margin: 0; color: var(--green); font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.status-intro h3 { margin: .22rem 0 0; font-size: 1.15rem; letter-spacing: -.02em; }
+.status-intro-copy > span { display: block; margin-top: .45rem; color: var(--muted); font-size: .76rem; line-height: 1.48; }
+.status-intro-copy > strong { display: block; margin-top: .55rem; border-left: 3px solid var(--green); padding-left: .6rem; color: #36594d; font-size: .75rem; line-height: 1.45; }
+.status-intro ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.status-intro-item { min-width: 0; border: 1px solid rgba(52, 83, 72, .12); border-radius: 8px; padding: .65rem; }
+.status-intro-item strong, .status-intro-item small { display: block; }
+.status-intro-item strong { font-size: .76rem; }
+.status-intro-item small { margin-top: .22rem; color: inherit; font-size: .68rem; line-height: 1.38; opacity: .84; }
 .review-scope { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .7rem; margin-top: .7rem; border-left: 3px solid var(--amber); padding: .65rem .75rem; background: #fffaf1; color: #654a31; font-size: .77rem; line-height: 1.45; }
 .review-scope strong { color: #6d390a; white-space: nowrap; }
 
@@ -153,6 +163,9 @@
 .reply-map-comparison p { min-width: 0; overflow-wrap: anywhere; }
 .reply-map-comparison p:first-child { border-color: #ddb9b3; background: #fff3f1; }
 .reply-map-comparison p:first-child span { color: #8a352d; }
+.coverage-ownership { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: .3rem .7rem; margin: 0 0 .55rem; border-left: 3px solid var(--blue); border-radius: 7px; padding: .6rem .7rem; background: var(--blue-soft); }
+.coverage-ownership strong { color: var(--ink); font-size: .73rem; white-space: nowrap; }
+.coverage-ownership span { color: var(--muted); font-size: .71rem; line-height: 1.42; }
 .coverage-key { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; margin: 0 0 .8rem; }
 .coverage-key span { border-radius: 99px; padding: .3rem .5rem; background: var(--slate-soft); color: var(--muted); font-size: .74rem; font-weight: 700; }
 .coverage-key .key-answer_located { background: var(--green-soft); color: var(--green-dark); }
@@ -371,6 +384,7 @@
 
 @media (max-width: 960px) {
   .review-note-heading { grid-template-columns: 1fr; gap: .75rem; }
+  .status-intro { grid-template-columns: 1fr; }
   .product-intro { grid-template-columns: 1fr; }
   .product-intro aside { max-width: 480px; }
   .workspace-grid { grid-template-columns: 1fr; }
@@ -415,6 +429,8 @@
   .prototype-review-note h2 { font-size: clamp(1.4rem, 7.5vw, 1.85rem); }
   .review-paths { margin-top: 1rem; }
   .review-paths a { min-height: 108px; }
+  .status-intro { padding: .8rem; }
+  .status-intro ul { grid-template-columns: 1fr; }
   .review-scope { grid-template-columns: 1fr; gap: .2rem; }
   .product-intro { gap: 1.4rem; padding-top: .8rem; }
   .product-intro h1 { font-size: clamp(2rem, 10vw, 2.8rem); }
@@ -435,6 +451,8 @@
   .node-inspector dl, .mapping-body dl { grid-template-columns: 1fr; }
   .reply-map-item summary { grid-template-columns: 38px minmax(0,1fr); }
   .reply-map-item summary .status-badge { grid-column: 2; }
+  .coverage-ownership { grid-template-columns: 1fr; }
+  .coverage-ownership strong { white-space: normal; }
   .reply-view-toggle button { min-width: 0; padding-inline: .45rem; }
   .before-workspace { padding: .65rem; }
   .before-record-stack article:nth-child(even) { margin-left: .25rem; }

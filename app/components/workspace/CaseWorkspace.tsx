@@ -108,7 +108,7 @@ export function CaseWorkspace({
             <p className="eyebrow">Citizen-ready outcome</p>
             <h2 id="outcome-title">What this Reply Map shows</h2>
           </div>
-          <p>{reviewedCount ? `${reviewedCount} human check${reviewedCount === 1 ? '' : 's'} applied in this tab.` : 'Proposed labels only. Check every result yourself.'}</p>
+          <p>{reviewedCount ? `${reviewedCount} local reviewer check${reviewedCount === 1 ? '' : 's'} applied in this tab.` : 'Case JSON evidence labels—not official RTI statuses. Check every result yourself.'}</p>
         </div>
         <dl className="outcome-counts" aria-label="Question coverage summary">
           {COVERAGE_CODES.map((code) => (

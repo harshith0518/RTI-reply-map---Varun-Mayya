@@ -66,7 +66,7 @@ This is structural validation, not source authentication. The browser cannot ins
 
 ## Evidence semantics
 
-The public labels remain intentionally narrow:
+The public labels remain intentionally narrow. They are evidence-coverage values supplied by `RTICaseData`, not government workflow statuses: fixture authors assign them for built-in examples, while custom cases supply them through validated JSON. No officer input or official-portal lookup exists in the prototype.
 
 - `answer_located`
 - `partially_addressed`

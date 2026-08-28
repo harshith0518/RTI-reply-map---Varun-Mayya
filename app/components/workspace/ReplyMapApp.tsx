@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { EXAMPLE_CASES } from '@/src/case-examples';
 import type { RTICaseData } from '@/src/case-model';
-import type { CoverageCode } from '@/src/coverage';
+import { COVERAGE_COPY, COVERAGE_HELP, type CoverageCode } from '@/src/coverage';
 import { CaseWorkspace } from './CaseWorkspace';
 import { ExamplePicker, LOCAL_CASE_OPTION } from './ExamplePicker';
 import { HowItWorks } from './HowItWorks';
@@ -101,6 +101,20 @@ export function ReplyMapApp() {
               <div><strong>Test a custom case</strong><small>Paste redacted JSON or choose a file. The tree and Reply Map are built locally in this browser.</small></div>
             </a>
           </nav>
+
+          <section className="status-intro" aria-labelledby="status-intro-title">
+            <div className="status-intro-copy">
+              <p>Four Reply Map labels</p>
+              <h3 id="status-intro-title">Evidence coverage—not an official RTI status.</h3>
+              <span>Each label comes from the prepared case JSON: authored in a fictional example or supplied with a custom case. No assigned officer enters or approves it in this prototype, and it is not a legal finding. A citizen or reviewer may change it under “Your evidence check”; that change stays only in this browser tab.</span>
+              <strong>Why it matters: a reply can exist while individual questions remain partial, unsupported or uncertain. These labels make that difference visible.</strong>
+            </div>
+            <ul aria-label="Meaning of the four Reply Map evidence labels">
+              {(Object.entries(COVERAGE_COPY) as [CoverageCode, string][]).map(([code, label]) => (
+                <li className={`status-intro-item status-${code}`} key={code}><strong>{label}</strong><small>{COVERAGE_HELP[code]}</small></li>
+              ))}
+            </ul>
+          </section>
 
           <aside className="review-scope" aria-label="Scope of this prototype phase">
             <strong>Current phase</strong>

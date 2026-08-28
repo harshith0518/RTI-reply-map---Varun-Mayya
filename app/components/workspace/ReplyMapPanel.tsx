@@ -89,7 +89,7 @@ export function ReplyMapPanel({
   return (
     <section className="workspace-panel reply-panel" aria-labelledby="reply-map-title">
       <header className="panel-header">
-        <div><p className="panel-kicker">2 · Information found</p><h2 id="reply-map-title">Reply Map</h2></div>
+        <div><p className="panel-kicker">2 · Evidence coverage</p><h2 id="reply-map-title">Reply Map</h2></div>
         <span className="structure-chip">{comparisonView === 'after' ? `${data.mappings.length} mapped · ${reviewedCount} checked` : `${data.nodes.length} events · ${data.documents.length} files`}</span>
       </header>
       <p className="panel-intro">Compare the scattered records people navigate today with the question-to-evidence view this proposal creates.</p>
@@ -109,7 +109,11 @@ export function ReplyMapPanel({
         </div>
       </div>
       {comparisonView === 'after' ? <>
-        <div className="coverage-key" aria-label="Reply Map status key">
+        <div className="coverage-ownership">
+          <strong>Proposed evidence labels</strong>
+          <span>They come from the prepared case JSON—not an RTI portal or an assigned officer. “Your evidence check” lets you review them locally without changing the source.</span>
+        </div>
+        <div className="coverage-key" aria-label="Reply Map evidence-label key">
           {Object.entries(COVERAGE_COPY).map(([code, label]) => (
             <span className={`key-${code}`} key={code}>{data.mappings.filter((mapping) => (reviews[mapping.id] ?? mapping.coverage) === code).length} {label}</span>
           ))}
@@ -163,14 +167,14 @@ export function ReplyMapPanel({
                   <button className="branch-link" type="button" onClick={() => onRevealNode(mapping.nodeId)}>Show this case event in the tree</button>
                   <div className="review-actions">
                     <label className="review-control">
-                      <span>Your check <small>kept only in this tab</small></span>
+                      <span>Your evidence check <small>optional · this tab only</small></span>
                       <select value={effectiveCoverage} onChange={(event) => onReview(mapping.id, event.target.value as CoverageCode)}>
                         {(Object.entries(COVERAGE_COPY) as [CoverageCode, string][]).map(([code, label]) => <option value={code} key={code}>{label}</option>)}
                       </select>
                     </label>
                     {reviews[mapping.id]
                       ? <span className="check-saved" role="status">✓ Check saved</span>
-                      : <button className="confirm-review" type="button" onClick={() => onReview(mapping.id, effectiveCoverage)}>Confirm this result</button>}
+                      : <button className="confirm-review" type="button" onClick={() => onReview(mapping.id, effectiveCoverage)}>Confirm this label</button>}
                   </div>
                 </div>
                 {reviews[mapping.id] ? <p className="review-note">Original proposal: {COVERAGE_COPY[mapping.coverage]}. Your check is shown above without deleting the original.</p> : null}
