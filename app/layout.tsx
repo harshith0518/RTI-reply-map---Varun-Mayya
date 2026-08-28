@@ -1,25 +1,26 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './workspace.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rti-reply-map.harshith794.chatgpt.site'),
-  title: 'RTI Reply Map — Understand related RTI replies',
+  title: 'RTI Reply Map — Turn RTI records into a case tree',
   description:
-    'An independent, synthetic hackathon prototype that maps original RTI questions to exact reply passages and related registration branches.',
+    'A no-login, local-first prototype that turns RTI registrations, replies, and appeals into a dependency tree and evidence-linked Reply Map.',
   alternates: { canonical: '/' },
   openGraph: {
     title: 'RTI Reply Map',
-    description: 'One request. Three replies. One clear, evidence-linked map.',
+    description: 'Turn scattered RTI records into one dependency tree and evidence-linked Reply Map.',
     url: '/',
     siteName: 'RTI Reply Map',
     locale: 'en_IN',
     type: 'website',
-    images: [{ url: '/og.png', alt: 'RTI Reply Map — one request, three replies, one clear map' }],
+    images: [{ url: '/og.png', alt: 'RTI Reply Map — understand related RTI records in one clear map' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'RTI Reply Map',
-    description: 'One request. Three replies. One clear, evidence-linked map.',
+    description: 'Turn scattered RTI records into one dependency tree and evidence-linked Reply Map.',
     images: ['/og.png'],
   },
 };

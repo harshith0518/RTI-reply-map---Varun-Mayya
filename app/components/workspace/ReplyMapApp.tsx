@@ -1,0 +1,98 @@
+'use client';
+
+import { useState } from 'react';
+import { EXAMPLE_CASES } from '@/src/case-examples';
+import type { RTICaseData } from '@/src/case-model';
+import { CaseWorkspace } from './CaseWorkspace';
+import { ExamplePicker } from './ExamplePicker';
+import { ImportCasePanel } from './ImportCasePanel';
+
+export function ReplyMapApp() {
+  const [activeCase, setActiveCase] = useState<RTICaseData>(EXAMPLE_CASES[0]);
+  const [importedCase, setImportedCase] = useState<RTICaseData>();
+  const [liveMessage, setLiveMessage] = useState('');
+
+  function selectCase(caseId: string) {
+    const next = importedCase?.caseId === caseId
+      ? importedCase
+      : EXAMPLE_CASES.find((item) => item.caseId === caseId);
+    if (!next) return;
+    setActiveCase(next);
+    setLiveMessage(`${next.citizenName}'s ${next.structureLabel.toLowerCase()} case is now shown.`);
+  }
+
+  function loadCase(data: RTICaseData) {
+    setImportedCase(data);
+    setActiveCase(data);
+    setLiveMessage(`${data.title} is loaded from local JSON.`);
+    window.setTimeout(() => document.getElementById('workspace')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  function clearImportedCase() {
+    setImportedCase(undefined);
+    setActiveCase(EXAMPLE_CASES[0]);
+    setLiveMessage('The imported case was cleared from this tab. Maya’s sample is shown again.');
+  }
+
+  return (
+    <div className="site-shell workspace-shell">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
+      <header className="topbar workspace-topbar">
+        <a className="brand" href="#main-content" aria-label="RTI Reply Map home">
+          <span className="brand-mark" aria-hidden="true">▤</span>
+          <span><strong>RTI Reply Map</strong><small>Case tree + evidence map</small></span>
+        </a>
+        <div className="topbar-actions">
+          <a className="topbar-link" href="#use-your-case">Use your case</a>
+          <span className="demo-pill"><strong>{activeCase.source === 'custom' ? 'Local case' : 'Sample prototype'}</strong><small>{activeCase.source === 'custom' ? 'Nothing uploaded' : 'Not a government website'}</small></span>
+        </div>
+      </header>
+
+      <main id="main-content" className="workspace-page">
+        <section className="product-intro" aria-labelledby="product-title">
+          <div>
+            <p className="eyebrow">One RTI application can become many files. Keep the meaning together.</p>
+            <h1 id="product-title">Every reply has a place. Every question has a trail.</h1>
+            <p>RTI Reply Map turns registrations, transfers, replies, fee notices, and appeals into one dependency tree—then links every original question to the exact passage that addresses it.</p>
+          </div>
+          <aside aria-label="How RTI Reply Map transforms a case">
+            <strong>The transformation</strong>
+            <span>Scattered records</span><b>→</b>
+            <span>Dependency tree</span><b>→</b>
+            <span>Evidence-linked Reply Map</span><b>✓</b>
+          </aside>
+        </section>
+
+        <div className="trust-row" aria-label="Prototype boundaries">
+          <span>No login</span><span>No upload</span><span>No paid API</span><span>No legal verdict</span>
+        </div>
+
+        <ExamplePicker examples={EXAMPLE_CASES} activeCase={activeCase} importedCase={importedCase} onSelect={selectCase} />
+
+        <section className="active-case-strip" aria-label="Selected case">
+          <div><span>{activeCase.source === 'custom' ? 'Your local case' : 'Selected demonstration'}</span><strong>{activeCase.citizenName} · {activeCase.structureLabel}</strong></div>
+          <p>{activeCase.source === 'custom' ? 'Loaded in memory only. Refreshing clears it.' : 'Fictional data · Select tree nodes and open Reply Map results to trace the case.'}</p>
+        </section>
+
+        <CaseWorkspace data={activeCase} key={activeCase.caseId} />
+        <ImportCasePanel importedCase={importedCase} onLoadCase={loadCase} onClearCase={clearImportedCase} />
+        <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>
+      </main>
+
+      <footer className="site-footer workspace-footer">
+        <div className="disclosure">
+          <strong>Independent hackathon prototype</strong>
+          <span>{activeCase.source === 'custom' ? 'Local imported case — nothing is uploaded' : 'Uses fictional sample records'}</span>
+          <span>Not connected to a government website</span>
+          <span>Nothing is submitted</span>
+          <span>Not legal advice</span>
+        </div>
+        <p>The map locates evidence and case relationships. It does not decide legal compliance or file an RTI or appeal.</p>
+        <nav className="footer-links" aria-label="Official RTI resources">
+          <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal</a>
+          <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ</a>
+        </nav>
+      </footer>
+    </div>
+  );
+}

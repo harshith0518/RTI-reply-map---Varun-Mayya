@@ -1,0 +1,98 @@
+'use client';
+
+import { useState } from 'react';
+import { COVERAGE_COPY, COVERAGE_HELP, type CoverageCode } from '@/src/coverage';
+import type { RTICaseData } from '@/src/case-model';
+import { StatusBadge } from '../shared';
+
+export function ReplyMapPanel({
+  data,
+  selectedNodeId,
+  reviews,
+  onSelectNode,
+  onReview,
+  onResetReviews,
+}: {
+  data: RTICaseData;
+  selectedNodeId: string;
+  reviews: Record<string, CoverageCode>;
+  onSelectNode: (nodeId: string) => void;
+  onReview: (mappingId: string, coverage: CoverageCode) => void;
+  onResetReviews: () => void;
+}) {
+  const firstUncertain = data.mappings.find((mapping) => mapping.coverage !== 'answer_located')?.id;
+  const defaultOpen = firstUncertain ?? data.mappings[0]?.id;
+  const reviewedCount = Object.keys(reviews).length;
+  const [openMappings, setOpenMappings] = useState<Set<string>>(() => new Set(defaultOpen ? [defaultOpen] : []));
+
+  return (
+    <section className="workspace-panel reply-panel" aria-labelledby="reply-map-title">
+      <header className="panel-header">
+        <div><p className="panel-kicker">2 · Information found</p><h2 id="reply-map-title">Reply Map</h2></div>
+        <span className="structure-chip">{data.mappings.length} mapped · {reviewedCount} checked</span>
+      </header>
+      <p className="panel-intro">Each original question stays attached to the exact reply, passage, page, and registration number.</p>
+      <div className="coverage-key" aria-label="Reply Map status key">
+        {Object.entries(COVERAGE_COPY).map(([code, label]) => (
+          <span className={`key-${code}`} key={code}>{data.mappings.filter((mapping) => (reviews[mapping.id] ?? mapping.coverage) === code).length} {label}</span>
+        ))}
+        {reviewedCount ? <button type="button" onClick={onResetReviews}>Reset my checks</button> : null}
+      </div>
+      <div className="reply-map-list">
+        {data.mappings.map((mapping) => {
+          const question = data.questions.find((item) => item.id === mapping.questionId)!;
+          const document = data.documents.find((item) => item.id === mapping.documentId);
+          const effectiveCoverage = reviews[mapping.id] ?? mapping.coverage;
+          return (
+            <details
+              className={`reply-map-item ${selectedNodeId === mapping.nodeId ? 'selected' : ''}`}
+              open={openMappings.has(mapping.id)}
+              onToggle={(event) => {
+                const isOpen = event.currentTarget.open;
+                setOpenMappings((current) => {
+                  if (current.has(mapping.id) === isOpen) return current;
+                  const next = new Set(current);
+                  if (isOpen) next.add(mapping.id);
+                  else next.delete(mapping.id);
+                  return next;
+                });
+                if (isOpen) onSelectNode(mapping.nodeId);
+              }}
+              key={`${data.caseId}-${mapping.id}`}
+            >
+              <summary>
+                <span className="map-question-number">Q{question.number}</span>
+                <span className="map-question-title"><strong>{question.title}</strong><small>{mapping.registrationNumber ?? 'Registration not supplied'}</small></span>
+                <StatusBadge code={effectiveCoverage} prefix={reviews[mapping.id] ? 'Your check' : undefined} />
+              </summary>
+              <div className="mapping-body">
+                <p className="question-text"><strong>Citizen asked</strong>{question.text}</p>
+                {mapping.passage ? <blockquote><span>Passage located</span>“{mapping.passage}”</blockquote> : <div className="mapping-empty">No supporting passage is available for this result.</div>}
+                <dl>
+                  <div><dt>Reply file</dt><dd>{document?.fileName ?? 'No reply document'}</dd></div>
+                  <div><dt>Page / location</dt><dd>{mapping.location ?? 'Not available'}</dd></div>
+                  <div><dt>Confidence</dt><dd className="capitalize">{mapping.confidence}</dd></div>
+                  <div><dt>Meaning</dt><dd>{COVERAGE_HELP[effectiveCoverage]}</dd></div>
+                </dl>
+                <p className="mapping-explanation"><strong>Why {COVERAGE_COPY[mapping.coverage]}</strong>{mapping.explanation}</p>
+                {mapping.missingDetail ? <p className="missing-record"><strong>Still not located</strong>{mapping.missingDetail}</p> : null}
+                {mapping.temporalQualifier ? <p className="temporal-note">Time qualifier: {mapping.temporalQualifier}</p> : null}
+                {document?.assetPath ? <a className="document-link" href={document.assetPath} target="_blank" rel="noreferrer">Open watermarked sample PDF <span>(new tab)</span></a> : null}
+                <div className="mapping-actions">
+                  <button className="branch-link" type="button" onClick={() => onSelectNode(mapping.nodeId)}>Show this reply in the tree</button>
+                  <label className="review-control">
+                    <span>Your check <small>kept only in this tab</small></span>
+                    <select value={effectiveCoverage} onChange={(event) => onReview(mapping.id, event.target.value as CoverageCode)}>
+                      {(Object.entries(COVERAGE_COPY) as [CoverageCode, string][]).map(([code, label]) => <option value={code} key={code}>{label}</option>)}
+                    </select>
+                  </label>
+                </div>
+                {reviews[mapping.id] ? <p className="review-note">Original proposal: {COVERAGE_COPY[mapping.coverage]}. Your check is shown above without deleting the original.</p> : null}
+              </div>
+            </details>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
