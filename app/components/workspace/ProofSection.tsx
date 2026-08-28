@@ -1,4 +1,4 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element -- these small, lazy local records must stay host-agnostic in the static build */
 
 const PROOFS = [
   {
@@ -57,7 +57,7 @@ export function ProofSection() {
         {PROOFS.map((proof) => (
           <article className="proof-card" key={proof.index}>
             <a className="proof-image-link" href={proof.source} target="_blank" rel="noreferrer" aria-label={`${proof.sourceLabel} (new tab)`}>
-              <Image src={proof.image} width={proof.width} height={proof.height} alt={proof.alt} loading="lazy" sizes="(max-width: 760px) calc(100vw - 3rem), (max-width: 1200px) 42vw, 480px" />
+              <img src={proof.image} width={proof.width} height={proof.height} alt={proof.alt} loading="lazy" decoding="async" />
             </a>
             <div className="proof-copy">
               <span className="proof-index">Proof {proof.index} · {proof.label}</span>
