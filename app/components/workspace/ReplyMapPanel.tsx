@@ -2,8 +2,66 @@
 
 import { useState } from 'react';
 import { COVERAGE_COPY, COVERAGE_HELP, type CoverageCode } from '@/src/coverage';
-import type { RTICaseData } from '@/src/case-model';
+import { NODE_KIND_COPY, type RTICaseData } from '@/src/case-model';
 import { StatusBadge } from '../shared';
+
+function BeforeReplyMap({ data }: { data: RTICaseData }) {
+  const caseRecords = data.nodes.filter((node) => node.kind !== 'application');
+  const recordsToShow = caseRecords.length ? caseRecords : data.nodes;
+  const visibleRecords = recordsToShow.slice(0, 6);
+  const visibleQuestions = data.questions.slice(0, 4);
+  const registrationCount = new Set(data.nodes.flatMap((node) => node.registrationNumber ? [node.registrationNumber] : [])).size;
+
+  return (
+    <section className="before-reply-map" aria-labelledby="before-reply-title">
+      <header className="before-problem-heading">
+        <p>Before change · Illustrative unlinked view</p>
+        <h3 id="before-reply-title">Records exist. The answer trail is still manual.</h3>
+        <span>{data.painPoint}</span>
+      </header>
+
+      <div className="before-workspace">
+        <section className="before-records" aria-labelledby="before-records-title">
+          <div className="before-column-heading"><strong id="before-records-title">Separate records to open</strong><span>{recordsToShow.length} case events</span></div>
+          <div className="before-record-stack">
+            {visibleRecords.map((node) => (
+              <article key={node.id}>
+                <span>{NODE_KIND_COPY[node.kind]}</span>
+                <strong>{node.title}</strong>
+                <code>{node.registrationNumber ?? node.appealNumber ?? 'No linked registration shown'}</code>
+                <small>{node.status ?? node.office ?? 'Open this record for context'}</small>
+              </article>
+            ))}
+            {recordsToShow.length > visibleRecords.length ? <p>+ {recordsToShow.length - visibleRecords.length} more case events to inspect</p> : null}
+          </div>
+        </section>
+
+        <section className="before-questions" aria-labelledby="before-questions-title">
+          <div className="before-column-heading"><strong id="before-questions-title">Questions to trace manually</strong><span>{data.questions.length} original questions</span></div>
+          <ol>
+            {visibleQuestions.map((question) => (
+              <li key={question.id}>
+                <span>Q{question.number}</span>
+                <div><strong>{question.title}</strong><small>Which registration? Which reply? Which page?</small></div>
+                <b>Unlinked</b>
+              </li>
+            ))}
+          </ol>
+          {data.questions.length > visibleQuestions.length ? <p>+ {data.questions.length - visibleQuestions.length} more questions to trace</p> : null}
+        </section>
+      </div>
+
+      <footer className="before-manual-cost">
+        <dl aria-label="Manual review workload">
+          <div><dt>Registration trails</dt><dd>{registrationCount}</dd></div>
+          <div><dt>Files or notices</dt><dd>{data.documents.length}</dd></div>
+          <div><dt>Joined Reply Map</dt><dd>No</dd></div>
+        </dl>
+        <div><strong>The work left to the citizen</strong><p>Open each record, match registration numbers, search pages and remember which branch answered which question.</p></div>
+      </footer>
+    </section>
+  );
+}
 
 export function ReplyMapPanel({
   data,
@@ -26,22 +84,39 @@ export function ReplyMapPanel({
   const defaultOpen = firstUncertain ?? data.mappings[0]?.id;
   const reviewedCount = Object.keys(reviews).length;
   const [openMappings, setOpenMappings] = useState<Set<string>>(() => new Set(defaultOpen ? [defaultOpen] : []));
+  const [comparisonView, setComparisonView] = useState<'after' | 'before'>('after');
 
   return (
     <section className="workspace-panel reply-panel" aria-labelledby="reply-map-title">
       <header className="panel-header">
         <div><p className="panel-kicker">2 · Information found</p><h2 id="reply-map-title">Reply Map</h2></div>
-        <span className="structure-chip">{data.mappings.length} mapped · {reviewedCount} checked</span>
+        <span className="structure-chip">{comparisonView === 'after' ? `${data.mappings.length} mapped · ${reviewedCount} checked` : `${data.nodes.length} events · ${data.documents.length} files`}</span>
       </header>
-      <p className="panel-intro">Each question shows its evidence and location—or why none can safely be shown.</p>
-      <div className="coverage-key" aria-label="Reply Map status key">
-        {Object.entries(COVERAGE_COPY).map(([code, label]) => (
-          <span className={`key-${code}`} key={code}>{data.mappings.filter((mapping) => (reviews[mapping.id] ?? mapping.coverage) === code).length} {label}</span>
-        ))}
-        {reviewedCount ? <button type="button" onClick={onResetReviews}>Reset my checks</button> : null}
+      <p className="panel-intro">Compare the scattered records people navigate today with the question-to-evidence view this proposal creates.</p>
+      <div className="before-after reply-map-comparison" aria-label="Case-specific before and after comparison">
+        <p><span>Before · Without Reply Map</span><strong>{data.painPoint}</strong></p>
+        <b aria-hidden="true">→</b>
+        <p><span>After · With Reply Map</span><strong>Every original question has one visible result tied to its case event, with an exact passage and location when available—or a clear explanation of what remains incomplete.</strong></p>
       </div>
-      <div className="reply-map-list">
-        {data.mappings.map((mapping) => {
+      <div className="reply-compare-switch">
+        <div aria-live="polite">
+          <span>Compare this case</span>
+          <strong>{comparisonView === 'after' ? 'After change: one answer trail' : 'Before change: manual reconstruction'}</strong>
+        </div>
+        <div className="reply-view-toggle" role="group" aria-label="Compare before and after views">
+          <button type="button" className={comparisonView === 'after' ? 'active' : ''} aria-pressed={comparisonView === 'after'} onClick={() => setComparisonView('after')}><span>After change</span><strong>Reply Map</strong></button>
+          <button type="button" className={comparisonView === 'before' ? 'active' : ''} aria-pressed={comparisonView === 'before'} onClick={() => setComparisonView('before')}><span>Before change</span><strong>Scattered records</strong></button>
+        </div>
+      </div>
+      {comparisonView === 'after' ? <>
+        <div className="coverage-key" aria-label="Reply Map status key">
+          {Object.entries(COVERAGE_COPY).map(([code, label]) => (
+            <span className={`key-${code}`} key={code}>{data.mappings.filter((mapping) => (reviews[mapping.id] ?? mapping.coverage) === code).length} {label}</span>
+          ))}
+          {reviewedCount ? <button type="button" onClick={onResetReviews}>Reset my checks</button> : null}
+        </div>
+        <div className="reply-map-list">
+          {data.mappings.map((mapping) => {
           const question = data.questions.find((item) => item.id === mapping.questionId)!;
           const document = data.documents.find((item) => item.id === mapping.documentId);
           const node = data.nodes.find((item) => item.id === mapping.nodeId);
@@ -102,8 +177,9 @@ export function ReplyMapPanel({
               </div>
             </details>
           );
-        })}
-      </div>
+          })}
+        </div>
+      </> : <BeforeReplyMap data={data} />}
     </section>
   );
 }
