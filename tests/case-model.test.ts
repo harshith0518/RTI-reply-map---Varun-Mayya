@@ -1,0 +1,113 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { EXAMPLE_CASES } from '../src/case-examples.ts';
+import { CASE_JSON_TEMPLATE } from '../src/case-prompt.ts';
+import {
+  MAX_CASE_JSON_BYTES,
+  buildCaseTree,
+  parseCaseJson,
+  summarizeCase,
+  validateCaseData,
+  type CaseTreeItem,
+  type RTICaseData,
+} from '../src/case-model.ts';
+
+function countTree(item: CaseTreeItem): number {
+  return 1 + item.children.reduce((total, child) => total + countTree(child), 0);
+}
+
+function depth(item: CaseTreeItem): number {
+  return 1 + Math.max(0, ...item.children.map(depth));
+}
+
+function cloneCase(data: RTICaseData): RTICaseData {
+  return structuredClone(data);
+}
+
+test('all five public examples pass the same runtime validator used for imports', () => {
+  assert.equal(EXAMPLE_CASES.length, 5);
+  for (const example of EXAMPLE_CASES) {
+    const result = validateCaseData(example);
+    assert.equal(result.ok, true, `${example.caseId}: ${result.errors.join(' | ')}`);
+    assert.equal(countTree(buildCaseTree(example)), example.nodes.length);
+    assert.equal(example.mappings.length, example.questions.length);
+  }
+});
+
+test('the examples exercise five materially different case structures', () => {
+  const [maya, nisha, asha, imran, meera] = EXAMPLE_CASES;
+  assert.equal(buildCaseTree(maya).children.length, 3, 'Maya is a three-way parallel split');
+  assert.ok(nisha.nodes.some((node) => node.kind === 'transfer'), 'Nisha includes an authority transfer');
+  assert.ok(depth(buildCaseTree(nisha)) >= 5, 'Nisha transfers before the later split/replies');
+  assert.ok(asha.nodes.some((node) => node.kind === 'appeal_order'));
+  assert.ok(asha.nodes.some((node) => node.kind === 'supplemental_reply'));
+  assert.ok(imran.nodes.some((node) => node.kind === 'fee_notice'));
+  assert.ok(imran.nodes.some((node) => node.kind === 'no_reply'));
+  assert.equal(meera.nodes.length, 3, 'Meera stays a simple single-registration chain');
+  assert.equal(meera.documents.length, 3, 'Meera maps one consolidated package with annexures');
+});
+
+test('summary counts unique registrations instead of repeated registration nodes', () => {
+  const maya = summarizeCase(EXAMPLE_CASES[0]);
+  assert.equal(maya.registrations, 3);
+  assert.equal(maya.replies, 3);
+  assert.equal(maya.questions, 3);
+});
+
+test('the JSON template is a complete valid local case', () => {
+  const parsed = parseCaseJson(JSON.stringify(CASE_JSON_TEMPLATE));
+  assert.equal(parsed.ok, true, parsed.errors.join(' | '));
+  assert.equal(parsed.data?.source, 'custom');
+});
+
+test('import validation rejects duplicate IDs and missing references', () => {
+  const duplicate = cloneCase(CASE_JSON_TEMPLATE);
+  duplicate.nodes[1].id = duplicate.nodes[0].id;
+  const result = validateCaseData(duplicate);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('node IDs must be unique')));
+  assert.ok(result.errors.some((error) => error.includes('missing from-node') || error.includes('parent edge')));
+});
+
+test('import validation rejects dependency cycles', () => {
+  const cyclic = cloneCase(CASE_JSON_TEMPLATE);
+  cyclic.edges.push({ id: 'edge-cycle', from: 'reply-1', to: 'application-1', kind: 'supplemented_by', label: 'Invalid cycle' });
+  const result = validateCaseData(cyclic);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('cycle')));
+});
+
+test('procedural documents cannot support a positive Reply Map result', () => {
+  const procedural = cloneCase(CASE_JSON_TEMPLATE);
+  procedural.documents[0].kind = 'appeal_order';
+  const result = validateCaseData(procedural);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('procedural document')));
+});
+
+test('custom cases cannot inject public links through assetPath', () => {
+  const linked = cloneCase(CASE_JSON_TEMPLATE);
+  linked.documents[0].assetPath = '/replies/pretend.pdf';
+  const result = validateCaseData(linked);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('not allowed in custom cases')));
+});
+
+test('the root must be an application and question numbers must be unique', () => {
+  const invalid = cloneCase(CASE_JSON_TEMPLATE);
+  invalid.nodes[0].kind = 'registration';
+  invalid.questions.push({ ...invalid.questions[0], id: 'q2' });
+  invalid.nodes[0].questionIds?.push('q2');
+  invalid.mappings.push({ ...invalid.mappings[0], id: 'mapping-q2', questionId: 'q2' });
+  const result = validateCaseData(invalid);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.includes('root node must be an application')));
+  assert.ok(result.errors.some((error) => error.includes('Question numbers must be unique')));
+});
+
+test('oversized input is rejected before parsing', () => {
+  const input = `{"padding":"${'x'.repeat(MAX_CASE_JSON_BYTES)}"}`;
+  const result = parseCaseJson(input);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors[0].includes('larger than 512 KB'));
+});

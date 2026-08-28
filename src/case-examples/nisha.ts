@@ -1,0 +1,50 @@
+import type { RTICaseData } from '../case-model.ts';
+
+export const nishaTransferCase: RTICaseData = {
+  schemaVersion: '1.0',
+  caseId: 'nisha-transfer-then-split',
+  source: 'synthetic',
+  fictional: true,
+  title: 'Scholarship evaluation and release records',
+  citizenName: 'Nisha',
+  citizenGoal: 'Trace her scholarship records after filing with the wrong Central authority.',
+  scenario: 'The first authority transferred the full request to a fictional university, where it then split between Evaluation and Finance.',
+  painPoint: 'A transfer notice, a replacement registration, a related finance number, and two replies must be read in the right order. The transfer notice itself answers none of Nisha’s questions.',
+  filedOn: '2026-07-07',
+  authority: 'Ministry of Education → Central Skills University (fictional)',
+  rootNodeId: 'nisha-application',
+  structureLabel: 'Serial transfer, then split',
+  tags: ['authority transfer', 'parallel split', 'explicit no-record'],
+  questions: [
+    { id: 'nisha-q1', number: 1, title: 'Evaluation sheet', text: 'Provide the evaluation score sheet for application DEMO-SCH-117.' },
+    { id: 'nisha-q2', number: 2, title: 'Sanction-list entry', text: 'Provide the approved scholarship sanction-list entry for application DEMO-SCH-117.' },
+    { id: 'nisha-q3', number: 3, title: 'Release records', text: 'Provide the fund-release order and transaction reference, if those records exist.' },
+  ],
+  nodes: [
+    { id: 'nisha-application', kind: 'application', title: 'Original RTI application', summary: 'Nisha files three scholarship-record questions with the Ministry.', date: '2026-07-07', status: 'Filed', questionIds: ['nisha-q1', 'nisha-q2', 'nisha-q3'] },
+    { id: 'nisha-ministry-registration', kind: 'registration', title: 'Ministry registration', summary: 'The Ministry receives the case but does not hold the university records.', date: '2026-07-07', status: 'Transferred', office: 'Ministry nodal office', registrationNumber: 'DEMO/MOE/R/E/26/01017', questionIds: ['nisha-q1', 'nisha-q2', 'nisha-q3'] },
+    { id: 'nisha-transfer', kind: 'transfer', title: 'Transferred to the University', summary: 'A procedural notice moves the complete request to the fictional Central Skills University.', date: '2026-07-09', status: 'Authority transfer', registrationNumber: 'DEMO/MOE/R/E/26/01017', questionIds: ['nisha-q1', 'nisha-q2', 'nisha-q3'], documentIds: ['nisha-transfer-doc'] },
+    { id: 'nisha-university-registration', kind: 'registration', title: 'University evaluation registration', summary: 'The new authority registers the case and retains the evaluation question.', date: '2026-07-10', status: 'Reply received', office: 'Scholarship Evaluation section', registrationNumber: 'DEMO/CSU/R/E/26/00208', questionIds: ['nisha-q1', 'nisha-q2', 'nisha-q3'] },
+    { id: 'nisha-evaluation-reply', kind: 'reply', title: 'Evaluation reply', summary: 'Provides Nisha’s score components and total.', date: '2026-07-25', status: 'Substantive reply', registrationNumber: 'DEMO/CSU/R/E/26/00208', questionIds: ['nisha-q1'], documentIds: ['nisha-evaluation-doc'] },
+    { id: 'nisha-finance-registration', kind: 'registration', title: 'Related Finance registration', summary: 'Finance receives the sanction and fund-release questions.', date: '2026-07-11', status: 'Reply received', office: 'Scholarship Finance section', registrationNumber: 'DEMO/CSU/R/E/26/00208/1', questionIds: ['nisha-q2', 'nisha-q3'] },
+    { id: 'nisha-finance-reply', kind: 'reply', title: 'Finance reply', summary: 'Provides the sanction entry and a dated statement that release records do not yet exist.', date: '2026-07-29', status: 'Substantive reply', registrationNumber: 'DEMO/CSU/R/E/26/00208/1', questionIds: ['nisha-q2', 'nisha-q3'], documentIds: ['nisha-finance-doc'] },
+  ],
+  edges: [
+    { id: 'nisha-e1', from: 'nisha-application', to: 'nisha-ministry-registration', kind: 'registered_as', label: 'Registered by Ministry' },
+    { id: 'nisha-e2', from: 'nisha-ministry-registration', to: 'nisha-transfer', kind: 'transferred_to', label: 'Transfer notice' },
+    { id: 'nisha-e3', from: 'nisha-transfer', to: 'nisha-university-registration', kind: 'transferred_to', label: 'New authority registration' },
+    { id: 'nisha-e4', from: 'nisha-university-registration', to: 'nisha-evaluation-reply', kind: 'replied_with', label: 'Evaluation reply' },
+    { id: 'nisha-e5', from: 'nisha-university-registration', to: 'nisha-finance-registration', kind: 'split_to', label: 'Questions 2–3 forwarded' },
+    { id: 'nisha-e6', from: 'nisha-finance-registration', to: 'nisha-finance-reply', kind: 'replied_with', label: 'Finance reply' },
+  ],
+  documents: [
+    { id: 'nisha-transfer-doc', title: 'Authority transfer notice', kind: 'transfer_notice', fileName: 'nisha-transfer-notice.pdf', registrationNumber: 'DEMO/MOE/R/E/26/01017', issuedOn: '2026-07-09' },
+    { id: 'nisha-evaluation-doc', title: 'Evaluation section reply', kind: 'substantive_reply', fileName: 'nisha-evaluation-reply.pdf', registrationNumber: 'DEMO/CSU/R/E/26/00208', issuedOn: '2026-07-25' },
+    { id: 'nisha-finance-doc', title: 'Finance section reply', kind: 'substantive_reply', fileName: 'nisha-finance-reply.pdf', registrationNumber: 'DEMO/CSU/R/E/26/00208/1', issuedOn: '2026-07-29' },
+  ],
+  mappings: [
+    { id: 'nisha-map-q1', questionId: 'nisha-q1', nodeId: 'nisha-evaluation-reply', documentId: 'nisha-evaluation-doc', registrationNumber: 'DEMO/CSU/R/E/26/00208', coverage: 'answer_located', passage: 'Application DEMO-SCH-117 — Academic score: 47/50; Need score: 35/40; Verification score: 8/10; Total evaluation score: 90/100.', location: 'Page 3 · Evaluation table', confidence: 'high', explanation: 'The requested score components and total appear in the substantive University reply.' },
+    { id: 'nisha-map-q2', questionId: 'nisha-q2', nodeId: 'nisha-finance-reply', documentId: 'nisha-finance-doc', registrationNumber: 'DEMO/CSU/R/E/26/00208/1', coverage: 'answer_located', passage: 'Sanction List 2026-B, Entry 44: Application DEMO-SCH-117 — Approved amount: Rs. 36,000.', location: 'Annexure B · Page 2', confidence: 'high', explanation: 'The applicant entry and approved amount appear in the Finance annexure.' },
+    { id: 'nisha-map-q3', questionId: 'nisha-q3', nodeId: 'nisha-finance-reply', documentId: 'nisha-finance-doc', registrationNumber: 'DEMO/CSU/R/E/26/00208/1', coverage: 'answer_located', passage: 'As of 28 July 2026, no fund-release order or bank transaction reference has been generated for Entry 44.', location: 'Page 1', confidence: 'high', explanation: 'This is an explicit, dated no-record response—not an absent answer.', temporalQualifier: 'As of 28 July 2026' },
+  ],
+};
