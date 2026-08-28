@@ -9,7 +9,9 @@ The website accepts one JSON object with `schemaVersion: "1.0"`. The easiest sta
 3. Keep exact short evidence passages and page or attachment locations.
 4. Paste the returned JSON into the local checker.
 
-The website itself does not send the chosen file or pasted JSON anywhere. Imported cases stay in the current tab's memory and disappear on refresh.
+The website itself does not send the chosen file or pasted JSON anywhere. Imported cases stay in the current tab's memory and disappear on refresh. If redacted records are supplied to ChatGPT, that happens separately in the user's own ChatGPT session and is governed by that service—not by this static site.
+
+The local checker validates JSON shape, lifecycle connections, and internal evidence references. It cannot inspect source documents or confirm that quoted text, dates, pages, registration numbers, or authorities are factually correct. Always compare the rendered result with the redacted source records.
 
 ## Top-level fields
 
@@ -18,7 +20,7 @@ The website itself does not send the chosen file or pasted JSON anywhere. Import
 | `schemaVersion` | Must be `"1.0"`. |
 | `caseId` | Unique, stable identifier for the case. |
 | `source` | Must be `"custom"` for an imported case. |
-| `fictional` | Whether the content is synthetic. |
+| `fictional` | Use `true` only for synthetic content; use `false` for a real, safely redacted case. |
 | `title`, `citizenName`, `citizenGoal`, `scenario`, `painPoint` | Citizen-facing context. Use redacted labels. |
 | `filedOn` | `YYYY-MM-DD`. |
 | `authority` | Redacted public-authority name or neutral label. |
@@ -46,6 +48,7 @@ Results: `answer_located`, `partially_addressed`, `no_matching_passage`, `needs_
 - Every node is connected to the root and the graph has no cycles.
 - Every ID is unique and every reference exists.
 - Every question has exactly one mapping.
+- A mapping's question and document must belong to its selected lifecycle node; registration numbers must agree where supplied.
 - `answer_located` and `partially_addressed` require a substantive/attachment document, exact passage, and location.
 - Transfer notices, fee notices, and appeal orders cannot be answer evidence.
 - `no_matching_passage` means a substantive reply was inspected but no relevant passage was found.

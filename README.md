@@ -3,7 +3,7 @@
 RTI Reply Map is a mobile-first, no-login prototype that turns a scattered RTI case into two connected views:
 
 1. A dependency tree showing how the application became registrations, transfers, replies, fee notices, no-reply states, appeals, orders, and supplemental replies.
-2. A Reply Map connecting every original question to an exact passage, page, document, registration number, and cautious coverage result.
+2. A Reply Map connecting every original question to exact evidence and its location when available—or a clear reason no passage can safely be shown.
 
 - **Live demo:** https://rti-reply-map.harshith794.chatgpt.site
 - **GitHub:** https://github.com/harshith0518/RTI-reply-map---Varun-Mayya
@@ -22,19 +22,19 @@ The public workspace contains five deliberately different cases:
 | Imran | Reply, additional-fee notice, and no-reply branches | “Procedure pending” and “nothing received” remain distinct. |
 | Meera | One registration and one consolidated package | The product does not invent branches when the case is simple. |
 
-Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item to see the exact passage and change the proposed label using the browser-only human check.
+Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item to inspect its evidence or missing-evidence reason, then change the proposed label using the browser-only human check.
 
 ## Use a custom redacted case
 
 The “Use your own redacted case” section provides:
 
-- A copyable, privacy-guarded ChatGPT prompt.
+- A copyable, privacy-aware ChatGPT prompt with explicit redaction instructions.
 - A downloadable valid JSON template.
 - Paste and local `.json` file input.
-- Runtime validation for schema, IDs, references, tree connectivity, cycles, evidence, and procedural-document misuse.
+- Runtime validation for strict fields, IDs, real dates, tree connectivity, cycles, question/node/document relationships, and procedural-document misuse.
 - The same dependency-tree and Reply Map renderer used by all five examples.
 
-There is no ChatGPT API call in the site. A user prepares JSON in their own ChatGPT session, then loads it into this browser tab. Imported data is kept in memory, is never uploaded by the app, and disappears on refresh. See [docs/CASE-JSON.md](docs/CASE-JSON.md) for the contract.
+There is no ChatGPT API call in the site. A user prepares JSON in their own ChatGPT session, then loads it into this browser tab. Imported data is kept in memory, is never uploaded by the app, and disappears on refresh. The checker verifies structure and internal references; it cannot inspect source PDFs or prove that a passage, page, date, or registration number is factually accurate. The user must compare the map with the redacted source records. See [docs/CASE-JSON.md](docs/CASE-JSON.md) for the contract.
 
 ## Architecture
 

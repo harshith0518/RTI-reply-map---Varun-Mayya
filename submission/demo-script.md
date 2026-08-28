@@ -1,31 +1,31 @@
 # 60-second demo script
 
-## 0–10 seconds — The problem
+## 0–8 seconds — The problem
 
-“One RTI request can turn into several registration numbers and separate replies. The portal delivers the records, but the citizen still has to work out which reply answers which original question.”
+“One RTI application can produce several registrations, notices, and replies. The citizen still has to work out which document addresses each original question.”
 
-Show the landing page and tap **View Maya's sample case**.
+Show the product introduction and the five-case picker.
 
-## 10–22 seconds — Preserve the original questions
+## 8–23 seconds — Connect structure to evidence
 
-“RTI Reply Map keeps Maya's three questions visible and shows the parallel branches created for them.”
+“For Maya, the dependency tree shows three parallel registrations. The Reply Map keeps every question beside its registration and source evidence.”
 
-Move through **Questions** and **Branches**.
+Select Maya's Question 3. Point to **Partially addressed**, the 120-seat passage, its page and PDF, and the missing calculation record.
 
-## 22–38 seconds — Map answers to evidence
+## 23–35 seconds — Prove it is not one canned tree
 
-“Instead of a document list, Maya gets one result per question. Two answers are located. The seat-total reply is only partial because it says 120 seats but does not include the calculation sheet she requested.”
+“The same workspace handles five different structures: a transfer then split, an appeal with a later reply, fee versus no reply, and even one simple consolidated response.”
 
-Open Question 3 and point to the quote, PDF, page, branch, and missing detail.
+Switch briefly to **Imran** and show the procedural fee notice beside the separate no-reply branch.
 
-## 38–50 seconds — Keep the human in control
+## 35–51 seconds — Load a redacted case locally
 
-“The label is a proposal, not a verdict. Maya can inspect the source, confirm or change the label, and add a private note. Nothing is submitted.”
+“A user can copy this privacy-aware ChatGPT prompt, use only redacted records in their own ChatGPT session, and load the returned JSON here. The file stays in this tab.”
 
-Choose a label or keep **Partially addressed**, add an optional note, and save.
+Show **Use your own redacted case**, the prompt, JSON input, and **Check JSON** action.
 
-## 50–60 seconds — The outcome
+## 51–60 seconds — Honest boundary and architecture
 
-“Maya now has one reviewed, evidence-linked summary she can download. The prototype needs no login, uses synthetic watermarked records, and runs without a database, paid API, or government connection.”
+“The checker validates structure and references—not source truth—so passages and pages still need manual comparison. The site is a free static build: no login, backend, paid API, government connection, or legal verdict.”
 
-End on the summary screen.
+End on the tree and Reply Map together.

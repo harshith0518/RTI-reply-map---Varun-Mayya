@@ -10,7 +10,7 @@ src/case-examples.ts + src/case-examples/*.ts
                          |
                          v
 src/case-model.ts <── src/case-prompt.ts
-  versioned types       guarded ChatGPT prompt + valid template
+  versioned types       privacy-aware ChatGPT prompt + valid template
   runtime validation              |
   tree construction               v
                          pasted or chosen local JSON
@@ -46,15 +46,20 @@ The current graph deliberately requires a rooted tree: the root has no parent; e
 All five built-in fixtures and every pasted/chosen custom case use `validateCaseData`. The validator rejects:
 
 - Unsupported schema versions and malformed required fields.
+- Unknown fields, invalid optional-field types, and impossible calendar dates.
 - Inputs above 512 KB and excessive collection sizes.
 - Duplicate IDs or missing question, node, document, or edge references.
 - Multiple parents, disconnected nodes, root parents, and cycles.
 - Missing Reply Map results or more than one result for a question.
+- Evidence references that do not belong to the mapped question and lifecycle node.
 - Positive results without an exact passage, location, and document.
+- `no_matching_passage` results without an inspected substantive document.
 - Procedural transfer, fee, or appeal-order documents used as answer evidence.
 - Custom `assetPath` links.
 
 Strings are rendered through React. The app does not use `dangerouslySetInnerHTML`. Custom documents are metadata only and cannot inject a link.
+
+This is structural validation, not source authentication. The browser cannot inspect an unprovided PDF, detect a fabricated quotation, or prove that a date, page, registration number, or office name matches an original record. That boundary is stated beside the importer, and users are told to compare the loaded map with their redacted records.
 
 ## Evidence semantics
 
@@ -75,7 +80,7 @@ The human check overlays the proposed label in React state. The original proposa
 2. Personal details are redacted before records are shared with any external AI service.
 3. ChatGPT returns one JSON object using schema version `1.0`.
 4. The user pastes JSON or chooses a local `.json` file.
-5. The same runtime validator used for the fixtures checks the case.
+5. The same runtime validator used for the fixtures checks structure and cross-references.
 6. A valid case replaces the selected example in memory and renders through the same components.
 7. Refresh or “Clear imported case” removes it.
 

@@ -2,10 +2,12 @@
 
 ## RTI Reply Map
 
-One RTI request can produce several registration numbers and replies from different branches. A citizen must then work out which reply answers which original question, while keeping track of transfers, pages, and missing records. RTI Reply Map turns that scattered journey into one evidence-linked, question-by-question view.
+When one Central RTI application produces related registrations and separate replies, a citizen may still need to compare every document with the original questions. RTI Reply Map is a no-login workspace that keeps the case structure and evidence together.
 
-The no-login prototype follows Maya's fictional fellowship-information request. Her three questions split into three parallel reply branches. For each question, the site shows a plain-language coverage label, the exact supporting passage, source PDF, page or annexure, and registration branch. Maya can inspect the evidence, confirm or change the suggested label, add a private browser-only note, and download a clearly marked reviewed summary.
+Its dependency tree shows registrations, transfers, replies, fee notices, no-reply observations, appeals, orders, and supplemental replies. Beside it, the Reply Map gives one cautious result per original question. When evidence exists, the result includes the exact passage, page or attachment, document, and registration number. When it does not, the interface explains whether no substantive reply is available or no matching passage was located.
 
-The system is designed to support judgement, not replace it. Labels are deterministic proposals; ambiguous or incomplete evidence is surfaced for human review. The demonstration uses only synthetic, visibly watermarked records. It is not connected to a government portal, submits nothing, and does not decide RTI compliance or recommend an appeal.
+Five fictional cases demonstrate materially different structures: Maya's parallel CPIO split, Nisha's authority transfer then split, Asha's appeal and later reply, Imran's fee-notice and no-reply branches, and Meera's single consolidated reply.
 
-The architecture is deliberately lightweight and deployable for free: a static React interface, typed synthetic fixtures, deterministic mapping rules, local browser storage, and no account, database, paid API, or live AI dependency. Maya is the main story; Nisha and Asha are automated robustness fixtures covering serial transfers, parallel splits, missing replies, appeal orders, and supplemental replies.
+A user can also prepare a redacted case in their own ChatGPT session with the copyable prompt, then paste or choose the returned JSON locally. The app validates schema, allowed values, IDs, references, tree connectivity, and mapping relationships. It cannot verify whether passages, pages, or facts match the source records; the user must check those manually against the redacted originals.
+
+The free-deployable static React build uses no login, backend, database, paid API, analytics, live government connection, or runtime AI call. Imported JSON and human checks remain in the current browser tab. The prototype submits nothing and makes no legal-compliance decision.
