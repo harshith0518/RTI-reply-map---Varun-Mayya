@@ -2,17 +2,17 @@ const STEPS = [
   {
     number: '01',
     title: 'Choose a complete case',
-    text: 'Start with one of five fictional citizen journeys—from a simple reply to transfers, fee notices, silence, and an appeal.',
+    text: 'Explore five fictional journeys: reply, transfer, fee notice, silence, and appeal.',
   },
   {
     number: '02',
     title: 'Follow the dependency tree',
-    text: 'See which registration, office, document, and later event belongs to each branch without treating procedure as answer evidence.',
+    text: 'Trace every branch without mistaking procedure for answer evidence.',
   },
   {
     number: '03',
     title: 'Check every original question',
-    text: 'The Reply Map shows the exact passage and location when available, or explains why evidence cannot safely be shown.',
+    text: 'See the exact passage and location—or why no evidence can safely be shown.',
   },
 ];
 
@@ -24,7 +24,7 @@ export function HowItWorks() {
           <p className="eyebrow">The complete citizen journey</p>
           <h2 id="how-title">From scattered files to one reviewable answer trail.</h2>
         </div>
-        <p>Built for a quick first-time review: choose a case, understand its branches, inspect the evidence, and make a human check.</p>
+        <p>Choose a case, follow its branches, inspect the evidence, then make your own check.</p>
       </div>
 
       <ol className="how-steps">
@@ -47,10 +47,10 @@ export function HowItWorks() {
         </div>
         <aside>
           <strong>No hidden AI call</strong>
-          <p>The deployed website is static. Typed examples and imported JSON are converted into the tree and Reply Map by deterministic browser code—without calling ChatGPT, OpenAI, or a government API.</p>
+          <p>This static site uses deterministic browser code to turn fixtures or imported JSON into a tree and Reply Map. It calls no ChatGPT, OpenAI, or government API.</p>
         </aside>
       </div>
-      <p className="scale-note"><strong>Safe scale-up path:</strong> a real service would require consent, automatic redaction, encryption, deletion controls, short retention, document-security testing, and legal review.</p>
+      <p className="scale-note"><strong>Safe scale-up path:</strong> a real service would need consent, automated redaction, encryption, deletion controls, short retention, security testing, and legal review.</p>
     </section>
   );
 }

@@ -33,7 +33,7 @@ export function ReplyMapPanel({
         <div><p className="panel-kicker">2 · Information found</p><h2 id="reply-map-title">Reply Map</h2></div>
         <span className="structure-chip">{data.mappings.length} mapped · {reviewedCount} checked</span>
       </header>
-      <p className="panel-intro">Each question shows exact evidence and location when available—or why a passage cannot safely be shown.</p>
+      <p className="panel-intro">Each question shows its evidence and location—or why none can safely be shown.</p>
       <div className="coverage-key" aria-label="Reply Map status key">
         {Object.entries(COVERAGE_COPY).map(([code, label]) => (
           <span className={`key-${code}`} key={code}>{data.mappings.filter((mapping) => (reviews[mapping.id] ?? mapping.coverage) === code).length} {label}</span>

@@ -78,7 +78,7 @@ export function CaseWorkspace({
         </dl>
         <div className="case-context"><strong>Why this gets confusing</strong><p>{data.painPoint}</p></div>
         <div className="original-questions">
-          <div><strong>What the citizen originally asked</strong><span>Every question must end with one visible Reply Map result.</span></div>
+          <div><strong>What the citizen originally asked</strong><span>Every question gets one visible Reply Map result.</span></div>
           <ol>
             {data.questions.map((question) => (
               <li key={question.id}><span>Q{question.number}</span><div><strong>{question.title}</strong><p>{question.text}</p></div></li>
@@ -106,9 +106,9 @@ export function CaseWorkspace({
         <div className="outcome-heading">
           <div>
             <p className="eyebrow">Citizen-ready outcome</p>
-            <h2 id="outcome-title">What this Reply Map tells you</h2>
+            <h2 id="outcome-title">What this Reply Map shows</h2>
           </div>
-          <p>{reviewedCount ? `${reviewedCount} human check${reviewedCount === 1 ? '' : 's'} applied in this tab.` : 'Showing the proposed evidence labels. You can check every result yourself.'}</p>
+          <p>{reviewedCount ? `${reviewedCount} human check${reviewedCount === 1 ? '' : 's'} applied in this tab.` : 'Proposed labels only. Check every result yourself.'}</p>
         </div>
         <dl className="outcome-counts" aria-label="Question coverage summary">
           {COVERAGE_CODES.map((code) => (
@@ -121,7 +121,7 @@ export function CaseWorkspace({
         <div className="outcome-next-step">
           <div>
             <h3>{attentionMappings.length ? `${attentionMappings.length} question${attentionMappings.length === 1 ? ' needs' : 's need'} attention` : 'Every question has a located answer'}</h3>
-            <p>{attentionMappings.length ? 'These labels are navigation aids, not a finding about legal compliance. Open the matching Reply Map item to inspect the passage, missing detail, and branch.' : 'Still inspect each passage before relying on it; this prototype does not decide whether a reply is legally adequate.'}</p>
+            <p>{attentionMappings.length ? 'These labels guide review; they do not judge legal compliance. Open each item to inspect its passage, gap, and branch.' : 'Review every passage before relying on it. This prototype does not judge legal adequacy.'}</p>
           </div>
           {attentionMappings.length > 0 && (
             <ul>
@@ -142,7 +142,7 @@ export function CaseWorkspace({
         </div>
         <div className="official-handoff">
           <strong>Need to act on a real case?</strong>
-          <span>Use the official portal or its guidance after verifying your records. This website does not submit an RTI, payment, or appeal.</span>
+          <span>Verify your records, then use the official portal or guidance. This site submits no RTI, payment, or appeal.</span>
           <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Open official RTI Online portal <span>(new tab)</span></a>
           <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Read official FAQ <span>(new tab)</span></a>
         </div>

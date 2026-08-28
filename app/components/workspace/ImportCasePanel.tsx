@@ -87,7 +87,7 @@ export function ImportCasePanel({
           <p className="eyebrow">Use your own redacted case</p>
           <h2 id="import-title">Turn records into the same tree and Reply Map.</h2>
         </div>
-        <p>No account or AI API inside this website. Deterministic browser code validates the JSON and builds the map locally; refreshing clears it.</p>
+        <p>No account or runtime AI/API. Deterministic browser code validates JSON and builds the map locally; refresh clears it.</p>
       </div>
 
       <div className="import-grid">
@@ -98,7 +98,7 @@ export function ImportCasePanel({
             <strong>Redact before sharing</strong>
             <p>Remove names, addresses, phone numbers, emails, Aadhaar or identity numbers, signatures, bank details, and any other personal information.</p>
           </div>
-          <p className="external-ai-note"><strong>Separate optional step:</strong> ChatGPT runs under its own account and privacy terms. This website never calls it. You can also edit the downloaded JSON template manually.</p>
+          <p className="external-ai-note"><strong>Optional external step:</strong> ChatGPT has separate account and privacy terms. This site never calls it; you can edit the template manually instead.</p>
           <ol className="import-steps">
             <li>Copy the prompt.</li>
             <li>Give ChatGPT only redacted RTI records.</li>
@@ -118,7 +118,7 @@ export function ImportCasePanel({
         <article className="json-card">
           <span className="card-step">B · Check and load</span>
           <h3>Paste JSON or choose a file</h3>
-          <p className="verification-note"><strong>What the checker can verify:</strong> JSON structure, tree connections, and evidence references. It cannot inspect your PDFs or prove that a quoted passage, date, page, or registration number is accurate. Compare the loaded map with your redacted source records.</p>
+          <p className="verification-note"><strong>What the checker can verify:</strong> JSON structure, tree links, and evidence references. It cannot inspect PDFs or verify source accuracy. Check every quote, date, page, and registration against your redacted records.</p>
           <label className="file-control" htmlFor={inputId}>
             <span>Choose a JSON file</span>
             <small>Stays on this device · maximum 512 KB</small>
@@ -142,7 +142,7 @@ export function ImportCasePanel({
           {validation ? (
             <div className={validation.ok ? 'validation-box valid' : 'validation-box invalid'} role={validation.ok ? 'status' : 'alert'}>
               <strong>{validation.ok ? 'Valid case JSON' : `${validation.errors.length} issue${validation.errors.length === 1 ? '' : 's'} found`}</strong>
-              {validation.ok ? <p>The dependency tree is connected and every question has one structurally valid Reply Map result. Source accuracy still needs your check.</p> : (
+              {validation.ok ? <p>The tree is connected, and every question has one structurally valid Reply Map result. You must still verify source accuracy.</p> : (
                 <>
                   {validation.errors.length > 8 ? <p>Showing the first 8 of {validation.errors.length} issues.</p> : null}
                   <ul>{validation.errors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}</ul>

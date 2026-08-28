@@ -69,7 +69,7 @@ export function ReplyMapApp() {
         <nav className="topbar-nav" aria-label="Explore the prototype">
           <a href="#examples">Five cases</a>
           <a href="#how-it-works">How it works</a>
-          <a href="#proof">Official proof</a>
+          <a href="#proof">Official sources</a>
           <a href="#use-your-case">Custom JSON</a>
         </nav>
         <div className="topbar-actions">
@@ -80,11 +80,11 @@ export function ReplyMapApp() {
       <main id="main-content" className="workspace-page" tabIndex={-1}>
         <section className="product-intro" aria-labelledby="product-title">
           <div>
-            <p className="eyebrow">One RTI application can become many files. Keep the meaning together.</p>
+            <p className="eyebrow">One RTI application. Many files. One connected case.</p>
             <h1 id="product-title">Every reply has a place. Every question has a trail.</h1>
-            <p>RTI Reply Map turns prepared case data—registrations, transfers, replies, fee notices, and appeals—into one dependency tree, then shows exact evidence when available or a clear reason no passage can be shown.</p>
+            <p>RTI Reply Map turns prepared case data into one dependency tree. Each question links to exact evidence—or a clear reason none can be shown.</p>
             <div className="hero-actions">
-              <a className="primary-button" href="#examples">Explore five working cases</a>
+              <a className="primary-button" href="#examples">Explore five fictional cases</a>
               <a className="secondary-button" href="#use-your-case">Test custom JSON</a>
             </div>
           </div>
@@ -104,7 +104,7 @@ export function ReplyMapApp() {
 
         <section className="active-case-strip" aria-label="Selected case">
           <div><span>{activeCase.source === 'custom' ? 'Your local case' : 'Selected demonstration'}</span><strong>{activeCase.citizenName} · {activeCase.structureLabel}</strong></div>
-          <p>{activeCase.source === 'custom' ? 'Loaded in memory only. Refreshing clears it.' : 'Fictional data · Select tree nodes and open Reply Map results to trace the case.'}</p>
+          <p>{activeCase.source === 'custom' ? 'Loaded in memory only. Refreshing clears it.' : 'Fictional data · Select a node to trace its Reply Map evidence.'}</p>
         </section>
 
         <CaseWorkspace
@@ -129,7 +129,7 @@ export function ReplyMapApp() {
           <span>Not legal advice</span>
           <span>Built with Codex · no runtime AI/API</span>
         </div>
-        <p>The map locates evidence and case relationships. It does not decide legal compliance or file an RTI or appeal.</p>
+        <p>The map locates evidence and case links. It does not judge compliance or file an RTI or appeal.</p>
         <nav className="footer-links" aria-label="Official RTI resources">
           <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal (new tab)</a>
           <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ (new tab)</a>

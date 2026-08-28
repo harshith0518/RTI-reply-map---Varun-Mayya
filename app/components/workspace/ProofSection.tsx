@@ -5,8 +5,8 @@ const PROOFS = [
     index: '01',
     label: 'Current official rule',
     title: 'One application can receive multiple registration numbers.',
-    caption: 'The current Central RTI Online FAQ explains that this can happen when an application is forwarded to multiple CPIOs.',
-    caveat: 'General portal guidance only; it does not measure frequency, show a particular case, or prove that citizens are confused.',
+    caption: 'The Central RTI Online FAQ says multiple registrations can result when an application is sent to multiple CPIOs.',
+    caveat: 'It does not measure frequency, document a specific case, or prove citizen confusion.',
     image: '/proofs/current-central-faq.png',
     width: 1265,
     height: 712,
@@ -17,9 +17,9 @@ const PROOFS = [
   {
     index: '02',
     label: 'Documented citizen consequence',
-    title: 'Related branches can mean separately checked statuses and replies.',
-    caption: 'The official citizen manual illustrates four related registrations, four statuses, four replies, and an appeal against the relevant registration.',
-    caveat: 'This is an official instructional example, not a measured usability study or a real citizen case.',
+    title: 'Related branches may require separate status and reply checks.',
+    caption: 'The official citizen manual shows four related registrations, status checks, expected replies, and a branch-specific appeal.',
+    caveat: 'This is an instructional example—not a usability study or real citizen case.',
     image: '/proofs/citizen-manual-four-replies.png',
     width: 1530,
     height: 1980,
@@ -30,9 +30,9 @@ const PROOFS = [
   {
     index: '03',
     label: 'Redacted production record',
-    title: 'A real reply can refer to more than one transferred registration.',
-    caption: 'A public, source-redacted 2025 TRAI record shows one consolidated reply referring to two transferred RTI registrations.',
-    caveat: 'This is one consolidated reply—not two replies—and one case does not establish how common this pattern is.',
+    title: 'One real reply can cite multiple transferred registrations.',
+    caption: 'A redacted 2025 TRAI record shows one consolidated reply citing two transferred RTI registrations.',
+    caveat: 'It is one consolidated reply—not two—and cannot establish prevalence.',
     image: '/proofs/trai-consolidated-reply-2025.png',
     width: 1240,
     height: 1755,
@@ -47,10 +47,10 @@ export function ProofSection() {
     <section className="proof-section" id="proof" aria-labelledby="proof-title">
       <div className="section-heading proof-heading">
         <div>
-          <p className="eyebrow">Official-source validation</p>
-          <h2 id="proof-title">Why this problem is real.</h2>
+          <p className="eyebrow">Official-source context</p>
+          <h2 id="proof-title">The official pattern behind the prototype.</h2>
         </div>
-        <p>These sources motivate the prototype. They do not endorse it, prove widespread difficulty, or decide whether any reply is legally adequate.</p>
+        <p>These sources document the pattern—not its prevalence. They neither endorse the prototype nor judge any reply’s legal adequacy.</p>
       </div>
       <div className="proof-disclaimer"><strong>Independent prototype</strong><span>Not affiliated with or endorsed by RTI Online, DoPT, NIC, TRAI, or any government authority.</span></div>
       <div className="proof-list">
@@ -60,7 +60,7 @@ export function ProofSection() {
               <img src={proof.image} width={proof.width} height={proof.height} alt={proof.alt} loading="lazy" decoding="async" />
             </a>
             <div className="proof-copy">
-              <span className="proof-index">Proof {proof.index} · {proof.label}</span>
+              <span className="proof-index">Source {proof.index} · {proof.label}</span>
               <h3>{proof.title}</h3>
               <p>{proof.caption}</p>
               <p className="proof-caveat"><strong>Read carefully:</strong> {proof.caveat}</p>

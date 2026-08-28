@@ -19,8 +19,8 @@ export function ExamplePicker({
     <section className="example-picker" id="examples" aria-labelledby="examples-title">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Five cases · five different failure patterns</p>
-          <h2 id="examples-title">Change the case. The same map still works.</h2>
+          <p className="eyebrow">Five cases · five failure patterns</p>
+          <h2 id="examples-title">Five cases. One consistent map.</h2>
         </div>
         <label className="example-select">
           <span>Choose a case</span>
@@ -52,7 +52,7 @@ export function ExamplePicker({
           </button>
         ))}
       </div>
-      <p className="example-caption">All five demonstrations are fictional and deliberately different. Select a card—or use the menu—to compare the same tree and Reply Map across every structure.</p>
+      <p className="example-caption">All five demos are fictional and structurally distinct. Switch cases to compare the same map.</p>
     </section>
   );
 }
