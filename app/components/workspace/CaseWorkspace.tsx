@@ -6,6 +6,15 @@ import type { SatisfactionChoice } from '@/src/question-actions';
 import { DependencyTree } from './DependencyTree';
 import { ReplyMapPanel } from './ReplyMapPanel';
 
+function formatFiledOn(value: string) {
+  return new Intl.DateTimeFormat('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(`${value}T00:00:00Z`));
+}
+
 export function CaseWorkspace({
   data,
   decisions,
@@ -63,15 +72,29 @@ export function CaseWorkspace({
         <div>
           <p className="eyebrow">{data.citizenName}&apos;s {data.fictional ? 'fictional case' : 'redacted local case'} · {data.structureLabel}</p>
           <h2 id="case-title" tabIndex={-1}>{data.title}</h2>
-          <p className="case-goal">{data.citizenGoal}</p>
+          <p className="case-filing-line">
+            Filed <time dateTime={data.filedOn}>{formatFiledOn(data.filedOn)}</time> with {data.authority}
+          </p>
         </div>
         <dl className="case-stats">
           <div><dt>Questions</dt><dd>{stats.questions}</dd></div>
           <div><dt>Registrations</dt><dd>{stats.registrations}</dd></div>
           <div><dt>Replies</dt><dd>{stats.replies}</dd></div>
         </dl>
+        <div className="case-story-grid" aria-label={`${data.citizenName}'s case story`}>
+          <article className="case-story case-story-primary">
+            <p className="case-story-label">Why {data.citizenName} filed</p>
+            <h3>{data.citizenGoal}</h3>
+            <p><strong>What happened next:</strong> {data.scenario}</p>
+          </article>
+          <article className="case-story case-story-problem">
+            <p className="case-story-label">Where the trail gets messy</p>
+            <p>{data.painPoint}</p>
+            <small>The dependency tree below puts this history back in order.</small>
+          </article>
+        </div>
         <div className="original-questions">
-          <div><strong>Original questions</strong><span>Open the Reply Map to check each answer and act in place.</span></div>
+          <div><strong>What {data.citizenName} asked in the RTI application</strong><span>These are the original questions. The Reply Map checks each one below.</span></div>
           <ol>
             {data.questions.map((question) => (
               <li key={question.id}><span>Q{question.number}</span><div><strong>{question.title}</strong><p>{question.text}</p></div></li>

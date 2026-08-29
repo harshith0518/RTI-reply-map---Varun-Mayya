@@ -39,6 +39,7 @@ export function ExamplePicker({
             type="button"
             className={activeCase.source === 'synthetic' && activeCase.caseId === example.caseId ? 'active' : ''}
             aria-pressed={activeCase.source === 'synthetic' && activeCase.caseId === example.caseId}
+            aria-label={`Open ${example.citizenName}'s case story and RTI history`}
             aria-controls="workspace"
             onClick={() => onSelect(example.caseId)}
             key={example.caseId}
@@ -52,7 +53,7 @@ export function ExamplePicker({
           </button>
         ))}
       </div>
-      <p className="example-caption">Splits, transfers, fees, silence and appeals—because one straight line would be too easy.</p>
+      <p className="example-caption">Pick a citizen to see why they filed, their exact RTI questions, and what happened to every branch.</p>
     </section>
   );
 }

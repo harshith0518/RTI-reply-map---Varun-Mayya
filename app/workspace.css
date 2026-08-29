@@ -47,11 +47,22 @@
 .mobile-import-link { display: none; }
 .case-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem 2rem; border: 1px solid var(--line); border-radius: 12px 12px 0 0; padding: 1.35rem; background: white; }
 .case-summary h2 { scroll-margin-top: 90px; margin: 0; font-size: clamp(1.8rem, 3vw, 2.7rem); letter-spacing: -.035em; line-height: 1.08; }
-.case-goal { margin: .55rem 0 0; color: var(--muted); }
+.case-filing-line { margin: .55rem 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
+.case-filing-line time { color: var(--ink); font-weight: 750; }
 .case-stats { display: flex; gap: .6rem; margin: 0; }
 .case-stats div { min-width: 86px; border-left: 1px solid var(--line); padding-left: .8rem; }
 .case-stats dt { color: var(--muted); font-size: .76rem; }
 .case-stats dd { margin: .2rem 0 0; font-size: 1.45rem; font-weight: 800; }
+.case-story-grid { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fbfcfa; }
+.case-story { min-width: 0; padding: 1rem; }
+.case-story + .case-story { border-left: 1px solid var(--line); }
+.case-story-label { margin: 0 0 .4rem; color: var(--green); font-size: .7rem; font-weight: 820; letter-spacing: .06em; text-transform: uppercase; }
+.case-story h3 { margin: 0; font-size: 1.05rem; letter-spacing: -.01em; line-height: 1.35; }
+.case-story > p:not(.case-story-label) { margin: .5rem 0 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+.case-story > p strong { color: var(--ink); }
+.case-story small { display: block; margin-top: .6rem; color: var(--green-dark); font-size: .72rem; line-height: 1.4; }
+.case-story-problem { background: #fffaf2; }
+.case-story-problem .case-story-label { color: #94621f; }
 .original-questions { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 9px; padding: .8rem; background: #f8faf8; }
 .original-questions > div { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .original-questions > div > strong { font-size: .84rem; }
@@ -639,6 +650,8 @@
   .case-summary { grid-template-columns: 1fr; padding: 1rem; }
   .case-stats { width: 100%; }
   .case-stats div { flex: 1; min-width: 0; }
+  .case-story-grid { grid-column: 1; grid-template-columns: 1fr; }
+  .case-story + .case-story { border-top: 1px solid var(--line); border-left: 0; }
   .original-questions { grid-column: 1; }
   .original-questions > div { align-items: flex-start; flex-direction: column; gap: .2rem; }
   .workspace-panel { padding: 1rem; }
