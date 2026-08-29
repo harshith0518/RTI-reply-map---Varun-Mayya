@@ -1,36 +1,38 @@
 # Two-minute demo script
 
-Record at roughly 128 words per minute. Keep browser zoom at 100%, move the pointer deliberately, and open Maya's case before recording.
+Record at roughly 126–130 words per minute to leave time for clicks. Keep browser zoom at 100%, move the pointer deliberately, and open Maya's case before recording. If both teammates present, one can take each minute.
 
-## Spoken script — exactly 250 words
+## Spoken script — 242 words
 
-<!-- SPOKEN_SCRIPT_START -->
-RTI Online links registration numbers and reply files. The harder part is reading them as one citizen case. RTI Reply Navigator redesigns the citizen view.
+### Minute one — citizen demo
 
-Meet Maya, a fictional applicant. One application became three branches. The tree shows where each registration and reply came from. Reply Map shows one result for each question: marks and cut-off link to exact passages; the seat reply gives a total, but not the calculation record she requested. The missing record stays visible.
+<!-- MINUTE_ONE_START -->
+I’m Maya, a fictional applicant. One RTI application became three registrations, so the current pattern means matching separate status pages and reply files back to my questions.
 
-Maya can say whether each result satisfies her. Choosing no reveals a next step right there beside the evidence, with the relevant registration number identified. She can review and copy a plain-language first-appeal draft. The site neither recommends nor files an appeal.
+In RTI Reply Navigator, I start with the dependency tree. It keeps the request, branches, and replies in one trail. Then Reply Map gives every question its registration, source file, exact passage, and page. My marks and cut-off answers are located. The seat reply gives a total, but not the calculation record I requested.
 
-Below, six public records explain the workflow. Each opens in an in-page preview where I can inspect or download the image, follow the official source, and read its caveat.
+I choose “No.” The relevant branch stays attached, and a first-appeal preparation note opens beside the evidence. I can edit, copy, or download it and follow an official link. The prototype neither recommends nor files an appeal.
+<!-- MINUTE_ONE_END -->
 
-Five samples are fictional. This site has no login, server upload, live AI, government integration, filing, or legal verdict. Codex helped research the workflow, design the format, build the interface and validator, and test it.
+### Minute two — build and choices
 
-Next, I would test with citizens, add consent and secure document handling, then pilot human-reviewed extraction through approved integrations.
+<!-- MINUTE_TWO_START -->
+Here’s how and why. Codex helped define the schema, build the validator and interface, create five fictional samples, and test them. Redacted local JSON follows the same path. The validator checks IDs, dates, tree connectivity, and evidence mappings. Deterministic rendering separates procedural notices from substantive answers and avoids invented branches.
 
-A reviewer can test a redacted case: copy the optional prompt, paste or choose JSON, check its structure, then load the same views. The JSON stays only in this tab.
+It is static and local-first: no login, server upload, runtime AI, or government integration. Imported JSON stays in this tab and disappears on refresh; the optional ChatGPT prompt runs separately. Validation checks structure, not whether passages match source records.
 
-Reply Navigator keeps official records intact while making the answer trail easier to understand and act on.
-<!-- SPOKEN_SCRIPT_END -->
+Public screenshots have an in-page preview and show branching can occur without claiming prevalence or endorsement. These notes are for preparation, not filing, legal advice, or a legal verdict. These choices keep citizens in control.
+<!-- MINUTE_TWO_END -->
 
 ## Recording plan — not spoken
 
-- **0:00–0:12:** Show the redesign heading and independence boundary.
-- **0:12–0:37:** Select Maya, trace the tree, then open Q1 and Q3.
-- **0:37–0:57:** On Q3 choose **No**. Show the branch, edit the missing item and copy the draft.
-- **0:57–1:10:** Preview one public record; point to Download and Official source; close with Escape.
-- **1:10–1:26:** Show the prototype boundaries and Codex contribution.
-- **1:26–1:36:** Hold on the three-item roadmap.
-- **1:36–1:50:** Copy the prompt, then use sample JSON → Check JSON → Load case.
-- **1:50–1:58:** End on the loaded tree and Reply Map.
+- **0:00–0:12:** Speak as Maya; show the headline and choose her fictional case.
+- **0:12–0:30:** Trace her application and three registrations in the dependency tree.
+- **0:30–0:46:** Open Reply Map; show the located answers and the missing calculation record.
+- **0:46–0:59:** Choose **No** and show the inline first-appeal preparation note.
+- **1:00–1:17:** Show the five examples while explaining the schema, validator and deterministic rendering.
+- **1:17–1:36:** Load sample JSON and explain that custom data stays in the tab.
+- **1:36–1:48:** Preview one public record and point to its caveat and official source.
+- **1:48–1:58:** End on the boundaries and explain why the design keeps citizens in control.
 
-Do not open external PDFs during the recording; the prototype already shows the source thumbnails, provenance, links, and caveats.
+Do not open external PDFs during the recording; the prototype already shows source thumbnails, provenance, links, and caveats.

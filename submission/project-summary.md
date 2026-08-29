@@ -2,14 +2,10 @@
 
 ## RTI Reply Navigator
 
-**Making RTI smooth as butter. One request. Every branch. Every reply.**
+<!-- PROJECT_SUMMARY_START -->
+RTI Reply Navigator is a mobile-first, no-login prototype for citizens whose single RTI application becomes multiple registrations, transfers, notices, replies, appeals, or supplemental replies. It reunites that trail in a dependency tree, then gives every original question one Reply Map entry linked to the relevant branch, document, exact passage, and page or location. The citizen—not the site—decides whether the information is sufficient. A “No” opens a branch-aware helper for a fee notice, silence, first appeal, transfer, or post-first-appeal situation, with an editable note, copy/download controls, and official links. Nothing is filed and no legal verdict is made.
 
-RTI Reply Navigator helps citizens read an RTI case when one application produces several registrations, transfers and replies. It preserves the case trail in a dependency tree, then gives each original question one visible result in Reply Map.
+The current RTI Online pattern can leave registrations, status views, and reply files as separate records that citizens must match back to their questions. Reply Navigator is better because it preserves the entire case relationship while putting evidence, the unanswered detail, and the possible handoff beside each question. It also distinguishes procedural records from substantive answers instead of treating every document as a reply.
 
-Each result names the related registration, document, exact passage and page when available. The citizen then answers one plain question: “Did this give you the information you needed?” A “No” opens the relevant fee, no-reply, first-appeal or post-first-appeal path beside that question, with an editable preparation note and official handoff links. The site does not choose or file a remedy.
-
-Five fictional cases show different shapes: parallel replies; a transfer followed by a split; a first appeal and supplemental reply; fee and silence branches; and one consolidated reply. Reviewers can also paste or select redacted JSON. An in-browser validator checks the schema, IDs, dates, references, tree structure and mappings before the same deterministic renderer builds the views. It checks structure, not whether quoted passages match the source records.
-
-Six caveated public sources show that branching, multiple registrations, transfers and branch-specific replies can occur. Each opens in an in-page preview with download and official-source actions. They do not measure prevalence or imply endorsement.
-
-Codex helped research the workflow, define the schema, build the validator and interface, create tests, and prepare submission materials. The static prototype uses no login, backend, database, analytics, paid API, government integration or runtime AI. Custom data and answer choices stay in this tab.
+Five fictional cases demonstrate different case shapes. A user can also paste or choose redacted local JSON; the same runtime validator checks schema, IDs, dates, references, tree structure, and evidence mappings before rendering it. Validation confirms structure, not factual accuracy. Imported data remains in memory and disappears on refresh. The static prototype has no login, server upload, backend, runtime AI, government integration, filing, or legal verdict. Codex helped research the workflow, define the schema, build the interface and validator, and test the rules.
+<!-- PROJECT_SUMMARY_END -->

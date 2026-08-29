@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties }
 import { createPortal } from 'react-dom';
 import { PROTOTYPE_TOUR_STEPS } from '@/src/tour';
 
-const DISMISSED_KEY = 'rti-reply-map-tour-dismissed-v1';
+const DISMISSED_KEY = 'rti-reply-map-tour-dismissed-v2';
 const subscribeToClient = () => () => undefined;
 
 interface SpotlightRect {
@@ -175,8 +175,8 @@ export function PrototypeTour() {
       {showInvitation ? (
         <aside className="tour-invitation" aria-labelledby="tour-invitation-title">
           <p className="tour-invitation-kicker"><span aria-hidden="true">?</span> Optional judge helper</p>
-          <h2 id="tour-invitation-title">The 60-second speedrun. No side quest.</h2>
-          <p>Five quick stops: cases, tree, answers, proof and your own JSON.</p>
+          <h2 id="tour-invitation-title">See the citizen journey in 60 seconds.</h2>
+          <p>Five quick stops: choose a case, trace its branches, check each answer, inspect the public evidence and load redacted JSON.</p>
           <div className="tour-invitation-actions">
             <button className="tour-start-button" type="button" onClick={startTour}>Start quick tour</button>
             <button className="tour-dismiss-button" type="button" onClick={dismissInvitation}>Not now</button>
@@ -186,7 +186,7 @@ export function PrototypeTour() {
       ) : null}
 
       {showLauncher ? (
-        <button ref={launcherRef} className="tour-launcher" type="button" onClick={startTour} aria-label="Start the 60-second prototype tour">
+        <button ref={launcherRef} className="tour-launcher" type="button" onClick={startTour} aria-label="Start the 60-second citizen journey tour">
           <span aria-hidden="true">?</span> Quick tour
         </button>
       ) : null}
