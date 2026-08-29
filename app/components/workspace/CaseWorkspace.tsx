@@ -30,10 +30,6 @@ export function CaseWorkspace({
   const [liveMessage, setLiveMessage] = useState('');
   const nodeElements = useRef(new Map<string, HTMLButtonElement>());
   const stats = summarizeCase(data);
-  const checkedCount = Object.keys(decisions).length;
-  const satisfiedCount = Object.values(decisions).filter((choice) => choice === 'satisfied').length;
-  const actionMappings = data.mappings.filter((mapping) => decisions[mapping.id] === 'needs_action');
-  const uncheckedCount = data.mappings.length - checkedCount;
 
   async function copyValue(value: string) {
     try {
@@ -118,36 +114,6 @@ export function CaseWorkspace({
           onLiveMessage={setLiveMessage}
         />
       </div>
-      <section className="outcome-summary" aria-labelledby="outcome-title">
-        <div className="outcome-heading">
-          <div>
-            <p className="eyebrow">Your call</p>
-            <h2 id="outcome-title">Neatly packed. No detective board required.</h2>
-          </div>
-          <p>{checkedCount} of {data.mappings.length} checked · {satisfiedCount} answered · {actionMappings.length} need a next step · {uncheckedCount} not checked</p>
-        </div>
-        <div className="outcome-next-step">
-          <div>
-            <h3>{actionMappings.length ? `${actionMappings.length} next step${actionMappings.length === 1 ? '' : 's'} ready` : checkedCount === data.mappings.length ? 'Your review is complete' : 'Check each original question'}</h3>
-            <p>{actionMappings.length ? 'The relevant branch and preparation note sit inside each question above.' : 'Your choices stay in this browser tab and are not sent anywhere.'}</p>
-          </div>
-          {actionMappings.length > 0 ? (
-            <ul>
-              {actionMappings.map((mapping) => {
-                const question = data.questions.find((item) => item.id === mapping.questionId);
-                const node = data.nodes.find((item) => item.id === mapping.nodeId);
-                return (
-                  <li key={mapping.id}>
-                    <span>Q{question?.number ?? '?'}</span>
-                    <div><strong>{question?.title ?? 'Question'}</strong><small>{node?.registrationNumber ?? mapping.registrationNumber ?? 'Verify branch registration'}</small></div>
-                    <em>Next step ready</em>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : null}
-        </div>
-      </section>
       <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>
     </>
   );

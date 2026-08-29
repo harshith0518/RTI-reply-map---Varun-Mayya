@@ -312,20 +312,6 @@
 .before-manual-cost > div strong { font-size: .76rem; }
 .before-manual-cost > div p { margin: .2rem 0 0; color: #654a47; font-size: .7rem; line-height: 1.4; }
 
-.outcome-summary { border: 1px solid var(--line); border-top: 0; border-radius: 0 0 12px 12px; padding: 1.35rem; background: #fbfcfa; }
-.outcome-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
-.outcome-heading h2 { margin: .2rem 0 0; font-size: clamp(1.35rem, 2.5vw, 1.9rem); letter-spacing: -.025em; }
-.outcome-heading > p { max-width: 430px; margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.5; }
-.outcome-next-step { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
-.outcome-next-step h3 { margin: 0; font-size: 1.02rem; }
-.outcome-next-step p { margin: .35rem 0 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
-.outcome-next-step ul { display: grid; gap: .42rem; margin: 0; padding: 0; list-style: none; }
-.outcome-next-step li { min-width: 0; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: .6rem; border: 1px solid var(--line); border-radius: 7px; padding: .55rem; background: white; }
-.outcome-next-step li > span { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 6px; background: var(--ink); color: white; font-size: .72rem; font-weight: 800; }
-.outcome-next-step li strong, .outcome-next-step li small { display: block; }
-.outcome-next-step li strong { font-size: .8rem; }
-.outcome-next-step li small { margin-top: .1rem; color: var(--muted); font-family: "Cascadia Code", Consolas, monospace; font-size: .68rem; overflow-wrap: anywhere; }
-.outcome-next-step li em { color: var(--amber); font-size: .7rem; font-style: normal; font-weight: 760; text-align: right; }
 .how-section { scroll-margin-top: 90px; margin-top: 3.5rem; border-top: 1px solid var(--line-strong); padding-top: 2.5rem; }
 .how-heading > p { max-width: 440px; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
 .build-boundary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: .75rem; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--line); }
@@ -710,11 +696,6 @@
   .before-manual-cost dl { gap: .3rem; }
   .mapping-actions { grid-template-columns: 1fr; }
   .review-actions { grid-template-columns: 1fr; }
-  .outcome-summary { padding: 1rem; }
-  .outcome-heading { align-items: flex-start; flex-direction: column; gap: .5rem; }
-  .outcome-next-step { grid-template-columns: 1fr; }
-  .outcome-next-step li { grid-template-columns: 34px minmax(0, 1fr); }
-  .outcome-next-step li em { grid-column: 2; text-align: left; }
   .why-section { margin: 2rem 0; }
   .why-intro { grid-template-columns: 1fr; gap: .75rem; padding: 1.1rem; }
   .why-question { align-items: flex-start; flex-direction: column; gap: .3rem; }
