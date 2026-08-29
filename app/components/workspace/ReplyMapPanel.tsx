@@ -15,8 +15,8 @@ function BeforeReplyMap({ data }: { data: RTICaseData }) {
   return (
     <section className="before-reply-map" aria-labelledby="before-reply-title">
       <header className="before-problem-heading">
-        <p>Before change · Illustrative unlinked view</p>
-        <h3 id="before-reply-title">Records exist. The answer trail is still manual.</h3>
+        <p>Before Reply Map · Illustrative view</p>
+        <h3 id="before-reply-title">Separate records. Manual matching.</h3>
         <span>{data.painPoint}</span>
       </header>
 
@@ -57,7 +57,7 @@ function BeforeReplyMap({ data }: { data: RTICaseData }) {
           <div><dt>Files or notices</dt><dd>{data.documents.length}</dd></div>
           <div><dt>Joined Reply Map</dt><dd>No</dd></div>
         </dl>
-        <div><strong>The work left to the citizen</strong><p>Open each record, match registration numbers, search pages and remember which branch answered which question.</p></div>
+        <div><strong>Work left to the citizen</strong><p>Open each record, match numbers, search pages and remember which reply answers which question.</p></div>
       </footer>
     </section>
   );
@@ -92,16 +92,11 @@ export function ReplyMapPanel({
         <div><p className="panel-kicker">2 · Evidence coverage</p><h2 id="reply-map-title">Reply Map</h2></div>
         <span className="structure-chip">{comparisonView === 'after' ? `${data.mappings.length} mapped · ${reviewedCount} checked` : `${data.nodes.length} events · ${data.documents.length} files`}</span>
       </header>
-      <p className="panel-intro">Switch between this question-by-question map and an illustrative view of the same case as separate records.</p>
-      <div className="before-after reply-map-comparison" aria-label="Case-specific before and after comparison">
-        <p><span>Before · Without Reply Map</span><strong>{data.painPoint}</strong></p>
-        <b aria-hidden="true">→</b>
-        <p><span>After · With Reply Map</span><strong>Every original question has one visible result tied to its case event, with an exact passage and location when available—or a clear explanation of what remains incomplete.</strong></p>
-      </div>
+      <p className="panel-intro">Open a question to see its passage, document and page. Switch views to see the same case as separate records.</p>
       <div className="reply-compare-switch">
         <div aria-live="polite">
-          <span>Compare this case</span>
-          <strong>{comparisonView === 'after' ? 'After change: one answer trail' : 'Before change: manual reconstruction'}</strong>
+          <span>Current view</span>
+          <strong>{comparisonView === 'after' ? 'Reply Map: one result per question' : 'Separate records: manual matching'}</strong>
         </div>
         <div className="reply-view-toggle" role="group" aria-label="Compare before and after views">
           <button type="button" className={comparisonView === 'after' ? 'active' : ''} aria-pressed={comparisonView === 'after'} onClick={() => setComparisonView('after')}><span>After change</span><strong>Reply Map</strong></button>
@@ -110,8 +105,8 @@ export function ReplyMapPanel({
       </div>
       {comparisonView === 'after' ? <>
         <div className="coverage-ownership">
-          <strong>Proposed evidence labels</strong>
-          <span>They come from the prepared case JSON—not an RTI portal or an assigned officer. “Your evidence check” lets you review them locally without changing the source.</span>
+          <strong>Evidence labels</strong>
+          <span>They come from the case data, not the RTI portal. You can review them below; changes stay in this tab.</span>
         </div>
         <div className="coverage-key" aria-label="Reply Map evidence-label key">
           {Object.entries(COVERAGE_COPY).map(([code, label]) => (
@@ -164,10 +159,10 @@ export function ReplyMapPanel({
                 {document?.assetPath ? <a className="document-link" href={document.assetPath} target="_blank" rel="noreferrer">Open watermarked sample PDF <span>(new tab)</span></a> : null}
                 {document && !document.assetPath ? <p className="document-metadata-note">{data.source === 'synthetic' ? 'Synthetic document metadata only · sample PDF not attached.' : 'Document metadata from imported JSON · compare it with your redacted source record.'}</p> : null}
                 <div className="mapping-actions">
-                  <button className="branch-link" type="button" onClick={() => onRevealNode(mapping.nodeId)}>Show this case event in the tree</button>
+                  <button className="branch-link" type="button" onClick={() => onRevealNode(mapping.nodeId)}>Show this record in the tree</button>
                   <div className="review-actions">
                     <label className="review-control">
-                      <span>Your evidence check <small>optional · this tab only</small></span>
+                      <span>Your check <small>optional · this tab only</small></span>
                       <select value={effectiveCoverage} onChange={(event) => onReview(mapping.id, event.target.value as CoverageCode)}>
                         {(Object.entries(COVERAGE_COPY) as [CoverageCode, string][]).map(([code, label]) => <option value={code} key={code}>{label}</option>)}
                       </select>

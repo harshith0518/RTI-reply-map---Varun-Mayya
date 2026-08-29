@@ -84,41 +84,17 @@ export function ImportCasePanel({
     <section className="import-section" id="use-your-case" aria-labelledby="import-title">
       <div className="section-heading import-heading">
         <div>
-          <p className="eyebrow">Use your own redacted case</p>
-          <h2 id="import-title">Turn records into the same tree and Reply Map.</h2>
+          <p className="eyebrow">Custom test</p>
+          <h2 id="import-title">Load redacted JSON in this browser.</h2>
         </div>
-        <p>No account or runtime AI/API. Deterministic browser code validates JSON and builds the map locally; refresh clears it.</p>
+        <p>Start with the template or paste your own JSON. Nothing is uploaded; refresh clears it.</p>
       </div>
 
       <div className="import-grid">
-        <article className="prompt-card">
-          <span className="card-step">A · Prepare the JSON</span>
-          <h3>Copy a privacy-aware JSON prompt for ChatGPT</h3>
-          <div className="privacy-warning">
-            <strong>Redact before sharing</strong>
-            <p>Remove names, addresses, phone numbers, emails, Aadhaar or identity numbers, signatures, bank details, and any other personal information.</p>
-          </div>
-          <p className="external-ai-note"><strong>Optional external step:</strong> ChatGPT has separate account and privacy terms. This site never calls it; you can edit the template manually instead.</p>
-          <ol className="import-steps">
-            <li>Copy the prompt.</li>
-            <li>Give ChatGPT only redacted RTI records.</li>
-            <li>Ask it to return JSON only.</li>
-            <li>Paste that JSON into the checker.</li>
-          </ol>
-          <div className="button-row">
-            <button className="primary-button compact-button" type="button" onClick={copyPrompt}>Copy ChatGPT prompt</button>
-            <button className="secondary-button compact-button" type="button" onClick={() => downloadText('rti-reply-map-template.json', JSON.stringify(CASE_JSON_TEMPLATE, null, 2))}>Download JSON template</button>
-          </div>
-          <details className="prompt-preview">
-            <summary>Read the full prompt</summary>
-            <textarea aria-label="Full ChatGPT prompt" readOnly value={CUSTOM_CASE_PROMPT} rows={12} />
-          </details>
-        </article>
-
         <article className="json-card">
-          <span className="card-step">B · Check and load</span>
-          <h3>Paste JSON or choose a file</h3>
-          <p className="verification-note"><strong>What the checker can verify:</strong> JSON structure, tree links, and evidence references. It cannot inspect PDFs or verify source accuracy. Check every quote, date, page, and registration against your redacted records.</p>
+          <span className="card-step">A · Try the checker</span>
+          <h3>Start with the template or paste JSON</h3>
+          <p className="verification-note"><strong>Checks structure and links—not source accuracy.</strong> Compare every quote, page and registration with your redacted records.</p>
           <label className="file-control" htmlFor={inputId}>
             <span>Choose a JSON file</span>
             <small>Stays on this device · maximum 512 KB</small>
@@ -129,7 +105,7 @@ export function ImportCasePanel({
             <textarea
               value={jsonText}
               onChange={(event) => updateJson(event.target.value)}
-              placeholder={'Paste the JSON object from ChatGPT here…'}
+              placeholder={'Paste one JSON object here…'}
               spellCheck={false}
               rows={13}
             />
@@ -142,7 +118,7 @@ export function ImportCasePanel({
           {validation ? (
             <div className={validation.ok ? 'validation-box valid' : 'validation-box invalid'} role={validation.ok ? 'status' : 'alert'}>
               <strong>{validation.ok ? 'Valid case JSON' : `${validation.errors.length} issue${validation.errors.length === 1 ? '' : 's'} found`}</strong>
-              {validation.ok ? <p>The tree is connected, and every question has one structurally valid Reply Map result. You must still verify source accuracy.</p> : (
+              {validation.ok ? <p>The case is structurally ready. You must still verify the source evidence.</p> : (
                 <>
                   {validation.errors.length > 8 ? <p>Showing the first 8 of {validation.errors.length} issues.</p> : null}
                   <ul>{validation.errors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}</ul>
@@ -156,6 +132,33 @@ export function ImportCasePanel({
               <button type="button" onClick={onClearCase}>Clear imported case</button>
             </div>
           ) : null}
+        </article>
+
+        <article className="prompt-card">
+          <span className="card-step">B · Prepare your own JSON</span>
+          <h3>Need help preparing a case?</h3>
+          <p className="preparation-summary">Edit the template manually, or use the optional prompt after redacting every record.</p>
+          <details className="preparation-help">
+            <summary>Open the redaction and prompt guide</summary>
+            <div className="privacy-warning">
+              <strong>Redact before sharing</strong>
+              <p>Remove names, contact details, identity numbers, signatures, bank details and other personal information.</p>
+            </div>
+            <p className="external-ai-note"><strong>Optional external step:</strong> ChatGPT is separate; this site never calls it.</p>
+            <ol className="import-steps">
+              <li>Redact the records.</li>
+              <li>Copy the prompt.</li>
+              <li>Paste the returned JSON above.</li>
+            </ol>
+            <div className="button-row">
+              <button className="primary-button compact-button" type="button" onClick={copyPrompt}>Copy ChatGPT prompt</button>
+              <button className="secondary-button compact-button" type="button" onClick={() => downloadText('rti-reply-map-template.json', JSON.stringify(CASE_JSON_TEMPLATE, null, 2))}>Download JSON template</button>
+            </div>
+            <details className="prompt-preview">
+              <summary>Read the full prompt</summary>
+              <textarea aria-label="Full ChatGPT prompt" readOnly value={CUSTOM_CASE_PROMPT} rows={12} />
+            </details>
+          </details>
         </article>
       </div>
       <div className="live-region" aria-live="polite" aria-atomic="true">{message}</div>

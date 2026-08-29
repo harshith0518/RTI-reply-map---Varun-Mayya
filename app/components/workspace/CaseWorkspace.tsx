@@ -6,8 +6,6 @@ import { summarizeCase, type RTICaseData } from '@/src/case-model';
 import { DependencyTree } from './DependencyTree';
 import { ReplyMapPanel } from './ReplyMapPanel';
 
-const COVERAGE_CODES = Object.keys(COVERAGE_COPY) as CoverageCode[];
-
 export function CaseWorkspace({
   data,
   reviews,
@@ -24,15 +22,11 @@ export function CaseWorkspace({
   const nodeElements = useRef(new Map<string, HTMLButtonElement>());
   const stats = summarizeCase(data);
   const reviewedCount = Object.keys(reviews).length;
-  const effectiveCoverage = Object.fromEntries(COVERAGE_CODES.map((code) => [code, 0])) as Record<CoverageCode, number>;
-
-  for (const mapping of data.mappings) {
-    effectiveCoverage[reviews[mapping.id] ?? mapping.coverage] += 1;
-  }
 
   const attentionMappings = data.mappings.filter(
     (mapping) => (reviews[mapping.id] ?? mapping.coverage) !== 'answer_located',
   );
+  const locatedCount = data.mappings.length - attentionMappings.length;
 
   async function copyValue(value: string) {
     try {
@@ -76,16 +70,14 @@ export function CaseWorkspace({
           <div><dt>Registrations</dt><dd>{stats.registrations}</dd></div>
           <div><dt>Replies</dt><dd>{stats.replies}</dd></div>
         </dl>
-        <div className="case-context"><strong>Why this gets confusing</strong><p>{data.painPoint}</p></div>
         <div className="original-questions">
-          <div><strong>What the citizen originally asked</strong><span>Every question gets one visible Reply Map result.</span></div>
+          <div><strong>Original questions</strong><span>Each points to a passage or a stated gap.</span></div>
           <ol>
             {data.questions.map((question) => (
               <li key={question.id}><span>Q{question.number}</span><div><strong>{question.title}</strong><p>{question.text}</p></div></li>
             ))}
           </ol>
         </div>
-        <div className="case-boundary"><strong>{data.source === 'custom' ? 'Local imported case' : 'Fictional demonstration'}</strong><span>{reviewedCount ? `${reviewedCount} result${reviewedCount === 1 ? '' : 's'} checked by you · ` : ''}No automated legal conclusion</span></div>
       </section>
       <div className="workspace-grid" id="workspace">
         <DependencyTree data={data} selectedNodeId={selectedNodeId} onSelectNode={setSelectedNodeId} onRegisterNode={registerNode} onCopy={copyValue} />
@@ -105,23 +97,15 @@ export function CaseWorkspace({
       <section className="outcome-summary" aria-labelledby="outcome-title">
         <div className="outcome-heading">
           <div>
-            <p className="eyebrow">Citizen-ready outcome</p>
-            <h2 id="outcome-title">What this Reply Map shows</h2>
+            <p className="eyebrow">Case result</p>
+            <h2 id="outcome-title">What needs attention</h2>
           </div>
-          <p>{reviewedCount ? `${reviewedCount} local reviewer check${reviewedCount === 1 ? '' : 's'} applied in this tab.` : 'Case JSON evidence labels—not official RTI statuses. Check every result yourself.'}</p>
+          <p>{locatedCount} question{locatedCount === 1 ? ' has' : 's have'} a located answer. {attentionMappings.length} need{attentionMappings.length === 1 ? 's' : ''} a closer look.{reviewedCount ? ` ${reviewedCount} local check${reviewedCount === 1 ? '' : 's'} applied.` : ''}</p>
         </div>
-        <dl className="outcome-counts" aria-label="Question coverage summary">
-          {COVERAGE_CODES.map((code) => (
-            <div className={`outcome-count count-${code}`} key={code}>
-              <dt>{COVERAGE_COPY[code]}</dt>
-              <dd>{effectiveCoverage[code]}</dd>
-            </div>
-          ))}
-        </dl>
         <div className="outcome-next-step">
           <div>
             <h3>{attentionMappings.length ? `${attentionMappings.length} question${attentionMappings.length === 1 ? ' needs' : 's need'} attention` : 'Every question has a located answer'}</h3>
-            <p>{attentionMappings.length ? 'These labels guide review; they do not judge legal compliance. Open each item to inspect its passage, gap, and branch.' : 'Review every passage before relying on it. This prototype does not judge legal adequacy.'}</p>
+            <p>{attentionMappings.length ? 'Open the item to inspect its passage, gap and branch.' : 'Review every passage before relying on it.'} These are evidence labels, not legal findings.</p>
           </div>
           {attentionMappings.length > 0 && (
             <ul>
@@ -139,12 +123,6 @@ export function CaseWorkspace({
               })}
             </ul>
           )}
-        </div>
-        <div className="official-handoff">
-          <strong>Need to act on a real case?</strong>
-          <span>Verify your records, then use the official portal or guidance. This site submits no RTI, payment, or appeal.</span>
-          <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Open official RTI Online portal <span>(new tab)</span></a>
-          <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Read official FAQ <span>(new tab)</span></a>
         </div>
       </section>
       <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>

@@ -22,12 +22,12 @@ A future service would need consent, redaction, encryption, deletion, security t
 
 ## Recording plan — not spoken
 
-- **0:00–0:15:** Show the title, opening note, and Maya selected in the five-case picker.
-- **0:15–0:27:** Point to Maya's three original questions and the selected-case strip.
-- **0:27–0:52:** Show the centered dependency tree, then open Q1, Q2, and Q3 in Reply Map. Pause on Q3's missing calculation record.
+- **0:00–0:15:** Show the title, three-step review path, and Maya selected in the five-case picker.
+- **0:15–0:27:** Point to Maya's three original questions.
+- **0:27–0:52:** Show the centered dependency tree, then open Q1 and Q3 in Reply Map. Pause on Q3's missing calculation record.
 - **0:52–1:08:** Point to the evidence-label note, use “Show this case event in the tree,” and confirm one label.
 - **1:08–1:22:** Scroll to the prototype-boundary note and one public-source group. Keep its caveat visible.
-- **1:22–1:42:** Open “How it works,” then Custom JSON. Click “Try the template,” “Check JSON,” and “Load case.”
+- **1:22–1:42:** Open “Scope,” then Custom JSON. Click “Try the template,” “Check JSON,” and “Load case.”
 - **1:42–1:58:** Return to the loaded tree and Reply Map while delivering the safety and closing lines.
 
 Do not open external PDFs during the recording; the prototype already shows the source thumbnails, provenance, links, and caveats.

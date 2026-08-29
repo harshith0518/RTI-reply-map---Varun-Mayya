@@ -7,39 +7,33 @@ export interface PrototypeTourStep {
 
 export const PROTOTYPE_TOUR_STEPS = [
   {
-    targetId: 'prototype-overview',
-    eyebrow: 'Start here',
-    title: 'Try the proposal as a reviewer',
-    body: 'Choose a fictional case, read its tree and Reply Map, then check the public records below. This is an independent prototype, not a government portal.',
-  },
-  {
     targetId: 'examples',
     eyebrow: 'Fictional examples',
     title: 'Choose a case to explore',
-    body: 'Each example follows a different split, transfer, fee, silence, reply or appeal path. Selecting one updates both views below.',
+    body: 'Each example follows a different split, transfer, fee, silence, reply or appeal path. One choice updates both views.',
   },
   {
     targetId: 'dependency-tree-panel',
     eyebrow: 'Case structure',
     title: 'See how the records are related',
-    body: 'The tree reconnects every event in the prepared case JSON. Select a node to inspect its registration, questions and documents; this is not a live official tracker.',
+    body: 'The tree reconnects each registration, transfer and reply. Select a node to inspect its details and documents.',
   },
   {
     targetId: 'reply-map-panel',
     eyebrow: 'Question evidence',
     title: 'Check one question at a time',
-    body: 'Reply Map links every question to a passage or a visible gap. “After change” shows the proposal; “Before change” shows an illustrative unlinked view. Its labels are not official decisions.',
+    body: 'Reply Map links each question to a passage or visible gap. Compare it with the illustrative “Before change” view.',
   },
   {
     targetId: 'why-this-exists',
     eyebrow: 'Public sources',
     title: 'Read the record behind the problem',
-    body: 'Official guidance and published RTI files document registrations, transfers and separate replies. They show the workflow, not how common the problem is or how citizens experience it.',
+    body: 'Official guidance and published files document branching. They show the workflow, not how often people face it.',
   },
   {
     targetId: 'use-your-case',
     eyebrow: 'Custom test',
     title: 'Try redacted JSON locally',
-    body: 'Paste JSON or choose a file. The site validates it and builds both views in this browser with no runtime AI/API. Source accuracy still needs a human check.',
+    body: 'Paste or choose redacted JSON. Structure is checked and both views are built locally; you still verify the sources.',
   },
 ] as const satisfies readonly PrototypeTourStep[];
