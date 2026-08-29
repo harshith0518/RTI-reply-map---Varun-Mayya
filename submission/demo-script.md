@@ -5,7 +5,7 @@ Record at roughly 128 words per minute. Keep browser zoom at 100%, move the poin
 ## Spoken script — exactly 250 words
 
 <!-- SPOKEN_SCRIPT_START -->
-RTI Online links registration numbers and reply files. The harder part is reading them as one connected citizen case. Reply Map redesigns that citizen view.
+RTI Online links registration numbers and reply files. The harder part is reading them as one citizen case. RTI Reply Navigator redesigns the citizen view.
 
 Meet Maya, a fictional applicant. One application became three branches. The tree shows where each registration and reply came from. Reply Map shows one result for each question: marks and cut-off link to exact passages; the seat reply gives a total, but not the calculation record she requested. The missing record stays visible.
 
@@ -19,7 +19,7 @@ Next, I would test with citizens, add consent and secure document handling, then
 
 A reviewer can test a redacted case: copy the optional prompt, paste or choose JSON, check its structure, then load the same views. The JSON stays only in this tab.
 
-Reply Map keeps official records intact while making the answer trail easier to understand and act on.
+Reply Navigator keeps official records intact while making the answer trail easier to understand and act on.
 <!-- SPOKEN_SCRIPT_END -->
 
 ## Recording plan — not spoken

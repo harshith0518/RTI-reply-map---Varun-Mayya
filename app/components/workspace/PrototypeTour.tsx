@@ -175,8 +175,8 @@ export function PrototypeTour() {
       {showInvitation ? (
         <aside className="tour-invitation" aria-labelledby="tour-invitation-title">
           <p className="tour-invitation-kicker"><span aria-hidden="true">?</span> Optional judge helper</p>
-          <h2 id="tour-invitation-title">See the whole prototype in 60 seconds.</h2>
-          <p>Five short stops cover the cases, tree, Reply Map, public records and local JSON test.</p>
+          <h2 id="tour-invitation-title">The 60-second speedrun. No side quest.</h2>
+          <p>Five quick stops: cases, tree, answers, proof and your own JSON.</p>
           <div className="tour-invitation-actions">
             <button className="tour-start-button" type="button" onClick={startTour}>Start quick tour</button>
             <button className="tour-dismiss-button" type="button" onClick={dismissInvitation}>Not now</button>

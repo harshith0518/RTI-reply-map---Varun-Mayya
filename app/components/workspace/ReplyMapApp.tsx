@@ -63,9 +63,9 @@ export function ReplyMapApp() {
     <div className="site-shell workspace-shell">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="topbar workspace-topbar">
-        <a className="brand" href="#main-content" aria-label="RTI Reply Map home">
+        <a className="brand" href="#main-content" aria-label="RTI Reply Navigator home">
           <span className="brand-mark" aria-hidden="true">▤</span>
-          <span><strong>RTI Reply Map</strong><small>Connected case + next step</small></span>
+          <span><strong>RTI Reply Navigator</strong><small>Your case, minus the detective work</small></span>
         </a>
         <nav className="topbar-nav" aria-label="Explore the prototype">
           <a href="#examples">Cases</a>
@@ -81,10 +81,10 @@ export function ReplyMapApp() {
       <main id="main-content" className="workspace-page" tabIndex={-1}>
         <section className="product-intro" id="prototype-overview" aria-labelledby="product-title">
           <div>
-            <p className="review-note-kicker"><span aria-hidden="true">●</span> Independent redesign of the RTI Online citizen journey</p>
-            <h1 id="product-title">One RTI case. Every branch, answer and next step.</h1>
-            <p>Official registrations and files stay intact. This proposed citizen view connects them, matches every original question and puts the next action beside anything still missing.</p>
-            <p className="prototype-line"><strong>This is the working solution—not a feature slideshow.</strong> Try five cases, inspect the public records and load custom JSON. You decide whether an answer satisfies you; the site never decides that for you.</p>
+            <p className="review-note-kicker"><span aria-hidden="true">●</span> Less tab-hopping. More actual answers.</p>
+            <h1 id="product-title">Making RTI smooth as butter</h1>
+            <p><strong>One request. Every branch. Every reply.</strong> A citizen-first view that turns registrations, transfers and replies into one path you can actually follow.</p>
+            <p className="prototype-line"><strong>Not a “coming soon” slide deck.</strong> Pick a case, click through the mess or bring redacted JSON. You decide whether the answer worked; the site does not decide for you.</p>
             <div className="hero-actions">
               <a className="primary-button" href="#examples">Start with Maya&apos;s case</a>
               <a className="secondary-button" href="#why-this-exists">See the public records</a>
@@ -94,15 +94,15 @@ export function ReplyMapApp() {
           <nav className="review-paths" aria-label="Review this solution in three steps">
             <a href="#examples">
               <span>01</span>
-              <div><strong>See today&apos;s pattern</strong><small>Pick one of five fictional RTI paths.</small></div>
+              <div><strong>Pick a plot twist</strong><small>Choose one of five fictional RTI paths.</small></div>
             </a>
             <a href="#workspace">
               <span>02</span>
-              <div><strong>See the proposed view</strong><small>Tree the case, then check every question.</small></div>
+              <div><strong>Follow the rabbit hole</strong><small>Tree the case, then check every question.</small></div>
             </a>
             <a href="#use-your-case">
               <span>03</span>
-              <div><strong>Choose the next step</strong><small>If information is missing, prepare the right follow-up in place.</small></div>
+              <div><strong>Fix the loose end</strong><small>If information is missing, prepare the next step in place.</small></div>
             </a>
           </nav>
         </section>
@@ -130,7 +130,7 @@ export function ReplyMapApp() {
         <section className="footer-handoff footer-compact" aria-labelledby="footer-handoff-title">
           <div>
             <p className="footer-kicker">Independent hackathon prototype</p>
-            <h2 id="footer-handoff-title">Explore a case or test redacted JSON.</h2>
+            <h2 id="footer-handoff-title">One request. Zero tab-hopping.</h2>
             <p>Five fictional cases, six public records and browser-only testing. Try a question, its next step or your own redacted JSON.</p>
           </div>
           <nav className="footer-quick-links" aria-label="Review the prototype">

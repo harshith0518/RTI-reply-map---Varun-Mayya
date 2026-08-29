@@ -19,8 +19,8 @@ export function ExamplePicker({
     <section className="example-picker" id="examples" aria-labelledby="examples-title">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Five fictional paths</p>
-          <h2 id="examples-title">Choose a case.</h2>
+          <p className="eyebrow">Five RTI plot twists</p>
+          <h2 id="examples-title">Pick your paperwork adventure.</h2>
         </div>
         <label className="example-select">
           <span>Choose a case</span>
@@ -52,7 +52,7 @@ export function ExamplePicker({
           </button>
         ))}
       </div>
-      <p className="example-caption">Each case tests a different split, transfer, fee, silence or appeal pattern.</p>
+      <p className="example-caption">Splits, transfers, fees, silence and appeals—because one straight line would be too easy.</p>
     </section>
   );
 }

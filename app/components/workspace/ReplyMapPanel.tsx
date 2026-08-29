@@ -15,8 +15,8 @@ function BeforeReplyMap({ data }: { data: RTICaseData }) {
   return (
     <section className="before-reply-map" aria-labelledby="before-reply-title">
       <header className="before-problem-heading">
-        <p>Current portal pattern · simplified illustration</p>
-        <h3 id="before-reply-title">Separate registrations. Manual matching.</h3>
+        <p>The tab-hopping era · simplified illustration</p>
+        <h3 id="before-reply-title">Numbers everywhere. Answers somewhere.</h3>
         <span>{data.painPoint}</span>
       </header>
       <div className="before-workspace">
@@ -94,10 +94,10 @@ export function ReplyMapPanel({
   return (
     <section className="workspace-panel reply-panel" id="reply-map-panel" aria-labelledby="reply-map-title">
       <header className="panel-header">
-        <div><p className="panel-kicker">2 · Question check</p><h2 id="reply-map-title">Reply Map</h2></div>
+        <div><p className="panel-kicker">2 · The part that matters</p><h2 id="reply-map-title">Cool. But did they answer?</h2></div>
         <span className="structure-chip">{comparisonView === 'proposed' ? `${data.mappings.length} questions · ${checkedCount} checked` : `${data.nodes.length} events · ${data.documents.length} files`}</span>
       </header>
-      <p className="panel-intro">Open a question to read its source, say whether it helped, and prepare a next step without leaving the case.</p>
+      <p className="panel-intro">Open a question, read the source and say yes or no. Revolutionary, apparently.</p>
       <div className="reply-compare-switch">
         <div aria-live="polite">
           <span>Compare the experience</span>
@@ -110,7 +110,7 @@ export function ReplyMapPanel({
       </div>
       {comparisonView === 'proposed' ? <>
         <div className="human-check-note">
-          <strong>You make the final call.</strong>
+          <strong>You&apos;re the judge here.</strong>
           <span>The JSON links records to questions. Only you can say whether the information is satisfactory.</span>
           {checkedCount ? <button type="button" onClick={onResetDecisions}>Reset my answers</button> : null}
         </div>

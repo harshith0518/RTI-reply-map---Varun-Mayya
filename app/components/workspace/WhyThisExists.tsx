@@ -78,7 +78,7 @@ export function WhyThisExists() {
   return (
     <section className="why-section" id="why-this-exists" aria-labelledby="why-title">
       <div className="why-intro">
-        <div><p className="eyebrow">Why this redesign matters</p><h2 id="why-title">The records are linked. The answer trail is not.</h2></div>
+        <div><p className="eyebrow">Proof, not vibes</p><h2 id="why-title">Because “open another tab” is not a solution.</h2></div>
         <p>Official guidance and published files show several registrations, transfers, replies and branch-specific appeals.</p>
       </div>
       <div className="why-question"><span>The missing view</span><strong>Which branch answers each original question—and what can the citizen do next?</strong></div>

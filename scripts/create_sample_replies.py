@@ -100,7 +100,7 @@ def build_results_reply(path: Path) -> None:
     pdf.drawString(62, y - 23, "Document note")
     pdf.setFillColor(MUTED)
     pdf.setFont("Helvetica", 9)
-    pdf.drawString(62, y - 43, "This entire file is fictional and exists only for the RTI Reply Map demonstration.")
+    pdf.drawString(62, y - 43, "This entire file is fictional and exists only for the RTI Reply Navigator demonstration.")
     pdf.showPage()
 
     draw_page_frame(pdf, "Candidate Marks Table", registration, "PDF page 2 of 2 - cited as page 2")

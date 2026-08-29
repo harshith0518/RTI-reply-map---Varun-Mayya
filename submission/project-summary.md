@@ -1,8 +1,10 @@
 # Submission summary
 
-## RTI Reply Map
+## RTI Reply Navigator
 
-RTI Reply Map helps citizens read an RTI case when one application produces several registrations, transfers and replies. It preserves the case trail in a dependency tree, then gives each original question one visible result in Reply Map.
+**Making RTI smooth as butter. One request. Every branch. Every reply.**
+
+RTI Reply Navigator helps citizens read an RTI case when one application produces several registrations, transfers and replies. It preserves the case trail in a dependency tree, then gives each original question one visible result in Reply Map.
 
 Each result names the related registration, document, exact passage and page when available. The citizen then answers one plain question: “Did this give you the information you needed?” A “No” opens the relevant fee, no-reply, first-appeal or post-first-appeal path beside that question, with an editable preparation note and official handoff links. The site does not choose or file a remedy.
 

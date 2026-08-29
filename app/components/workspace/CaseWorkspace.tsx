@@ -98,8 +98,8 @@ export function CaseWorkspace({
       <section className="outcome-summary" aria-labelledby="outcome-title">
         <div className="outcome-heading">
           <div>
-            <p className="eyebrow">Your review</p>
-            <h2 id="outcome-title">What you chose</h2>
+            <p className="eyebrow">Your call</p>
+            <h2 id="outcome-title">Neatly packed. No detective board required.</h2>
           </div>
           <p>{checkedCount} of {data.mappings.length} checked · {satisfiedCount} answered · {actionMappings.length} need a next step · {uncheckedCount} not checked</p>
         </div>

@@ -69,7 +69,7 @@ export function ImportCasePanel({
   return (
     <section className="import-section" id="use-your-case" aria-labelledby="import-title">
       <div className="section-heading import-heading">
-        <div><p className="eyebrow">Custom test</p><h2 id="import-title">Test a redacted case in three steps.</h2></div>
+        <div><p className="eyebrow">Bring your own plot twist</p><h2 id="import-title">Your RTI chaos, now with a map.</h2></div>
         <p>ChatGPT prepares the JSON separately. This static site only checks and renders it in your tab.</p>
       </div>
 
@@ -82,7 +82,7 @@ export function ImportCasePanel({
       <div className="import-grid">
         <article className="prompt-card">
           <span className="card-step">Step 1 · Prepare JSON</span>
-          <h3>Copy this prompt, then add redacted records</h3>
+          <h3>Give ChatGPT the boring formatting job.</h3>
           <div className="privacy-warning"><strong>Redact first</strong><p>Remove names, contact details, identity numbers, signatures, bank details and other personal information.</p></div>
           <p className="external-ai-note"><strong>Separate service:</strong> ChatGPT is not called by this website. Review its privacy terms before sharing anything.</p>
           <button className="primary-button compact-button prompt-copy-button" type="button" onClick={copyPrompt}>Copy ChatGPT prompt</button>
@@ -94,7 +94,7 @@ export function ImportCasePanel({
 
         <article className="json-card">
           <span className="card-step">Steps 2–3 · Add JSON</span>
-          <h3>Paste the returned JSON or choose a file</h3>
+          <h3>Drop the JSON. Watch the case organise itself.</h3>
           <p className="verification-note"><strong>Checks structure and links, not source documents.</strong> Verify every passage, page, date and registration yourself.</p>
           <label className="file-control" htmlFor={inputId}><span>Choose a JSON file</span><small>Stays in this tab · maximum 512 KB</small></label>
           <input id={inputId} className="visually-hidden-file" type="file" accept="application/json,.json" onChange={chooseFile} />

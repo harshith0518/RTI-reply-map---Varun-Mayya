@@ -1,6 +1,8 @@
-# RTI Reply Map
+# RTI Reply Navigator
 
-RTI Reply Map is a mobile-first, no-login prototype that turns a scattered RTI case into two connected views:
+**Making RTI smooth as butter. One request. Every branch. Every reply.**
+
+RTI Reply Navigator is a mobile-first, no-login prototype that turns a scattered RTI case into two connected views:
 
 1. A dependency tree showing how the application became registrations, transfers, replies, fee notices, no-reply states, appeals, orders, and supplemental replies.
 2. A Reply Map connecting every original question to its source, asking whether it satisfied the citizen, and placing the relevant next step beside anything still missing.

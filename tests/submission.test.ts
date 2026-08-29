@@ -11,6 +11,7 @@ test('the spoken submission script is exactly 250 words and states key boundarie
   const spoken = match[1].trim();
   assert.equal(spoken.split(/\s+/).length, 250);
   assert.match(spoken, /fictional applicant/);
+  assert.match(spoken, /RTI Reply Navigator/);
   assert.match(spoken, /neither recommends nor files an appeal/);
   assert.match(spoken, /no login, server upload, live AI, government integration, filing, or legal verdict/);
   assert.match(spoken, /in-page preview/);

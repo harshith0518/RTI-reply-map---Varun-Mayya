@@ -1,6 +1,6 @@
 # Architecture
 
-RTI Reply Map is a static, local-first client application. Its job is to make an RTI case auditable: lifecycle relationships remain visible in a dependency tree, while every original question stays linked to evidence in the Reply Map.
+RTI Reply Navigator is a static, local-first client application. Its job is to make an RTI case auditable: lifecycle relationships remain visible in a dependency tree, while every original question stays linked to evidence in the Reply Map.
 
 ## System shape
 

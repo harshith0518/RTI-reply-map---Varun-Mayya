@@ -125,7 +125,7 @@ const schemaGuide = {
   confidence: ['high', 'medium', 'low'],
 };
 
-export const CUSTOM_CASE_PROMPT = `You are preparing one redacted RTI case for a local visualisation called RTI Reply Map.
+export const CUSTOM_CASE_PROMPT = `You are preparing one redacted RTI case for a local visualisation called RTI Reply Navigator.
 
 PRIVACY FIRST
 - Before doing anything, tell me if the supplied material still contains names, addresses, phone numbers, email addresses, Aadhaar or other identity numbers, signatures, bank details, or any personal identifier. Ask me to redact it. Do not repeat those details.
@@ -146,7 +146,7 @@ OUTPUT RULES
 - An explicit dated statement that no record exists may be answer_located; preserve the date/time qualifier and explain that this is an answer passage, not proof of legal compliance.
 - Do not make a legal-compliance verdict and do not advise whether an appeal must be filed.
 - Do not include assetPath or embed files/base64 data.
-- Before returning JSON, check every exact passage, page, date, registration number, and relationship against the supplied redacted records. The RTI Reply Map website validates structure and references; it cannot inspect the source PDFs or verify factual accuracy.
+- Before returning JSON, check every exact passage, page, date, registration number, and relationship against the supplied redacted records. The RTI Reply Navigator website validates structure and references; it cannot inspect the source PDFs or verify factual accuracy.
 
 ALLOWED VALUES
 ${JSON.stringify(schemaGuide, null, 2)}

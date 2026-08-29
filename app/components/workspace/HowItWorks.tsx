@@ -3,8 +3,8 @@ export function HowItWorks() {
     <section className="how-section" id="how-it-works" aria-labelledby="how-title">
       <div className="section-heading how-heading">
         <div>
-          <p className="eyebrow">Prototype scope and next week</p>
-          <h2 id="how-title">Working now. Honest about what comes next.</h2>
+          <p className="eyebrow">No hand-waving zone</p>
+          <h2 id="how-title">What works. What&apos;s next. No magic dust.</h2>
         </div>
         <p>This redesign works with prepared case data. It does not replace or connect to an official portal.</p>
       </div>
@@ -20,7 +20,7 @@ export function HowItWorks() {
         </div>
       </div>
       <div className="roadmap-block" aria-labelledby="roadmap-title">
-        <header><p className="eyebrow">Next week, if shortlisted</p><h3 id="roadmap-title">Finish the citizen journey end to end.</h3></header>
+        <header><p className="eyebrow">Next week, if shortlisted</p><h3 id="roadmap-title">Round two: finish the whole journey.</h3></header>
         <ol>
           <li><span>01</span><div><strong>First and second appeals</strong><p>Prepare complete files, preserve branch links and hand off to the correct official route.</p></div></li>
           <li><span>02</span><div><strong>Email alerts</strong><p>Remind citizens about replies, appeal actions and status changes after verified dates.</p></div></li>

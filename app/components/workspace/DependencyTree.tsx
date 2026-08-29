@@ -87,10 +87,10 @@ export function DependencyTree({
   return (
     <section className="workspace-panel tree-panel" id="dependency-tree-panel" aria-labelledby="tree-title">
       <header className="panel-header">
-        <div><p className="panel-kicker">1 · Case structure</p><h2 id="tree-title">Dependency tree</h2></div>
+        <div><p className="panel-kicker">1 · Where did my request go?</p><h2 id="tree-title">The RTI family tree.</h2></div>
         <span className="structure-chip">{data.structureLabel}</span>
       </header>
-      <p className="panel-intro">Select an event to see its registration, questions, and documents.</p>
+      <p className="panel-intro">Every registration, transfer and reply—reunited at last.</p>
       <div className="graph-stage">
         <ol className="case-graph" aria-label={`Dependency tree for ${data.title}`}>
           <TreeBranch item={tree} selectedNodeId={selectedNodeId} onSelectNode={onSelectNode} onRegisterNode={onRegisterNode} />
