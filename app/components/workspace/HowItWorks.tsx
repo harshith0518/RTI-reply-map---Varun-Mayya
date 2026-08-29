@@ -3,10 +3,8 @@ export function HowItWorks() {
     <section className="how-section" id="how-it-works" aria-labelledby="how-title">
       <div className="section-heading how-heading">
         <div>
-          <p className="eyebrow">No hand-waving zone</p>
-          <h2 id="how-title">What works. What&apos;s next. No magic dust.</h2>
+          <h2 id="how-title">What works. What&apos;s next.</h2>
         </div>
-        <p>This redesign works with prepared case data. It does not replace or connect to an official portal.</p>
       </div>
 
       <div className="build-boundary">

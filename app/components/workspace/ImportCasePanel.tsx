@@ -93,7 +93,7 @@ export function ImportCasePanel({
         </article>
 
         <article className="json-card">
-          <span className="card-step">Steps 2–3 · Add JSON</span>
+          <span className="card-step">Step 2</span>
           <h3>Drop the JSON. Watch the case organise itself.</h3>
           <p className="verification-note"><strong>Checks structure and links, not source documents.</strong> Verify every passage, page, date and registration yourself.</p>
           <label className="file-control" htmlFor={inputId}><span>Choose a JSON file</span><small>Stays in this tab · maximum 512 KB</small></label>

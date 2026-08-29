@@ -81,7 +81,6 @@ export function ReplyMapApp() {
       <main id="main-content" className="workspace-page" tabIndex={-1}>
         <section className="product-intro" id="prototype-overview" aria-labelledby="product-title">
           <div>
-            <p className="review-note-kicker"><span aria-hidden="true">●</span> Less tab-hopping. More actual answers.</p>
             <h1 id="product-title">Making RTI smooth as butter</h1>
             <p><strong>One request. Every branch. Every reply.</strong> A citizen-first view that turns registrations, transfers and replies into one path you can actually follow.</p>
             <p className="prototype-line"><strong>Not a “coming soon” slide deck.</strong> Pick a case, click through the mess or bring redacted JSON. You decide whether the answer worked; the site does not decide for you.</p>
@@ -154,6 +153,18 @@ export function ReplyMapApp() {
             <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal (new tab)</a>
             <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ (new tab)</a>
           </nav>
+
+          <section className="creator-credit" aria-labelledby="creator-credit-title">
+            <div className="creator-identity">
+              <p>Created by</p>
+              <h3 id="creator-credit-title">Surya Harshith</h3>
+              <a href="mailto:bsharshith1808@gmail.com">Mail me for any queries: bsharshith1808@gmail.com</a>
+            </div>
+            <div className="creator-notes">
+              <p><strong>Made with:</strong> Codex, React 19, TypeScript, Vinext/Vite and OpenAI Sites.</p>
+              <p><strong>How Codex was used:</strong> Codex helped refine the idea, sent web-research agents to surface citizen pain points, and coded the entire website. The feedback, product structure and final direction are Surya Harshith&apos;s.</p>
+            </div>
+          </section>
         </div>
       </footer>
       <PrototypeTour />
