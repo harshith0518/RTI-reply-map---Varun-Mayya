@@ -17,7 +17,9 @@ test('the current-pattern comparison explains the registration lookup loop witho
   assert.match(source, /Close details/);
   assert.match(source, /Submit next registration/);
   assert.match(source, /application text and reply or remarks/);
-  assert.match(source, /not an official RTI Online screen/);
+  assert.doesNotMatch(source, /Important correction/);
+  assert.doesNotMatch(source, /Portal trail to inspect/);
+  assert.doesNotMatch(source, /Case-wide question check/);
   assert.match(source, /Illustration only · no RTI Online connection/);
   assert.match(source, /Open current View Status/);
   assert.match(source, /official manual screenshots below/);

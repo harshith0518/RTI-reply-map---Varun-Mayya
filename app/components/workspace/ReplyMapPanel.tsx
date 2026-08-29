@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { NODE_KIND_COPY, type RTICaseData } from '@/src/case-model';
+import type { RTICaseData } from '@/src/case-model';
 import type { SatisfactionChoice } from '@/src/question-actions';
 import { QuestionActionPanel } from './QuestionActionPanel';
 
@@ -16,14 +16,6 @@ interface ManualJourneyStep {
 }
 
 function BeforeReplyMap({ data }: { data: RTICaseData }) {
-  const portalRecords = data.nodes.filter((node) => node.kind !== 'application' && (
-    node.kind === 'registration' ||
-    node.kind === 'no_reply' ||
-    node.kind === 'fee_notice' ||
-    Boolean(node.documentIds?.length)
-  ));
-  const recordsToShow = portalRecords.length ? portalRecords : data.nodes.filter((node) => node.kind !== 'application');
-  const visibleRecords = recordsToShow.slice(0, 6);
   const visibleQuestions = data.questions.slice(0, 4);
   const registrationNumbers = Array.from(new Set(data.nodes.flatMap((node) => node.registrationNumber ? [node.registrationNumber] : [])));
   const registrationCount = registrationNumbers.length;
@@ -167,39 +159,6 @@ function BeforeReplyMap({ data }: { data: RTICaseData }) {
           <a href="#why-this-exists">See the official manual screenshots below</a>
         </nav>
       </section>
-      <aside className="before-accuracy-note">
-        <strong>Important correction</strong>
-        <p>The portal can place the application text and reply or remarks on one registration report. The two panels below are our comparison—not an official RTI Online screen. The missing piece is one case-wide map across every related registration.</p>
-      </aside>
-      <div className="before-workspace">
-        <section className="before-records" aria-labelledby="before-records-title">
-          <div className="before-column-heading"><strong id="before-records-title">Portal trail to inspect</strong><span>{recordsToShow.length} status or reply records</span></div>
-          <div className="before-record-stack">
-            {visibleRecords.map((node) => (
-              <article key={node.id}>
-                <span>{NODE_KIND_COPY[node.kind]}</span>
-                <strong>{node.title}</strong>
-                <code>{node.registrationNumber ?? node.appealNumber ?? 'No linked registration shown'}</code>
-                <small>{node.status ?? node.office ?? 'Open for context'}</small>
-              </article>
-            ))}
-            {recordsToShow.length > visibleRecords.length ? <p>+ {recordsToShow.length - visibleRecords.length} more events</p> : null}
-          </div>
-        </section>
-        <section className="before-questions" aria-labelledby="before-questions-title">
-          <div className="before-column-heading"><strong id="before-questions-title">Case-wide question check</strong><span>{data.questions.length} original questions</span></div>
-          <ol>
-            {visibleQuestions.map((question) => (
-              <li key={question.id}>
-                <span>Q{question.number}</span>
-                <div><strong>{question.title}</strong><small>Which branch reply and exact passage?</small></div>
-                <b>Still manual</b>
-              </li>
-            ))}
-          </ol>
-          {data.questions.length > visibleQuestions.length ? <p>+ {data.questions.length - visibleQuestions.length} more questions</p> : null}
-        </section>
-      </div>
       <footer className="before-manual-cost">
         <dl aria-label="Manual review workload">
           <div><dt>Registrations in case</dt><dd>{registrationCount}</dd></div>
