@@ -84,10 +84,6 @@ export function ReplyMapApp() {
             <h1 id="product-title">Making RTI smooth as butter</h1>
             <p><strong>One request. Every branch. Every reply.</strong> A citizen-first view that turns registrations, transfers and replies into one path you can actually follow.</p>
             <p className="prototype-line"><strong>Not a “coming soon” slide deck.</strong> Pick a case, click through the mess or bring redacted JSON. You decide whether the answer worked; the site does not decide for you.</p>
-            <div className="hero-actions">
-              <a className="primary-button" href="#examples">Start with Maya&apos;s case</a>
-              <a className="secondary-button" href="#why-this-exists">See the public records</a>
-            </div>
           </div>
 
           <nav className="review-paths" aria-label="Review this solution in three steps">

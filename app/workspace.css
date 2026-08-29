@@ -21,8 +21,6 @@
 .product-intro h1 { max-width: 900px; font-size: clamp(2.25rem, 5vw, 4.4rem); }
 .product-intro > div > h1 + p { max-width: 780px; margin: 1rem 0 0; color: var(--muted); font-size: 1.04rem; line-height: 1.6; }
 .prototype-line { max-width: 780px; margin: .65rem 0 0; color: #36594d; font-size: .86rem; line-height: 1.5; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.15rem; }
-.hero-actions a { text-decoration: none; }
 .trust-note { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .45rem 1rem; margin: 2.6rem 0 .8rem; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line); padding: .85rem .1rem; }
 .trust-note strong { color: var(--ink); font-size: .8rem; }
 .trust-note p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.5; }
