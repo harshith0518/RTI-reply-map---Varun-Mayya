@@ -1,32 +1,30 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { COVERAGE_COPY, type CoverageCode } from '@/src/coverage';
 import { summarizeCase, type RTICaseData } from '@/src/case-model';
+import type { SatisfactionChoice } from '@/src/question-actions';
 import { DependencyTree } from './DependencyTree';
 import { ReplyMapPanel } from './ReplyMapPanel';
 
 export function CaseWorkspace({
   data,
-  reviews,
-  onReview,
-  onResetReviews,
+  decisions,
+  onDecision,
+  onResetDecisions,
 }: {
   data: RTICaseData;
-  reviews: Record<string, CoverageCode>;
-  onReview: (mappingId: string, coverage: CoverageCode) => void;
-  onResetReviews: () => void;
+  decisions: Record<string, SatisfactionChoice>;
+  onDecision: (mappingId: string, choice: SatisfactionChoice) => void;
+  onResetDecisions: () => void;
 }) {
   const [selectedNodeId, setSelectedNodeId] = useState(data.rootNodeId);
   const [liveMessage, setLiveMessage] = useState('');
   const nodeElements = useRef(new Map<string, HTMLButtonElement>());
   const stats = summarizeCase(data);
-  const reviewedCount = Object.keys(reviews).length;
-
-  const attentionMappings = data.mappings.filter(
-    (mapping) => (reviews[mapping.id] ?? mapping.coverage) !== 'answer_located',
-  );
-  const locatedCount = data.mappings.length - attentionMappings.length;
+  const checkedCount = Object.keys(decisions).length;
+  const satisfiedCount = Object.values(decisions).filter((choice) => choice === 'satisfied').length;
+  const actionMappings = data.mappings.filter((mapping) => decisions[mapping.id] === 'needs_action');
+  const uncheckedCount = data.mappings.length - checkedCount;
 
   async function copyValue(value: string) {
     try {
@@ -37,9 +35,11 @@ export function CaseWorkspace({
     }
   }
 
-  function reviewMapping(mappingId: string, coverage: CoverageCode) {
-    onReview(mappingId, coverage);
-    setLiveMessage(`Your check was kept in this tab as “${COVERAGE_COPY[coverage]}”.`);
+  function decideQuestion(mappingId: string, choice: SatisfactionChoice) {
+    onDecision(mappingId, choice);
+    setLiveMessage(choice === 'satisfied'
+      ? 'Marked answered in this tab.'
+      : 'A next-step helper is now open below this question.');
   }
 
   function registerNode(nodeId: string, element: HTMLButtonElement | null) {
@@ -71,7 +71,7 @@ export function CaseWorkspace({
           <div><dt>Replies</dt><dd>{stats.replies}</dd></div>
         </dl>
         <div className="original-questions">
-          <div><strong>Original questions</strong><span>Each points to a passage or a stated gap.</span></div>
+          <div><strong>Original questions</strong><span>Open the Reply Map to check each answer and act in place.</span></div>
           <ol>
             {data.questions.map((question) => (
               <li key={question.id}><span>Q{question.number}</span><div><strong>{question.title}</strong><p>{question.text}</p></div></li>
@@ -84,45 +84,45 @@ export function CaseWorkspace({
         <ReplyMapPanel
           data={data}
           selectedNodeId={selectedNodeId}
-          reviews={reviews}
+          decisions={decisions}
           onSelectNode={setSelectedNodeId}
           onRevealNode={revealNode}
-          onReview={reviewMapping}
-          onResetReviews={() => {
-            onResetReviews();
-            setLiveMessage('Your checks were reset to the proposed results.');
+          onDecision={decideQuestion}
+          onResetDecisions={() => {
+            onResetDecisions();
+            setLiveMessage('Your answer checks were cleared from this tab.');
           }}
+          onLiveMessage={setLiveMessage}
         />
       </div>
       <section className="outcome-summary" aria-labelledby="outcome-title">
         <div className="outcome-heading">
           <div>
-            <p className="eyebrow">Case result</p>
-            <h2 id="outcome-title">What needs attention</h2>
+            <p className="eyebrow">Your review</p>
+            <h2 id="outcome-title">What you chose</h2>
           </div>
-          <p>{locatedCount} question{locatedCount === 1 ? ' has' : 's have'} a located answer. {attentionMappings.length} need{attentionMappings.length === 1 ? 's' : ''} a closer look.{reviewedCount ? ` ${reviewedCount} local check${reviewedCount === 1 ? '' : 's'} applied.` : ''}</p>
+          <p>{checkedCount} of {data.mappings.length} checked · {satisfiedCount} answered · {actionMappings.length} need a next step · {uncheckedCount} not checked</p>
         </div>
         <div className="outcome-next-step">
           <div>
-            <h3>{attentionMappings.length ? `${attentionMappings.length} question${attentionMappings.length === 1 ? ' needs' : 's need'} attention` : 'Every question has a located answer'}</h3>
-            <p>{attentionMappings.length ? 'Open the item to inspect its passage, gap and branch.' : 'Review every passage before relying on it.'} These are evidence labels, not legal findings.</p>
+            <h3>{actionMappings.length ? `${actionMappings.length} next step${actionMappings.length === 1 ? '' : 's'} ready` : checkedCount === data.mappings.length ? 'Your review is complete' : 'Check each original question'}</h3>
+            <p>{actionMappings.length ? 'The relevant branch and preparation note sit inside each question above.' : 'Your choices stay in this browser tab and are not sent anywhere.'}</p>
           </div>
-          {attentionMappings.length > 0 && (
+          {actionMappings.length > 0 ? (
             <ul>
-              {attentionMappings.map((mapping) => {
+              {actionMappings.map((mapping) => {
                 const question = data.questions.find((item) => item.id === mapping.questionId);
                 const node = data.nodes.find((item) => item.id === mapping.nodeId);
-                const result = reviews[mapping.id] ?? mapping.coverage;
                 return (
                   <li key={mapping.id}>
                     <span>Q{question?.number ?? '?'}</span>
-                    <div><strong>{question?.title ?? 'Question'}</strong><small>{node?.registrationNumber ?? mapping.registrationNumber ?? 'No branch registration'}</small></div>
-                    <em>{COVERAGE_COPY[result]}</em>
+                    <div><strong>{question?.title ?? 'Question'}</strong><small>{node?.registrationNumber ?? mapping.registrationNumber ?? 'Verify branch registration'}</small></div>
+                    <em>Next step ready</em>
                   </li>
                 );
               })}
             </ul>
-          )}
+          ) : null}
         </div>
       </section>
       <div className="live-region" aria-live="polite" aria-atomic="true">{liveMessage}</div>

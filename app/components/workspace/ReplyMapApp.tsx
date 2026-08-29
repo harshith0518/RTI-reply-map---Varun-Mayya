@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { EXAMPLE_CASES } from '@/src/case-examples';
 import type { RTICaseData } from '@/src/case-model';
-import type { CoverageCode } from '@/src/coverage';
+import type { SatisfactionChoice } from '@/src/question-actions';
 import { CaseWorkspace } from './CaseWorkspace';
 import { ExamplePicker, LOCAL_CASE_OPTION } from './ExamplePicker';
 import { HowItWorks } from './HowItWorks';
@@ -15,10 +15,10 @@ export function ReplyMapApp() {
   const [activeCase, setActiveCase] = useState<RTICaseData>(EXAMPLE_CASES[0]);
   const [importedCase, setImportedCase] = useState<RTICaseData>();
   const [importRevision, setImportRevision] = useState(0);
-  const [reviewsByCase, setReviewsByCase] = useState<Record<string, Record<string, CoverageCode>>>({});
+  const [decisionsByCase, setDecisionsByCase] = useState<Record<string, Record<string, SatisfactionChoice>>>({});
   const [liveMessage, setLiveMessage] = useState('');
-  const reviewKey = activeCase.source === 'custom' ? `${activeCase.caseId}:${importRevision}` : activeCase.caseId;
-  const activeReviews = reviewsByCase[reviewKey] ?? {};
+  const decisionKey = activeCase.source === 'custom' ? `${activeCase.caseId}:${importRevision}` : activeCase.caseId;
+  const activeDecisions = decisionsByCase[decisionKey] ?? {};
 
   function selectCase(caseId: string) {
     const next = caseId === LOCAL_CASE_OPTION
@@ -48,15 +48,15 @@ export function ReplyMapApp() {
     setLiveMessage('The imported case was cleared from this tab. Maya’s sample is shown again.');
   }
 
-  function reviewMapping(mappingId: string, coverage: CoverageCode) {
-    setReviewsByCase((current) => ({
+  function decideQuestion(mappingId: string, choice: SatisfactionChoice) {
+    setDecisionsByCase((current) => ({
       ...current,
-      [reviewKey]: { ...(current[reviewKey] ?? {}), [mappingId]: coverage },
+      [decisionKey]: { ...(current[decisionKey] ?? {}), [mappingId]: choice },
     }));
   }
 
-  function resetReviews() {
-    setReviewsByCase((current) => ({ ...current, [reviewKey]: {} }));
+  function resetDecisions() {
+    setDecisionsByCase((current) => ({ ...current, [decisionKey]: {} }));
   }
 
   return (
@@ -65,7 +65,7 @@ export function ReplyMapApp() {
       <header className="topbar workspace-topbar">
         <a className="brand" href="#main-content" aria-label="RTI Reply Map home">
           <span className="brand-mark" aria-hidden="true">▤</span>
-          <span><strong>RTI Reply Map</strong><small>Case tree + evidence map</small></span>
+          <span><strong>RTI Reply Map</strong><small>Connected case + next step</small></span>
         </a>
         <nav className="topbar-nav" aria-label="Explore the prototype">
           <a href="#examples">Cases</a>
@@ -81,10 +81,10 @@ export function ReplyMapApp() {
       <main id="main-content" className="workspace-page" tabIndex={-1}>
         <section className="product-intro" id="prototype-overview" aria-labelledby="product-title">
           <div>
-            <p className="review-note-kicker"><span aria-hidden="true">●</span> Working hackathon prototype</p>
-            <h1 id="product-title">One RTI can split into many replies. Reply Map keeps the case together.</h1>
-            <p>Trace every registration in a dependency tree. Then see which reply answers each original question—and what is still missing.</p>
-            <p className="prototype-line"><strong>This is the proposed solution:</strong> five live examples, public records and a local JSON test. Its four Reply Map labels describe evidence coverage—not officer input or official status.</p>
+            <p className="review-note-kicker"><span aria-hidden="true">●</span> Independent redesign of the RTI Online citizen journey</p>
+            <h1 id="product-title">One RTI case. Every branch, answer and next step.</h1>
+            <p>Official registrations and files stay intact. This proposed citizen view connects them, matches every original question and puts the next action beside anything still missing.</p>
+            <p className="prototype-line"><strong>This is the working solution—not a feature slideshow.</strong> Try five cases, inspect the public records and load custom JSON. You decide whether an answer satisfies you; the site never decides that for you.</p>
             <div className="hero-actions">
               <a className="primary-button" href="#examples">Start with Maya&apos;s case</a>
               <a className="secondary-button" href="#why-this-exists">See the public records</a>
@@ -94,15 +94,15 @@ export function ReplyMapApp() {
           <nav className="review-paths" aria-label="Review this solution in three steps">
             <a href="#examples">
               <span>01</span>
-              <div><strong>Pick a case</strong><small>Five fictional paths: splits, transfers, fees, silence and appeal.</small></div>
+              <div><strong>See today&apos;s pattern</strong><small>Pick one of five fictional RTI paths.</small></div>
             </a>
             <a href="#workspace">
               <span>02</span>
-              <div><strong>Read two views</strong><small>Tree = where records came from. Reply Map = what answered each question.</small></div>
+              <div><strong>See the proposed view</strong><small>Tree the case, then check every question.</small></div>
             </a>
             <a href="#use-your-case">
               <span>03</span>
-              <div><strong>Verify or test</strong><small>Check six public records, or load redacted JSON in this browser.</small></div>
+              <div><strong>Choose the next step</strong><small>If information is missing, prepare the right follow-up in place.</small></div>
             </a>
           </nav>
         </section>
@@ -111,14 +111,14 @@ export function ReplyMapApp() {
 
         <CaseWorkspace
           data={activeCase}
-          reviews={activeReviews}
-          onReview={reviewMapping}
-          onResetReviews={resetReviews}
+          decisions={activeDecisions}
+          onDecision={decideQuestion}
+          onResetDecisions={resetDecisions}
           key={`${activeCase.source}:${activeCase.caseId}:${activeCase.source === 'custom' ? importRevision : 0}`}
         />
         <aside className="trust-note" aria-label="Prototype boundaries">
           <strong>Prototype boundary</strong>
-          <p>No account, upload, runtime AI, government API or legal verdict. This phase traces replies, fees, silence and first appeals; formal denials and second appeals are not modelled.</p>
+          <p>No account, server upload, runtime AI or government API. Satisfaction is your choice; draft notes stay in this tab. Nothing is filed and no legal result is predicted.</p>
         </aside>
         <WhyThisExists />
         <HowItWorks />
@@ -131,7 +131,7 @@ export function ReplyMapApp() {
           <div>
             <p className="footer-kicker">Independent hackathon prototype</p>
             <h2 id="footer-handoff-title">Explore a case or test redacted JSON.</h2>
-            <p>Five fictional cases, six public records and browser-only testing. Nothing is filed or uploaded.</p>
+            <p>Five fictional cases, six public records and browser-only testing. Try a question, its next step or your own redacted JSON.</p>
           </div>
           <nav className="footer-quick-links" aria-label="Review the prototype">
             <a href="#examples">Cases</a>
@@ -149,7 +149,7 @@ export function ReplyMapApp() {
             <span>Not legal advice</span>
             <span>No runtime AI or API</span>
           </div>
-          <p>The map locates evidence and case links. It does not judge compliance or file an RTI or appeal.</p>
+          <p>This is a prototype of the proposed citizen experience. It does not calculate legal deadlines, choose a remedy or file an RTI or appeal.</p>
           <nav className="footer-links" aria-label="Official RTI resources">
             <a href="https://rtionline.gov.in/" target="_blank" rel="noreferrer">Official RTI Online portal (new tab)</a>
             <a href="https://rtionline.gov.in/faq.php" target="_blank" rel="noreferrer">Official RTI Online FAQ (new tab)</a>

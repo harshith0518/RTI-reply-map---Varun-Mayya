@@ -2,21 +2,7 @@
 
 import { useId, useState, type ChangeEvent } from 'react';
 import { CASE_JSON_TEMPLATE, CUSTOM_CASE_PROMPT } from '@/src/case-prompt';
-import {
-  MAX_CASE_JSON_BYTES,
-  parseCaseJson,
-  type CaseValidationResult,
-  type RTICaseData,
-} from '@/src/case-model';
-
-function downloadText(fileName: string, content: string) {
-  const url = URL.createObjectURL(new Blob([content], { type: 'application/json;charset=utf-8' }));
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  window.setTimeout(() => URL.revokeObjectURL(url), 0);
-}
+import { MAX_CASE_JSON_BYTES, parseCaseJson, type CaseValidationResult, type RTICaseData } from '@/src/case-model';
 
 export function ImportCasePanel({
   importedCase,
@@ -44,7 +30,7 @@ export function ImportCasePanel({
     const result = parseCaseJson(jsonText);
     setValidation(result);
     setCandidate(result.ok ? result.data : undefined);
-    setMessage(result.ok ? `JSON checked. ${result.data?.questions.length ?? 0} questions and ${result.data?.nodes.length ?? 0} case events are ready to load.` : 'JSON needs correction before it can be loaded.');
+    setMessage(result.ok ? `JSON checked. ${result.data?.questions.length ?? 0} questions and ${result.data?.nodes.length ?? 0} case events are ready.` : 'Correct the JSON before loading it.');
   }
 
   async function chooseFile(event: ChangeEvent<HTMLInputElement>) {
@@ -68,9 +54,9 @@ export function ImportCasePanel({
   async function copyPrompt() {
     try {
       await navigator.clipboard.writeText(CUSTOM_CASE_PROMPT);
-      setMessage('ChatGPT prompt copied. Redact personal details before sharing any record.');
+      setMessage('Prompt copied. Add only redacted RTI questions and records in ChatGPT.');
     } catch {
-      setMessage('Copy is unavailable. Select the prompt below and copy it manually.');
+      setMessage('Copy is unavailable. Select the prompt and copy it manually.');
     }
   }
 
@@ -83,82 +69,56 @@ export function ImportCasePanel({
   return (
     <section className="import-section" id="use-your-case" aria-labelledby="import-title">
       <div className="section-heading import-heading">
-        <div>
-          <p className="eyebrow">Custom test</p>
-          <h2 id="import-title">Load redacted JSON in this browser.</h2>
-        </div>
-        <p>Start with the template or paste your own JSON. Nothing is uploaded; refresh clears it.</p>
+        <div><p className="eyebrow">Custom test</p><h2 id="import-title">Test a redacted case in three steps.</h2></div>
+        <p>ChatGPT prepares the JSON separately. This static site only checks and renders it in your tab.</p>
       </div>
 
+      <ol className="custom-flow" aria-label="Custom case steps">
+        <li><span>1</span><div><strong>Copy prompt</strong><small>Add redacted questions and records in ChatGPT.</small></div></li>
+        <li><span>2</span><div><strong>Copy the JSON</strong><small>ChatGPT returns one JSON object.</small></div></li>
+        <li><span>3</span><div><strong>Paste or upload</strong><small>Check it, then load the tree and Reply Map.</small></div></li>
+      </ol>
+
       <div className="import-grid">
+        <article className="prompt-card">
+          <span className="card-step">Step 1 · Prepare JSON</span>
+          <h3>Copy this prompt, then add redacted records</h3>
+          <div className="privacy-warning"><strong>Redact first</strong><p>Remove names, contact details, identity numbers, signatures, bank details and other personal information.</p></div>
+          <p className="external-ai-note"><strong>Separate service:</strong> ChatGPT is not called by this website. Review its privacy terms before sharing anything.</p>
+          <button className="primary-button compact-button prompt-copy-button" type="button" onClick={copyPrompt}>Copy ChatGPT prompt</button>
+          <details className="prompt-preview">
+            <summary>View the full prompt · optional</summary>
+            <textarea aria-label="Full ChatGPT prompt" readOnly value={CUSTOM_CASE_PROMPT} rows={11} />
+          </details>
+        </article>
+
         <article className="json-card">
-          <span className="card-step">A · Try the checker</span>
-          <h3>Start with the template or paste JSON</h3>
-          <p className="verification-note"><strong>Checks structure and links—not source accuracy.</strong> Compare every quote, page and registration with your redacted records.</p>
-          <label className="file-control" htmlFor={inputId}>
-            <span>Choose a JSON file</span>
-            <small>Stays on this device · maximum 512 KB</small>
-          </label>
+          <span className="card-step">Steps 2–3 · Add JSON</span>
+          <h3>Paste the returned JSON or choose a file</h3>
+          <p className="verification-note"><strong>Checks structure and links, not source documents.</strong> Verify every passage, page, date and registration yourself.</p>
+          <label className="file-control" htmlFor={inputId}><span>Choose a JSON file</span><small>Stays in this tab · maximum 512 KB</small></label>
           <input id={inputId} className="visually-hidden-file" type="file" accept="application/json,.json" onChange={chooseFile} />
           <label className="json-editor">
             <span>Case JSON</span>
-            <textarea
-              value={jsonText}
-              onChange={(event) => updateJson(event.target.value)}
-              placeholder={'Paste one JSON object here…'}
-              spellCheck={false}
-              rows={13}
-            />
+            <textarea value={jsonText} onChange={(event) => updateJson(event.target.value)} placeholder="Paste one JSON object here…" spellCheck={false} rows={13} />
           </label>
           <div className="button-row">
-            <button className="secondary-button compact-button" type="button" onClick={() => updateJson(JSON.stringify(CASE_JSON_TEMPLATE, null, 2))}>Try the template</button>
+            <button className="secondary-button compact-button" type="button" onClick={() => updateJson(JSON.stringify(CASE_JSON_TEMPLATE, null, 2))}>Use sample JSON</button>
             <button className="secondary-button compact-button" type="button" onClick={checkJson}>Check JSON</button>
             <button className="primary-button compact-button" type="button" onClick={loadCandidate} disabled={!candidate}>Load case</button>
           </div>
           {validation ? (
             <div className={validation.ok ? 'validation-box valid' : 'validation-box invalid'} role={validation.ok ? 'status' : 'alert'}>
-              <strong>{validation.ok ? 'Valid case JSON' : `${validation.errors.length} issue${validation.errors.length === 1 ? '' : 's'} found`}</strong>
-              {validation.ok ? <p>The case is structurally ready. You must still verify the source evidence.</p> : (
-                <>
-                  {validation.errors.length > 8 ? <p>Showing the first 8 of {validation.errors.length} issues.</p> : null}
-                  <ul>{validation.errors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}</ul>
-                </>
-              )}
+              <strong>{validation.ok ? 'JSON is ready' : `${validation.errors.length} issue${validation.errors.length === 1 ? '' : 's'} found`}</strong>
+              {validation.ok ? <p>Structure is valid. Source facts still need human verification.</p> : <>
+                {validation.errors.length > 8 ? <p>Showing the first 8 of {validation.errors.length} issues.</p> : null}
+                <ul>{validation.errors.slice(0, 8).map((error) => <li key={error}>{error}</li>)}</ul>
+              </>}
             </div>
           ) : null}
           {importedCase ? (
-            <div className="loaded-case">
-              <div><small>Loaded locally</small><strong>{importedCase.title}</strong></div>
-              <button type="button" onClick={onClearCase}>Clear imported case</button>
-            </div>
+            <div className="loaded-case"><div><small>Loaded locally</small><strong>{importedCase.title}</strong></div><button type="button" onClick={onClearCase}>Clear imported case</button></div>
           ) : null}
-        </article>
-
-        <article className="prompt-card">
-          <span className="card-step">B · Prepare your own JSON</span>
-          <h3>Need help preparing a case?</h3>
-          <p className="preparation-summary">Edit the template manually, or use the optional prompt after redacting every record.</p>
-          <details className="preparation-help">
-            <summary>Open the redaction and prompt guide</summary>
-            <div className="privacy-warning">
-              <strong>Redact before sharing</strong>
-              <p>Remove names, contact details, identity numbers, signatures, bank details and other personal information.</p>
-            </div>
-            <p className="external-ai-note"><strong>Optional external step:</strong> ChatGPT is separate; this site never calls it.</p>
-            <ol className="import-steps">
-              <li>Redact the records.</li>
-              <li>Copy the prompt.</li>
-              <li>Paste the returned JSON above.</li>
-            </ol>
-            <div className="button-row">
-              <button className="primary-button compact-button" type="button" onClick={copyPrompt}>Copy ChatGPT prompt</button>
-              <button className="secondary-button compact-button" type="button" onClick={() => downloadText('rti-reply-map-template.json', JSON.stringify(CASE_JSON_TEMPLATE, null, 2))}>Download JSON template</button>
-            </div>
-            <details className="prompt-preview">
-              <summary>Read the full prompt</summary>
-              <textarea aria-label="Full ChatGPT prompt" readOnly value={CUSTOM_CASE_PROMPT} rows={12} />
-            </details>
-          </details>
         </article>
       </div>
       <div className="live-region" aria-live="polite" aria-atomic="true">{message}</div>

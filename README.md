@@ -3,7 +3,7 @@
 RTI Reply Map is a mobile-first, no-login prototype that turns a scattered RTI case into two connected views:
 
 1. A dependency tree showing how the application became registrations, transfers, replies, fee notices, no-reply states, appeals, orders, and supplemental replies.
-2. A Reply Map connecting every original question to exact evidence and its location when available—or a clear reason no passage can safely be shown.
+2. A Reply Map connecting every original question to its source, asking whether it satisfied the citizen, and placing the relevant next step beside anything still missing.
 
 - **Live demo:** https://rti-reply-map.harshith794.chatgpt.site
 - **GitHub:** https://github.com/harshith0518/RTI-reply-map---Varun-Mayya
@@ -22,7 +22,7 @@ The public workspace contains five deliberately different cases:
 | Imran | Reply, additional-fee notice, and no-reply branches | “Procedure pending” and “nothing received” remain distinct. |
 | Meera | One registration and one consolidated package | The product does not invent branches when the case is simple. |
 
-Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item to inspect its evidence or missing-evidence reason, then confirm or change the proposed label. The outcome summary keeps the final counts, attention items, and relevant branches visible; checks remain in this tab when switching between examples.
+Select any tree node to inspect its office, registration, questions, and documents. Open a Reply Map item, inspect the source, then answer whether it gave you the information needed. “No” opens a branch-aware fee, no-reply, first-appeal or post-first-appeal helper with an editable note, copy/download actions and official links. The choice remains in this tab and is never treated as a legal finding.
 
 Below the sample workspace, the “Why it matters” section uses six carefully caveated, source-linked screenshots from the Central RTI FAQ, the RTI Online citizen manual, and published AAI and TRAI records. They show how one application can become several registrations, status views, transfers, replies, and branch-specific appeal paths. They do not imply government endorsement, measure prevalence or usability impact, or decide any individual case.
 
@@ -31,7 +31,7 @@ Below the sample workspace, the “Why it matters” section uses six carefully 
 The “Use your own redacted case” section provides:
 
 - A copyable, privacy-aware ChatGPT prompt with explicit redaction instructions.
-- A downloadable valid JSON template.
+- A one-click sample JSON case.
 - Paste and local `.json` file input.
 - Runtime validation for strict fields, IDs, real dates, tree connectivity, cycles, question/node/document relationships, and procedural-document misuse.
 - The same dependency-tree and Reply Map renderer used by all five examples.
@@ -44,7 +44,7 @@ There is no ChatGPT API call in the site. The optional prompt runs separately un
 Five typed fixtures ───────────────┐
                                   ├─> runtime validator ─> dependency tree + Reply Map
 Pasted/chosen custom JSON ─────────┘                              |
-                                                          browser-only review
+                                                  browser-only satisfaction + next step
 ```
 
 The deploy is a static client application with no backend, database, authentication, paid API, analytics, or runtime AI dependency. The central schema and validator live in `src/case-model.ts`; examples live in `src/case-examples/`; the prompt and template live in `src/case-prompt.ts`; and the workspace UI lives in `app/components/workspace/`.

@@ -5,29 +5,32 @@ Record at roughly 128 words per minute. Keep browser zoom at 100%, move the poin
 ## Spoken script — exactly 250 words
 
 <!-- SPOKEN_SCRIPT_START -->
-One RTI application can lead to registration numbers and separate replies. The official portal links those records, but citizens may need to match each original question to the information inside them.
+RTI Online links registration numbers and reply files. The harder part is reading them as one connected citizen case. Reply Map redesigns that citizen view.
 
-This is Maya, a fictional applicant. She asks for her marks, the approved cut-off, and the record behind the seat total. Her application becomes three branches.
+Meet Maya, a fictional applicant. One application became three branches. The tree shows where each registration and reply came from. Reply Map shows one result for each question: marks and cut-off link to exact passages; the seat reply gives a total, but not the calculation record she requested. The missing record stays visible.
 
-The dependency tree keeps that history together. Beside it, Reply Map gives every question one visible result. Maya’s marks link to the exact table and page. Her cut-off links to its attachment. The third reply states 120 seats, but does not include the requested calculation record, so it is marked “Partially addressed.”
+Maya can say whether each result satisfies her. Choosing no reveals a next step right there beside the evidence, with the relevant registration number identified. She can review and copy a plain-language first-appeal draft. The site neither recommends nor files an appeal.
 
-These are evidence-coverage labels from case data, not official RTI statuses or legal verdicts. Maya can inspect the passage, open its branch, and confirm or correct it. Her review stays in this browser tab.
+Below, six public records explain the workflow. Each opens in an in-page preview where I can inspect or download the image, follow the official source, and read its caveat.
 
-Below, public RTI screenshots show that multiple registrations, transfers, separate replies, and branch-specific action can occur. They support the problem, but do not prove prevalence or endorse this prototype.
+Five samples are fictional. This site has no login, server upload, live AI, government integration, filing, or legal verdict. Codex helped research the workflow, design the format, build the interface and validator, and test it.
 
-This static site renders five fictional cases and redacted JSON locally. No login, server upload, government integration, runtime AI, or API. I used Codex to research the workflow, shape the schema, build the validator and interface, and test accessibility and the production build.
+Next, I would test with citizens, add consent and secure document handling, then pilot human-reviewed extraction through approved integrations.
 
-A future service would need consent, redaction, encryption, deletion, security testing, and legal review. Reply Map complements RTI Online by giving citizens one place to trace the case, verify evidence, and see what needs attention.
+A reviewer can test a redacted case: copy the optional prompt, paste or choose JSON, check its structure, then load the same views. The JSON stays only in this tab.
+
+Reply Map keeps official records intact while making the answer trail easier to understand and act on.
 <!-- SPOKEN_SCRIPT_END -->
 
 ## Recording plan — not spoken
 
-- **0:00–0:15:** Show the title, three-step review path, and Maya selected in the five-case picker.
-- **0:15–0:27:** Point to Maya's three original questions.
-- **0:27–0:52:** Show the centered dependency tree, then open Q1 and Q3 in Reply Map. Pause on Q3's missing calculation record.
-- **0:52–1:08:** Point to the evidence-label note, use “Show this case event in the tree,” and confirm one label.
-- **1:08–1:22:** Scroll to the prototype-boundary note and one public-source group. Keep its caveat visible.
-- **1:22–1:42:** Open “Scope,” then Custom JSON. Click “Try the template,” “Check JSON,” and “Load case.”
-- **1:42–1:58:** Return to the loaded tree and Reply Map while delivering the safety and closing lines.
+- **0:00–0:12:** Show the redesign heading and independence boundary.
+- **0:12–0:37:** Select Maya, trace the tree, then open Q1 and Q3.
+- **0:37–0:57:** On Q3 choose **No**. Show the branch, edit the missing item and copy the draft.
+- **0:57–1:10:** Preview one public record; point to Download and Official source; close with Escape.
+- **1:10–1:26:** Show the prototype boundaries and Codex contribution.
+- **1:26–1:36:** Hold on the three-item roadmap.
+- **1:36–1:50:** Copy the prompt, then use sample JSON → Check JSON → Load case.
+- **1:50–1:58:** End on the loaded tree and Reply Map.
 
 Do not open external PDFs during the recording; the prototype already shows the source thumbnails, provenance, links, and caveats.

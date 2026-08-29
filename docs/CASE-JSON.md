@@ -1,6 +1,6 @@
 # Custom case JSON
 
-The website accepts one JSON object with `schemaVersion: "1.0"`. The easiest starting point is the “Download JSON template” button in the live app. That template is generated from `CASE_JSON_TEMPLATE` in `src/case-prompt.ts` and is checked by the test suite.
+The website accepts one JSON object with `schemaVersion: "1.0"`. The easiest starting point is the “Use sample JSON” button in the live app. That sample is generated from `CASE_JSON_TEMPLATE` in `src/case-prompt.ts` and is checked by the test suite.
 
 ## Privacy workflow
 

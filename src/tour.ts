@@ -20,20 +20,20 @@ export const PROTOTYPE_TOUR_STEPS = [
   },
   {
     targetId: 'reply-map-panel',
-    eyebrow: 'Question evidence',
-    title: 'Check one question at a time',
-    body: 'Reply Map links each question to a passage or visible gap. Compare it with the illustrative “Before change” view.',
+    eyebrow: 'Question and next step',
+    title: 'Decide whether the reply helped you',
+    body: 'Read the source, choose yes or no, and open a branch-specific next step beside anything still missing.',
   },
   {
     targetId: 'why-this-exists',
     eyebrow: 'Public sources',
-    title: 'Read the record behind the problem',
-    body: 'Official guidance and published files document branching. They show the workflow, not how often people face it.',
+    title: 'Preview the records behind the problem',
+    body: 'Open any record in the page, download its image or follow the official source. Every example keeps its caveat.',
   },
   {
     targetId: 'use-your-case',
     eyebrow: 'Custom test',
-    title: 'Try redacted JSON locally',
-    body: 'Paste or choose redacted JSON. Structure is checked and both views are built locally; you still verify the sources.',
+    title: 'Prompt, JSON, check, load',
+    body: 'Copy the optional prompt, then paste or upload redacted JSON. The site checks structure and builds both views locally.',
   },
 ] as const satisfies readonly PrototypeTourStep[];

@@ -3,21 +3,29 @@ export function HowItWorks() {
     <section className="how-section" id="how-it-works" aria-labelledby="how-title">
       <div className="section-heading how-heading">
         <div>
-          <p className="eyebrow">Prototype scope</p>
-          <h2 id="how-title">What works now—and what does not.</h2>
+          <p className="eyebrow">Prototype scope and next week</p>
+          <h2 id="how-title">Working now. Honest about what comes next.</h2>
         </div>
-        <p>Prepared case data becomes a tree and Reply Map. Nothing connects to a government system.</p>
+        <p>This redesign works with prepared case data. It does not replace or connect to an official portal.</p>
       </div>
 
       <div className="build-boundary">
         <div>
           <p className="boundary-label">Working now</p>
-          <p>Five samples, tree interaction, Reply Map, local reviews and JSON validation.</p>
+          <p>Five cases, dependency tree, question checks, inline next-step notes and local JSON.</p>
         </div>
         <div>
-          <p className="boundary-label">In the five demo cases</p>
-          <p>People and records are fictional. Filing, payment, live status, extraction and legal decisions are not connected.</p>
+          <p className="boundary-label">Not connected</p>
+          <p>Government filing, payment, live status, email, document extraction and legal decisions.</p>
         </div>
+      </div>
+      <div className="roadmap-block" aria-labelledby="roadmap-title">
+        <header><p className="eyebrow">Next week, if shortlisted</p><h3 id="roadmap-title">Finish the citizen journey end to end.</h3></header>
+        <ol>
+          <li><span>01</span><div><strong>First and second appeals</strong><p>Prepare complete files, preserve branch links and hand off to the correct official route.</p></div></li>
+          <li><span>02</span><div><strong>Email alerts</strong><p>Remind citizens about replies, appeal actions and status changes after verified dates.</p></div></li>
+          <li><span>03</span><div><strong>Officer/admin view · if time</strong><p>Explore an optional work queue only after the citizen flow is complete.</p></div></li>
+        </ol>
       </div>
       <p className="scale-note"><strong>For real use:</strong> consent, redaction, encryption, deletion controls, security testing and legal review would be required.</p>
     </section>
