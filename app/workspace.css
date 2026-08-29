@@ -223,6 +223,26 @@
 .before-problem-heading p { margin: 0; color: #8a352d; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .before-problem-heading h3 { margin: .24rem 0 0; font-size: 1.25rem; letter-spacing: -.02em; }
 .before-problem-heading span { display: block; max-width: 680px; margin-top: .35rem; color: var(--muted); font-size: .8rem; line-height: 1.45; }
+.before-portal-simulator { margin: .8rem .8rem 0; border: 1px solid #b9c7c1; border-radius: 8px; padding: .75rem; background: #f7faf9; box-shadow: inset 0 3px 0 #356d7a; }
+.before-portal-simulator > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.before-portal-simulator > header p, .before-portal-simulator > header h4 { margin: 0; }
+.before-portal-simulator > header p { color: #356d7a; font-size: .63rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.before-portal-simulator > header h4 { margin-top: .16rem; font-size: .92rem; }
+.before-portal-simulator > header > span { color: var(--muted); font-size: .63rem; text-align: right; }
+.before-portal-stage { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .65rem; margin-top: .65rem; }
+.before-portal-screen { min-width: 0; border: 1px solid #cbd6d1; padding: .65rem; background: white; }
+.before-portal-screen > span, .before-portal-screen > strong, .before-portal-screen > code { display: block; }
+.before-portal-screen > span { color: #356d7a; font-size: .62rem; font-weight: 800; text-transform: uppercase; }
+.before-portal-screen > strong { margin-top: .2rem; font-size: .78rem; }
+.before-portal-screen > p { margin: .22rem 0 .5rem; color: var(--muted); font-size: .68rem; line-height: 1.42; }
+.before-portal-screen > code { border: 1px solid #e0e6e3; padding: .38rem .45rem; background: #f6f7f6; color: #3e5850; font-size: .64rem; overflow-wrap: anywhere; }
+.before-portal-stage > button { min-height: 38px; border: 1px solid #285d69; border-radius: 3px; padding: .48rem .65rem; background: #356d7a; color: white; font-size: .68rem; font-weight: 760; white-space: nowrap; box-shadow: 0 1px 0 rgba(0,0,0,.12); }
+.before-portal-stage > button:hover { background: #285d69; }
+.before-portal-stage > button span { margin-left: .45rem; }
+.before-portal-progress { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .3rem; margin-top: .55rem; }
+.before-portal-progress span { height: 3px; background: #d5dfda; }
+.before-portal-progress span.active { background: #356d7a; }
+.before-portal-simulator > a { display: inline-block; margin-top: .55rem; color: var(--blue); font-size: .65rem; font-weight: 740; }
 .before-workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .8rem; padding: .8rem; }
 .before-records, .before-questions { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: .75rem; background: white; }
 .before-column-heading { display: flex; align-items: center; justify-content: space-between; gap: .7rem; border-bottom: 1px solid var(--line); padding-bottom: .55rem; }
@@ -634,6 +654,11 @@
   .coverage-ownership strong { white-space: normal; }
   .reply-view-toggle button { min-width: 0; padding-inline: .45rem; }
   .before-workspace { padding: .65rem; }
+  .before-portal-simulator { margin: .65rem .65rem 0; }
+  .before-portal-simulator > header { flex-direction: column; gap: .35rem; }
+  .before-portal-simulator > header > span { text-align: left; }
+  .before-portal-stage { grid-template-columns: 1fr; }
+  .before-portal-stage > button { width: 100%; }
   .before-record-stack article:nth-child(even) { margin-left: .25rem; }
   .before-questions li { grid-template-columns: 30px minmax(0, 1fr); }
   .before-questions li b { grid-column: 2; justify-self: start; }

@@ -10,15 +10,68 @@ function BeforeReplyMap({ data }: { data: RTICaseData }) {
   const recordsToShow = caseRecords.length ? caseRecords : data.nodes;
   const visibleRecords = recordsToShow.slice(0, 6);
   const visibleQuestions = data.questions.slice(0, 4);
-  const registrationCount = new Set(data.nodes.flatMap((node) => node.registrationNumber ? [node.registrationNumber] : [])).size;
+  const registrationNumbers = Array.from(new Set(data.nodes.flatMap((node) => node.registrationNumber ? [node.registrationNumber] : [])));
+  const registrationCount = registrationNumbers.length;
+  const branchCount = Math.max(1, registrationCount);
+  const firstRegistration = registrationNumbers[0] ?? 'Registration number';
+  const visibleRegistrationList = registrationNumbers.slice(0, 2).join(' · ') || 'Registration number list';
+  const [manualStep, setManualStep] = useState(0);
+  const manualJourney = [
+    {
+      title: 'Enter one registration number',
+      detail: 'The status lookup starts with a registration number and the registered email or OTP.',
+      context: `${firstRegistration} · Email / OTP`,
+      action: 'View Status',
+    },
+    {
+      title: 'The status says the request was split',
+      detail: 'A case forwarded to multiple CPIOs can place the branch list behind another details link.',
+      context: 'Status: forwarded to multiple CPIOs',
+      action: 'Click here to view details',
+    },
+    {
+      title: `${branchCount} related registration ${branchCount === 1 ? 'row appears' : 'rows appear'}`,
+      detail: 'Each branch can carry its own status and reply. The citizen opens one registration at a time.',
+      context: visibleRegistrationList,
+      action: 'Open branch status',
+    },
+    {
+      title: 'One reply opens. The matching is still yours.',
+      detail: 'Read the file, remember its registration, return to the list and repeat until every original question is checked.',
+      context: `Reply file · 1 of ${branchCount} ${branchCount === 1 ? 'branch' : 'branches'} checked`,
+      action: 'Go back and check next ID',
+    },
+  ] as const;
+  const currentManualStep = manualJourney[manualStep];
 
   return (
     <section className="before-reply-map" aria-labelledby="before-reply-title">
       <header className="before-problem-heading">
-        <p>The tab-hopping era · simplified illustration</p>
-        <h3 id="before-reply-title">Numbers everywhere. Answers somewhere.</h3>
-        <span>{data.painPoint}</span>
+        <p>Current RTI Online path · simplified illustration</p>
+        <h3 id="before-reply-title">One request. Several IDs. Repeat the lookup.</h3>
+        <span>The official workflow can create a registration number for each CPIO branch. The citizen checks each branch, then matches its reply back to the original questions.</span>
       </header>
+      <section className="before-portal-simulator" aria-labelledby="before-portal-simulator-title">
+        <header>
+          <div><p>Manual click path</p><h4 id="before-portal-simulator-title">Try the repeat-and-match loop</h4></div>
+          <span>Illustration only · no RTI Online connection</span>
+        </header>
+        <div className="before-portal-stage">
+          <div className="before-portal-screen" aria-live="polite">
+            <span>Step {manualStep + 1} of {manualJourney.length}</span>
+            <strong>{currentManualStep.title}</strong>
+            <p>{currentManualStep.detail}</p>
+            <code>{currentManualStep.context}</code>
+          </div>
+          <button type="button" onClick={() => setManualStep((current) => current === manualJourney.length - 1 ? 0 : current + 1)}>
+            {currentManualStep.action}<span aria-hidden="true">→</span>
+          </button>
+        </div>
+        <div className="before-portal-progress" aria-hidden="true">
+          {manualJourney.map((step, index) => <span className={index <= manualStep ? 'active' : ''} key={step.action} />)}
+        </div>
+        <a href="#why-this-exists">See the official manual screenshots and sources below</a>
+      </section>
       <div className="before-workspace">
         <section className="before-records" aria-labelledby="before-records-title">
           <div className="before-column-heading"><strong id="before-records-title">Records to open</strong><span>{recordsToShow.length} case events</span></div>

@@ -22,7 +22,7 @@ export const PROTOTYPE_TOUR_STEPS = [
     targetId: 'reply-map-panel',
     eyebrow: 'Question-by-question review',
     title: 'Put every answer beside its question',
-    body: 'Compare separate records with the proposed Reply Map: each original question links to its branch, passage and page. The citizen decides Yes or No; No reveals the relevant preparation note and official handoff links.',
+    body: 'Each question links to its branch, passage and page. After the tour, switch to Current pattern to replay the registration-number loop; a No in Reply Map reveals the relevant preparation note.',
   },
   {
     targetId: 'why-this-exists',
