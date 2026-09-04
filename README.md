@@ -53,6 +53,10 @@ The deploy is a static client application with no backend, database, authenticat
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the data flow, trust boundaries, validation rules, and extension points.
 
+## Separate complete-site handoff
+
+The current deployment remains the focused Reply Map prototype. The next-phase, end-to-end citizen website should be created as a separate project and separate Site. Its current product contract is in [docs/COMPLETE-SITE-HANDOFF.md](docs/COMPLETE-SITE-HANDOFF.md), with a ready-to-paste new-chat instruction in [docs/NEW-CHAT-PROMPT.md](docs/NEW-CHAT-PROMPT.md).
+
 ## Run locally
 
 Prerequisites: Node.js 22.13 or later and npm.
